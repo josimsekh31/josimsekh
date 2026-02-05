@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Josim VIP Maker - Professional Bio Data</title>
+    
+    <!-- CDNs for Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #000000; /* Default Black */
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Editor Section Styling */
+        .editor-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 90vh;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        /* A4 Paper Preview Styling */
+        .preview-container {
+            background: #555;
+            padding: 20px;
+            height: 90vh;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        #biodata-preview {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            padding: 15mm;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            position: relative;
+            color: var(--primary-color);
+        }
+
+        /* Biodata Internal CSS */
+        .bio-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .bio-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .photo-box {
+            width: 130px;
+            height: 160px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            float: right;
+            margin-left: 20px;
+        }
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        .info-label {
+            width: 180px;
+            font-weight: 600;
+        }
+        .info-sep {
+            width: 20px;
+        }
+        .info-value {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        /* Table Styling */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .custom-table th, .custom-table td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+        }
+        .custom-table th {
+            background-color: transparent;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .declaration {
+            margin-top: 40px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .signatures {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* Print Media Query */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #biodata-preview, #biodata-preview * {
+                visibility: visible;
+            }
+            #biodata-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+
+        /* Cropper Modal */
+        .img-container {
+            max-height: 400px;
+        }
+        .img-container img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark mb-3">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-file-invoice me-2"></i>Josim VIP Maker
+                <small class="fs-6 text-secondary d-block">Make your Own Biodata in just 5m</small>
+            </span>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-warning btn-sm" onclick="saveDraft()">
+                    <i class="fas fa-save"></i> Save Draft
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="downloadPDF()">
+                    <i class="fas fa-file-pdf"></i> Save PDF
+                </button>
+                <button class="btn btn-success btn-sm" onclick="downloadImage()">
+                    <i class="fas fa-image"></i> Save Image
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left Side: Editor Form -->
+            <div class="col-md-5">
+                <div class="editor-panel">
+                    <h5 class="text-primary"><i class="fas fa-edit"></i> Edit Details</h5>
+                    
+                    <!-- Theme Settings -->
+                    <div class="card p-2 mb-3 bg-light">
+                        <label class="form-label fw-bold">Theme Color</label>
+                        <div class="d-flex gap-2 align-items-center">
+                            <input type="color" class="form-control form-control-color" id="themeColor" value="#000000" title="Choose your color">
+                            <button class="btn btn-sm btn-dark" onclick="setTheme('#000000')">Black & White</button>
+                            <button class="btn btn-sm btn-primary" onclick="setTheme('#0d6efd')">Blue</button>
+                            <button class="btn btn-sm btn-danger" onclick="setTheme('#dc3545')">Red</button>
+                        </div>
+                    </div>
+
+                    <!-- Personal Info -->
+                    <div class="section-title">Personal Information</div>
+                    
+                    <div class="mb-2">
+                        <label>Profile Photo</label>
+                        <input type="file" class="form-control" id="photoInput" accept="image/*">
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control input-sync" id="inp_name" placeholder="Name">
+                        <label>Full Name</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control input-sync" id="inp_father" placeholder="Father">
+                        <label>Father's Name</label>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6 form-floating mb-2">
+                            <input type="text" class="form-control input-sync" id="inp_mobile" placeholder="Mobile">
+                            <label>Mobile</label>
+                        </div>
+                        <div class="col-md-6 form-floating mb-2">
+                            <input type="text" class="form-control input-sync" id="inp_email" placeholder="Email">
+                            <label>Email ID</label>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6 form-floating mb-2">
+                            <select class="form-select input-sync" id="inp_gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <label>Gender</label>
+                        </div>
+                        <div class="col-md-6 form-floating mb-2">
+                            <input type="date" class="form-control" id="inp_dob_picker" onchange="formatDate(this.value)">
+                            <label>Date of Birth</label>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6 form-floating mb-2">
+                            <select class="form-select input-sync" id="inp_marital">
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                            </select>
+                            <label>Marital Status</label>
+                        </div>
+                        <div class="col-md-6 form-floating mb-2">
+                            <input type="text" class="form-control input-sync" id="inp_religion" placeholder="Hindu">
+                            <label>Religion</label>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control input-sync" id="inp_nationality" value="India">
+                        <label>Nationality</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control input-sync" id="inp_lang" placeholder="Languages">
+                        <label>Languages Known</label>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="section-title d-flex justify-content-between">
+                        <span>Education</span>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addEduRow()">+ Add Row</button>
+                    </div>
+                    <div id="edu-inputs">
+                        <!-- Dynamic Rows will appear here -->
+                    </div>
+
+                    <!-- Other Details -->
+                    <div class="section-title">Other Details</div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control input-sync" id="inp_computer" placeholder="Computer Skills">
+                        <label>Computer Knowledge</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control input-sync" id="inp_work" placeholder="Experience">
+                        <label>Work Experience</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <textarea class="form-control input-sync" id="inp_address" style="height: 80px"></textarea>
+                        <label>Address</label>
+                    </div>
+
+                    <div class="section-title">Declaration</div>
+                    <div class="row g-2">
+                         <div class="col-md-6 form-floating mb-2">
+                            <input type="text" class="form-control input-sync" id="inp_place" placeholder="Place">
+                            <label>Place</label>
+                        </div>
+                        <div class="col-md-6 form-floating mb-2">
+                            <input type="text" class="form-control input-sync" id="inp_date_text" placeholder="Date Text">
+                            <label>Date (Text)</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Side: Live Preview -->
+            <div class="col-md-7">
+                <div class="preview-container">
+                    <div id="biodata-preview">
+                        
+                        <!-- Header -->
+                        <div class="bio-header">
+                            <div class="bio-title">BIO DATA</div>
+                        </div>
+
+                        <!-- Photo Section (Float Right) -->
+                        <div class="photo-box">
+                            <img id="view_photo" src="https://via.placeholder.com/130x160?text=Photo" alt="User Photo">
+                        </div>
+
+                        <!-- Personal Info Details -->
+                        <div style="margin-right: 160px;"> <!-- Space for photo -->
+                            <div class="info-row"><div class="info-label">Name</div><div class="info-sep">:</div><div class="info-value" id="view_name">Sandeep Desai</div></div>
+                            <div class="info-row"><div class="info-label">Father's Name</div><div class="info-sep">:</div><div class="info-value" id="view_father">Aravind Babu</div></div>
+                            <div class="info-row"><div class="info-label">Mobile</div><div class="info-sep">:</div><div class="info-value" id="view_mobile">9452XXXX50</div></div>
+                            <div class="info-row"><div class="info-label">Email ID</div><div class="info-sep">:</div><div class="info-value" id="view_email">sandydxx@gmail.com</div></div>
+                            <div class="info-row"><div class="info-label">Gender</div><div class="info-sep">:</div><div class="info-value" id="view_gender">Male</div></div>
+                            <div class="info-row"><div class="info-label">Date of Birth</div><div class="info-sep">:</div><div class="info-value" id="view_dob_picker">02 Feb 2001</div></div>
+                            <div class="info-row"><div class="info-label">Marital Status</div><div class="info-sep">:</div><div class="info-value" id="view_marital">Married</div></div>
+                            <div class="info-row"><div class="info-label">Religion</div><div class="info-sep">:</div><div class="info-value" id="view_religion">Hindu</div></div>
+                            <div class="info-row"><div class="info-label">Nationality</div><div class="info-sep">:</div><div class="info-value" id="view_nationality">India</div></div>
+                            <div class="info-row"><div class="info-label">Languages Known</div><div class="info-sep">:</div><div class="info-value" id="view_lang">English, Hindi & Gujarati</div></div>
+                        </div>
+
+                        <div style="clear: both;"></div>
+
+                        <!-- Education Table -->
+                        <div class="mt-2">
+                            <strong>Education:</strong>
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Exam Name</th>
+                                        <th>Year of Pass</th>
+                                        <th>Institution Name</th>
+                                        <th>Marks/Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="view_edu_body">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Other Skills -->
+                        <div class="info-row"><div class="info-label">Computer Knowledge</div><div class="info-sep">:</div><div class="info-value" id="view_computer">MS Office, Tally ERP 9</div></div>
+                        <div class="info-row"><div class="info-label">Work Experience</div><div class="info-sep">:</div><div class="info-value" id="view_work">Fresher</div></div>
+                        <div class="info-row align-items-start"><div class="info-label">Address</div><div class="info-sep">:</div><div class="info-value" id="view_address">8-121, Atha, Surat, Gujarat - 395001</div></div>
+
+                        <!-- Declaration -->
+                        <div class="declaration">
+                            <strong>Declaration</strong><br>
+                            I do hereby declare that the above information is true to the best of my knowledge.
+                        </div>
+
+                        <!-- Footer/Sign -->
+                        <div class="signatures">
+                            <div>
+                                <div class="mb-1">Place: <span id="view_place">Surat</span></div>
+                                <div>Date: <span id="view_date_text">15 Apr 2023</span></div>
+                            </div>
+                            <div style="text-align: right;">
+                                <br><br>
+                                Signature
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cropper Modal -->
+    <div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crop Photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="img-container">
+                        <img id="imageToCrop" src="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="cropBtn">Crop & Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script>
+        // --- 1. Live Sync Logic ---
+        $(document).on('input', '.input-sync', function() {
+            let id = $(this).attr('id');
+            let viewId = id.replace('inp_', 'view_');
+            $('#' + viewId).text($(this).val());
+        });
+
+        // Theme Color Logic
+        function setTheme(color) {
+            $('#themeColor').val(color);
+            document.documentElement.style.setProperty('--primary-color', color);
+        }
+        $('#themeColor').on('input', function() {
+            setTheme($(this).val());
+        });
+
+        // Date Format Logic
+        function formatDate(dateStr) {
+            if (!dateStr) return;
+            const date = new Date(dateStr);
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            const formatted = date.toLocaleDateString('en-GB', options);
+            $('#view_dob_picker').text(formatted);
+        }
+
+        // --- 2. Dynamic Education Table ---
+        let eduCount = 0;
+        function addEduRow(data = {}) {
+            eduCount++;
+            let id = eduCount;
+            
+            // Editor Input Row
+            let editorHtml = `
+                <div class="card p-2 mb-2 border-secondary" id="edu_row_${id}">
+                    <div class="d-flex justify-content-between mb-1">
+                        <small class="fw-bold">Exam ${id}</small>
+                        <button class="btn btn-sm btn-danger py-0" onclick="removeEdu(${id})">&times;</button>
+                    </div>
+                    <div class="row g-1">
+                        <div class="col-3"><input type="text" class="form-control form-control-sm edu-sync" data-id="${id}" data-field="exam" placeholder="Exam" value="${data.exam || ''}"></div>
+                        <div class="col-2"><input type="text" class="form-control form-control-sm edu-sync" data-id="${id}" data-field="year" placeholder="Year" value="${data.year || ''}"></div>
+                        <div class="col-5"><input type="text" class="form-control form-control-sm edu-sync" data-id="${id}" data-field="inst" placeholder="Institution" value="${data.inst || ''}"></div>
+                        <div class="col-2"><input type="text" class="form-control form-control-sm edu-sync" data-id="${id}" data-field="marks" placeholder="Marks" value="${data.marks || ''}"></div>
+                    </div>
+                </div>
+            `;
+            $('#edu-inputs').append(editorHtml);
+
+            // Preview Table Row
+            let previewHtml = `
+                <tr id="view_edu_row_${id}">
+                    <td class="v-exam">${data.exam || ''}</td>
+                    <td class="v-year">${data.year || ''}</td>
+                    <td class="v-inst">${data.inst || ''}</td>
+                    <td class="v-marks">${data.marks || ''}</td>
+                </tr>
+            `;
+            $('#view_edu_body').append(previewHtml);
+        }
+
+        function removeEdu(id) {
+            $(`#edu_row_${id}`).remove();
+            $(`#view_edu_row_${id}`).remove();
+        }
+
+        // Sync Education Table
+        $(document).on('input', '.edu-sync', function() {
+            let id = $(this).data('id');
+            let field = $(this).data('field');
+            let val = $(this).val();
+            $(`#view_edu_row_${id} .v-${field}`).text(val);
+        });
+
+        // Initialize with default rows
+        $(document).ready(function() {
+            if(!localStorage.getItem('josimBioData')) {
+                addEduRow({exam: 'Elementary', year: '2017', inst: 'Little Flower High School', marks: '8.5'});
+                addEduRow({exam: 'College', year: '2019', inst: 'Triveni College', marks: '8.6'});
+            } else {
+                loadDraft();
+            }
+        });
+
+        // --- 3. Image Crop Logic ---
+        let cropper;
+        const image = document.getElementById('imageToCrop');
+        const cropModal = new bootstrap.Modal(document.getElementById('cropModal'));
+
+        $('#photoInput').change(function(e) {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    image.src = e.target.result;
+                    cropModal.show();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('cropModal').addEventListener('shown.bs.modal', function () {
+            cropper = new Cropper(image, {
+                aspectRatio: 130 / 160,
+                viewMode: 1,
+            });
+        });
+
+        document.getElementById('cropModal').addEventListener('hidden.bs.modal', function () {
+            cropper.destroy();
+            cropper = null;
+            $('#photoInput').val(''); // Reset input
+        });
+
+        $('#cropBtn').click(function() {
+            const canvas = cropper.getCroppedCanvas({
+                width: 130,
+                height: 160,
+            });
+            $('#view_photo').attr('src', canvas.toDataURL());
+            cropModal.hide();
+        });
+
+        // --- 4. Export Functions ---
+
+        // Save PDF
+        function downloadPDF() {
+            const element = document.getElementById('biodata-preview');
+            const opt = {
+                margin:       0,
+                filename:     'my_biodata.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Save Image
+        function downloadImage() {
+            const element = document.getElementById('biodata-preview');
+            html2canvas(element, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'my_biodata.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+
+        // --- 5. Save/Load Draft (LocalStorage) ---
+        function saveDraft() {
+            let data = {};
+            // Inputs
+            $('.input-sync').each(function() {
+                data[$(this).attr('id')] = $(this).val();
+            });
+            // Edu Rows
+            let eduData = [];
+            $('#edu-inputs .card').each(function() {
+                let id = $(this).attr('id').replace('edu_row_', '');
+                eduData.push({
+                    exam: $(`input[data-id="${id}"][data-field="exam"]`).val(),
+                    year: $(`input[data-id="${id}"][data-field="year"]`).val(),
+                    inst: $(`input[data-id="${id}"][data-field="inst"]`).val(),
+                    marks: $(`input[data-id="${id}"][data-field="marks"]`).val()
+                });
+            });
+            data['edu'] = eduData;
+            // Image
+            data['photo'] = $('#view_photo').attr('src');
+            // Color
+            data['color'] = $('#themeColor').val();
+
+            localStorage.setItem('josimBioData', JSON.stringify(data));
+            alert('Draft Saved Successfully!');
+        }
+
+        function loadDraft() {
+            let stored = localStorage.getItem('josimBioData');
+            if (stored) {
+                let data = JSON.parse(stored);
+                
+                // Load Inputs
+                for (let key in data) {
+                    if (key !== 'edu' && key !== 'photo' && key !== 'color') {
+                        $('#' + key).val(data[key]).trigger('input');
+                    }
+                }
+                
+                // Load Photo
+                if(data['photo']) $('#view_photo').attr('src', data['photo']);
+                
+                // Load Color
+                if(data['color']) setTheme(data['color']);
+
+                // Load Edu
+                $('#edu-inputs').empty();
+                $('#view_edu_body').empty();
+                if (data['edu'] && data['edu'].length > 0) {
+                    data['edu'].forEach(row => addEduRow(row));
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
