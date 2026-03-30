@@ -2,404 +2,778 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>JS Code Editor | Desktop IDE</title>
-    <!-- Font Awesome 6 (free icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Code Editor | Premium IDE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-dark: #0f111a;
+            --panel-dark: rgba(30, 33, 45, 0.7);
+            --accent: #7c4dff;
+            --accent-glow: rgba(124, 77, 255, 0.4);
+            --text-main: #e0e0e0;
+            --text-dim: #909090;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --sidebar-w: 280px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .light-mode {
+            --bg-dark: #f5f7fa;
+            --panel-dark: rgba(255, 255, 255, 0.8);
+            --accent: #6200ea;
+            --accent-glow: rgba(98, 0, 234, 0.2);
+            --text-main: #2d3436;
+            --text-dim: #636e72;
+            --glass: rgba(0, 0, 0, 0.02);
+            --border: rgba(0, 0, 0, 0.1);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s;
-        }
-
-        :root {
-            --bg-primary: #1e1e2f;
-            --bg-secondary: #252536;
-            --bg-sidebar: #181825;
-            --bg-editor: #1e1e2e;
-            --text-primary: #e4e4e7;
-            --text-secondary: #a1a1aa;
-            --border: #3f3f4e;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --tab-active: #2d2d3f;
-            --tab-inactive: #20202e;
-            --shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        body.light {
-            --bg-primary: #f9fafb;
-            --bg-secondary: #ffffff;
-            --bg-sidebar: #f3f4f6;
-            --bg-editor: #ffffff;
-            --text-primary: #1f2937;
-            --text-secondary: #4b5563;
-            --border: #e5e7eb;
-            --accent: #2563eb;
-            --tab-active: #ffffff;
-            --tab-inactive: #f3f4f6;
-            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Fira Code', monospace;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
             overflow: hidden;
-            height: 100vh;
+            transition: background 0.5s ease;
         }
 
-        /* Layout Grid */
-        .app {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            grid-template-columns: 280px 1fr 280px;
-            height: 100vh;
-            gap: 0;
-        }
-
+        /* --- UI Components --- */
+        
         /* Navbar */
-        .navbar {
-            grid-column: 1 / -1;
-            background: var(--bg-secondary);
-            backdrop-filter: blur(4px);
-            border-bottom: 1px solid var(--border);
-            padding: 0.6rem 1.5rem;
+        nav {
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            box-shadow: var(--shadow);
-            z-index: 10;
+            padding: 0 25px;
+            background: var(--panel-dark);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            position: relative;
         }
-        .logo h1 {
-            font-size: 1.35rem;
+
+        .logo {
             font-weight: 600;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--accent), #b388ff);
             -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2rem;
         }
-        .actions {
+
+        .nav-actions {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 15px;
         }
-        .btn {
-            background: var(--bg-primary);
+
+        .icon-btn {
+            background: var(--glass);
             border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: inline-flex;
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
         }
-        .btn:hover {
+
+        .icon-btn:hover {
             background: var(--accent);
-            border-color: var(--accent);
             color: white;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--accent-glow);
         }
-        .btn-icon {
-            padding: 6px 10px;
+
+        /* Layout Main */
+        .app-container {
+            display: flex;
+            height: calc(100vh - 60px);
+            position: relative;
         }
 
         /* Sidebar */
         .sidebar {
-            background: var(--bg-sidebar);
+            width: 45px; /* Collapsed width */
+            background: var(--panel-dark);
+            backdrop-filter: blur(10px);
             border-right: 1px solid var(--border);
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
+            z-index: 90;
         }
-        .explorer-header {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
+
+        .sidebar.expanded {
+            width: var(--sidebar-w);
+        }
+
+        .sidebar-toggle {
+            height: 100%;
+            width: 45px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-        .explorer-title {
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .folder-actions {
-            display: flex;
-            gap: 6px;
-        }
-        .project-tree {
-            flex: 1;
-            overflow-y: auto;
-            padding: 8px;
-        }
-        .tree-node {
-            padding: 4px 8px;
-            margin: 2px 0;
+            justify-content: center;
             cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: var(--transition);
+        }
+
+        .sidebar.expanded .sidebar-toggle {
+            height: 50px;
+            width: 50px;
+            right: 10px;
+            top: 10px;
+        }
+
+        .sidebar-content {
+            opacity: 0;
+            pointer-events: none;
+            padding: 20px;
+            transition: opacity 0.3s;
+            width: var(--sidebar-w);
+        }
+
+        .sidebar.expanded .sidebar-content {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .project-section { margin-bottom: 25px; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tree-item {
+            padding: 8px 12px;
             border-radius: 6px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 0.85rem;
+            gap: 10px;
+            margin-bottom: 4px;
+            transition: 0.2s;
+            font-size: 0.9rem;
         }
-        .tree-node:hover { background: var(--bg-primary); }
-        .node-name { display: flex; align-items: center; gap: 8px; }
-        .node-actions i { margin-left: 6px; opacity: 0.6; font-size: 0.7rem; }
-        .node-actions i:hover { opacity: 1; color: var(--accent); }
+
+        .tree-item:hover { background: var(--glass); }
+        .tree-item.active { background: var(--accent-glow); color: var(--accent); }
+        .tree-item i { width: 16px; text-align: center; }
 
         /* Editor Area */
-        .main-area {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .tabs-bar {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            gap: 2px;
-            overflow-x: auto;
-            padding: 0 8px;
-        }
-        .tab {
-            padding: 8px 16px;
-            background: var(--tab-inactive);
-            border-right: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .tab.active {
-            background: var(--tab-active);
-            border-bottom: 2px solid var(--accent);
-        }
-        .tab-close {
-            margin-left: 6px;
-            opacity: 0.6;
-        }
-        .editor-wrapper {
+        .editor-main {
             flex: 1;
             display: flex;
             flex-direction: column;
+            background: var(--bg-dark);
             position: relative;
         }
-        .code-container {
-            display: flex;
-            flex: 1;
-            overflow: auto;
-        }
-        .line-numbers {
-            background: var(--bg-sidebar);
-            padding: 12px 8px;
-            text-align: right;
-            font-family: 'Fira Code', monospace;
-            font-size: 13px;
-            color: var(--text-secondary);
-            user-select: none;
-            border-right: 1px solid var(--border);
-            line-height: 1.5;
-            overflow-y: hidden;
-        }
-        .editor-content {
-            flex: 1;
-            font-family: 'Fira Code', 'Cascadia Code', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-            padding: 12px;
-            outline: none;
-            white-space: pre-wrap;
-            word-break: break-word;
-            background: var(--bg-editor);
-            color: var(--text-primary);
-            overflow: auto;
-        }
-        .status-bar {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 4px 12px;
-            font-size: 0.7rem;
-            display: flex;
-            gap: 16px;
-        }
-        /* Right Panel */
-        .right-panel {
-            background: var(--bg-sidebar);
-            border-left: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        .panel-header {
-            padding: 12px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-        }
-        .tool-section {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-        .color-preview {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            margin: 8px 0;
-        }
-        input[type="color"] { width: 100%; margin: 8px 0; }
-        .search-box { width: 100%; padding: 6px; margin: 6px 0; background: var(--bg-primary); border: 1px solid var(--border); color: var(--text-primary); border-radius: 6px; }
 
-        /* Bottom Console */
-        .bottom-panel {
-            grid-column: 2 / 3;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            height: 180px;
+        /* Tabs */
+        .tabs-container {
+            height: 45px;
+            background: var(--panel-dark);
             display: flex;
-            flex-direction: column;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border);
         }
-        .console-header {
-            padding: 6px 12px;
-            background: var(--bg-sidebar);
-            font-weight: 600;
+
+        .tabs-container::-webkit-scrollbar { height: 0; }
+
+        .tab {
+            min-width: 140px;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-right: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            transition: 0.3s;
+            background: rgba(0,0,0,0.1);
         }
-        .console-output {
+
+        .tab.active {
+            background: var(--bg-dark);
+            color: var(--accent);
+            border-top: 2px solid var(--accent);
+        }
+
+        .tab-close:hover { color: #ff5252; }
+
+        /* Editor Core */
+        #editor-wrapper {
             flex: 1;
-            overflow-y: auto;
-            padding: 8px;
-            font-family: monospace;
-            font-size: 12px;
+            position: relative;
+            overflow: auto;
+            padding: 20px;
+            counter-reset: line;
         }
-        iframe {
+
+        #code-input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: transparent;
+            caret-color: var(--accent);
+            font-family: 'Fira Code', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            resize: none;
+            position: absolute;
+            z-index: 2;
+            white-space: pre;
+            padding-left: 50px;
+        }
+
+        #code-highlight {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            pointer-events: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            white-space: pre;
+            z-index: 1;
+            padding-left: 50px;
+        }
+
+        .line-numbers {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            color: var(--text-dim);
+            text-align: right;
+            padding-right: 15px;
+            border-right: 1px solid var(--border);
+            user-select: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Syntax Highlighting */
+        .hlt-keyword { color: #c678dd; }
+        .hlt-func { color: #61afef; }
+        .hlt-str { color: #98c379; }
+        .hlt-tag { color: #e06c75; }
+        .hlt-attr { color: #d19a66; }
+        .hlt-comment { color: #5c6370; font-style: italic; }
+
+        /* Right Drawer */
+        .drawer {
+            position: absolute;
+            right: -320px;
+            top: 0;
+            width: 320px;
+            height: 100%;
+            background: var(--panel-dark);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border);
+            z-index: 110;
+            transition: var(--transition);
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .drawer.open { right: 0; }
+
+        .drawer-handle {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 100px;
+            background: var(--panel-dark);
+            border: 1px solid var(--border);
+            border-right: none;
+            border-radius: 15px 0 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-dim);
+        }
+
+        /* Tools */
+        .tool-group { margin-bottom: 30px; }
+        .tool-group h4 { margin-bottom: 15px; color: var(--accent); font-size: 0.9rem; }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        /* Preview Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .modal.active { display: block; opacity: 1; }
+        
+        #preview-frame {
             width: 100%;
             height: 100%;
             border: none;
             background: white;
         }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover { color: var(--accent); transform: rotate(90deg); }
+
+        /* Status Bar */
+        .status-bar {
+            height: 30px;
+            background: var(--panel-dark);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 20px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            gap: 20px;
+        }
+
+        /* Toast Notifications */
         .toast {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
             background: var(--accent);
             color: white;
-            padding: 8px 16px;
+            padding: 12px 25px;
             border-radius: 30px;
-            z-index: 999;
-            animation: fadeOut 2s forwards;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
         }
-        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-        .collapsed { width: 40px; overflow: hidden; }
-        .resizer { cursor: ew-resize; width: 4px; background: var(--border); }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
     </style>
 </head>
-<body>
-<div class="app" id="app">
-    <div class="navbar">
-        <div class="logo"><h1><i class="fas fa-code"></i> JS Code Editor</h1></div>
-        <div class="actions">
-            <button id="newProjectBtn" class="btn"><i class="fas fa-folder-open"></i> New Project</button>
-            <button id="saveProjectBtn" class="btn"><i class="fas fa-save"></i> Save</button>
-            <button id="runBtn" class="btn"><i class="fas fa-play"></i> Run</button>
-            <button id="shareBtn" class="btn"><i class="fas fa-share-alt"></i> Share</button>
-            <button id="themeToggle" class="btn"><i class="fas fa-moon"></i> Theme</button>
+<body class="dark-mode">
+
+    <nav>
+        <div class="logo"><i class="fas fa-terminal"></i> JS Code</div>
+        <div class="nav-actions">
+            <button class="icon-btn" title="New Project" onclick="createNewProject()"><i class="fas fa-plus"></i></button>
+            <button class="icon-btn" title="Save All" onclick="saveAll()"><i class="fas fa-save"></i></button>
+            <button class="icon-btn" title="Run Project" style="background: var(--accent);" onclick="runCode()"><i class="fas fa-play"></i></button>
+            <button class="icon-btn" title="Toggle Theme" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+            <button class="icon-btn" title="Export JSON" onclick="exportProject()"><i class="fas fa-download"></i></button>
         </div>
-    </div>
-    <div class="sidebar" id="sidebar">
-        <div class="explorer-header"><span class="explorer-title"><i class="fas fa-project-diagram"></i> Project Explorer</span><div class="folder-actions"><button id="createFolderBtn" class="btn-icon btn" title="New Folder"><i class="fas fa-folder-plus"></i></button><button id="createFileBtn" class="btn-icon btn" title="New File"><i class="fas fa-file-plus"></i></button></div></div>
-        <div id="projectTree" class="project-tree"></div>
-    </div>
-    <div class="main-area">
-        <div class="tabs-bar" id="tabsContainer"></div>
-        <div class="editor-wrapper">
-            <div class="code-container">
-                <div id="lineNumbers" class="line-numbers">1</div>
-                <div id="editorContent" class="editor-content" contenteditable="true" spellcheck="false"></div>
+    </nav>
+
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-chevron-right" id="sidebar-icon"></i>
             </div>
-            <div class="status-bar"><span id="cursorPos">Ln 1, Col 1</span><span id="fileTypeStatus">Ready</span></div>
-        </div>
-        <div class="bottom-panel" id="bottomPanel">
-            <div class="console-header"><i class="fas fa-terminal"></i> Console / Output <button id="closeConsoleBtn" style="float:right; background:none; border:none; color:var(--text-secondary); cursor:pointer;"><i class="fas fa-times"></i></button></div>
-            <div id="consoleOutput" class="console-output">▶ Click Run to preview code</div>
+            <div class="sidebar-content">
+                <div class="project-section">
+                    <div class="section-header">
+                        <span>Projects</span>
+                        <i class="fas fa-folder-plus" style="cursor:pointer" onclick="createNewProject()"></i>
+                    </div>
+                    <div id="project-list">
+                        </div>
+                </div>
+                <div class="project-section">
+                    <div class="section-header">
+                        <span>Files</span>
+                        <i class="fas fa-file-circle-plus" style="cursor:pointer" onclick="createNewFile()"></i>
+                    </div>
+                    <div id="file-tree">
+                        </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="editor-main">
+            <div class="tabs-container" id="tabs-bar">
+                </div>
+            
+            <div id="editor-wrapper">
+                <div class="line-numbers" id="line-numbers">1</div>
+                <pre id="code-highlight"><code></code></pre>
+                <textarea id="code-input" spellcheck="false" oninput="updateEditor()" onkeydown="handleTab(event)"></textarea>
+            </div>
+
+            <div class="status-bar">
+                <span id="pos-stat">Ln 1, Col 1</span>
+                <span id="file-stat">No File Open</span>
+                <span>UTF-8</span>
+            </div>
+        </main>
+
+        <div class="drawer" id="right-drawer">
+            <div class="drawer-handle" onclick="toggleDrawer()">
+                <i class="fas fa-screwdriver-wrench"></i>
+            </div>
+            <div class="tool-group">
+                <h4><i class="fas fa-search"></i> Search & Replace</h4>
+                <input type="text" id="find-input" placeholder="Find..." oninput="highlightMatches()">
+                <input type="text" id="replace-input" placeholder="Replace with...">
+                <button class="icon-btn" style="width: 100%; border-radius: 8px;" onclick="replaceText()">Replace All</button>
+            </div>
+
+            <div class="tool-group">
+                <h4><i class="fas fa-palette"></i> Color Picker</h4>
+                <input type="color" id="color-picker" style="width:100%; height:40px; border:none; cursor:pointer;" oninput="updateColorPreview()">
+                <div id="color-hex" class="color-preview" style="background: #7c4dff;">#7C4DFF</div>
+                <button class="icon-btn" style="width: 100%; border-radius: 8px;" onclick="insertColor()">Insert Hex</button>
+            </div>
         </div>
     </div>
-    <div class="right-panel" id="rightPanel">
-        <div class="panel-header"><i class="fas fa-tools"></i> Tools <i id="collapseRight" class="fas fa-chevron-right" style="float:right; cursor:pointer;"></i></div>
-        <div id="toolsContent"><div class="tool-section"><b>🎨 Color Picker</b><input type="color" id="colorPicker" value="#3b82f6"><div id="colorPreview" class="color-preview"></div><button id="insertColorBtn" class="btn">Insert Color</button><div><small>HEX: <span id="hexValue">#3b82f6</span> RGB: <span id="rgbValue">59,130,246</span></small></div></div><div class="tool-section"><b>🔍 Search & Replace</b><input type="text" id="searchInput" class="search-box" placeholder="Find..."><input type="text" id="replaceInput" class="search-box" placeholder="Replace..."><button id="findBtn" class="btn">Find</button> <button id="replaceBtn" class="btn">Replace</button></div><div class="tool-section"><b>✂️ Editor Tools</b><div><button id="copyBtn" class="btn"><i class="fas fa-copy"></i> Copy</button> <button id="cutBtn" class="btn"><i class="fas fa-cut"></i> Cut</button> <button id="pasteBtn" class="btn"><i class="fas fa-paste"></i> Paste</button> <button id="selectAllBtn" class="btn">Select All</button> <button id="undoBtn" class="btn"><i class="fas fa-undo"></i> Undo</button> <button id="redoBtn" class="btn"><i class="fas fa-redo"></i> Redo</button></div></div></div>
+
+    <div class="modal" id="preview-modal">
+        <i class="fas fa-times close-modal" onclick="closePreview()"></i>
+        <iframe id="preview-frame"></iframe>
     </div>
-</div>
-<script>
-    // ---------- DATA MODELS ----------
-    let projects = []; let currentProjectId = null; let currentFileKey = null; let openTabs = []; let activeTabId = null;
-    let editorHistory = { stack: [], index: -1 }; let ignoreHistory = false;
-    function loadFromStorage() { const p = localStorage.getItem("js_editor_projects"); if(p) projects = JSON.parse(p); else projects = [{ id: "proj1", name: "MyWorkspace", files: { "index.html": { name:"index.html", type:"html", content:"<h1>Hello World</h1>" }, "style.css": { name:"style.css", type:"css", content:"body{font-family:sans-serif;}" }, "script.js": { name:"script.js", type:"js", content:"console.log('ready');" } }, folderTree: null }]; currentProjectId = localStorage.getItem("currentProject") || projects[0]?.id; if(!projects.find(p=>p.id===currentProjectId)) currentProjectId=projects[0]?.id; }
-    function saveProjectsToStorage() { localStorage.setItem("js_editor_projects", JSON.stringify(projects)); localStorage.setItem("currentProject", currentProjectId); }
-    function getCurrentProject() { return projects.find(p=>p.id===currentProjectId); }
-    function saveAllOpenFiles() { if(!currentFileKey) return; const proj = getCurrentProject(); if(proj && currentFileKey && proj.files[currentFileKey]) { proj.files[currentFileKey].content = editorEl.innerText; saveProjectsToStorage(); } }
-    // editor ref
-    const editorEl = document.getElementById("editorContent");
-    const lineNumbersDiv = document.getElementById("lineNumbers");
-    function updateLineNumbers() { const lines = editorEl.innerText.split('\n'); let nums = ''; for(let i=1;i<=lines.length;i++) nums+= i + '<br>'; lineNumbersDiv.innerHTML = nums; }
-    function syncCursor() { const sel = window.getSelection(); if(sel.rangeCount) { const range = sel.getRangeAt(0); const preCaret = range.cloneRange(); preCaret.selectNodeContents(editorEl); preCaret.setEnd(range.endContainer, range.endOffset); const row = (preCaret.toString().match(/\n/g)||[]).length + 1; const col = range.endOffset - (preCaret.toString().lastIndexOf('\n')+1); document.getElementById("cursorPos").innerText = `Ln ${row}, Col ${col+1}`; } }
-    function highlightSyntax() { /* basic lightweight syntax highlighter (keywords, strings) for demo */ if(!currentFileKey) return; const code = editorEl.innerText; const ext = currentFileKey.split('.').pop(); let html = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); if(ext === 'js') html = html.replace(/\b(const|let|var|function|return|if|else|for|while|class|export|import|async|await)\b/g, '<span style="color:#c678dd;">$&</span>').replace(/\/\/.*/g, '<span style="color:#98c379;">$&</span>').replace(/(".*?"|'.*?')/g, '<span style="color:#e5c07b;">$&</span>'); else if(ext === 'html') html = html.replace(/&lt;(\/?[\w-]+)(.*?)&gt;/g, '<span style="color:#e06c75;">&lt;$1$2&gt;</span>'); else if(ext === 'css') html = html.replace(/([{}:;])/g, '<span style="color:#56b6c2;">$&</span>').replace(/\b(color|background|margin|padding|display|flex)\b/g, '<span style="color:#c678dd;">$&</span>'); editorEl.innerHTML = html; restoreCaret(); }
-    let lastContent = '';
-    function onEditorInput() { updateLineNumbers(); syncCursor(); saveAllOpenFiles(); if(!ignoreHistory) addToHistory(editorEl.innerText); }
-    function addToHistory(content) { editorHistory.stack = editorHistory.stack.slice(0, editorHistory.index+1); editorHistory.stack.push(content); editorHistory.index++; }
-    function undo() { if(editorHistory.index>0) { editorHistory.index--; ignoreHistory=true; editorEl.innerText=editorHistory.stack[editorHistory.index]; onEditorInput(); ignoreHistory=false; } }
-    function redo() { if(editorHistory.index<editorHistory.stack.length-1){ editorHistory.index++; ignoreHistory=true; editorEl.innerText=editorHistory.stack[editorHistory.index]; onEditorInput(); ignoreHistory=false; } }
-    function restoreCaret() { /* keep focus */ editorEl.focus(); }
-    function loadFileIntoEditor(fileKey) { if(!getCurrentProject()) return; const file = getCurrentProject().files[fileKey]; if(file){ currentFileKey=fileKey; editorEl.innerText=file.content; addToHistory(file.content); updateLineNumbers(); highlightSyntax(); syncCursor(); document.getElementById("fileTypeStatus").innerText = file.name; }
-    }
-    function renderTabs() { const container = document.getElementById("tabsContainer"); container.innerHTML=""; openTabs.forEach(tab=>{ const tabDiv = document.createElement("div"); tabDiv.className = `tab ${activeTabId===tab.id ? 'active':''}`; tabDiv.innerHTML = `<i class="fas fa-file-code"></i>${tab.name}<i class="fas fa-times tab-close" data-id="${tab.id}"></i>`; tabDiv.addEventListener("click",(e)=>{ if(!e.target.classList.contains("tab-close")){ activeTabId=tab.id; loadFileIntoEditor(tab.fileKey); renderTabs(); } }); const closeBtn = tabDiv.querySelector(".tab-close"); closeBtn.addEventListener("click",(e)=>{ e.stopPropagation(); openTabs = openTabs.filter(t=>t.id!==tab.id); if(activeTabId===tab.id && openTabs.length){ activeTabId=openTabs[0].id; loadFileIntoEditor(openTabs[0].fileKey); }else if(openTabs.length===0){ activeTabId=null; currentFileKey=null; editorEl.innerText=""; lineNumbersDiv.innerHTML="1"; } renderTabs(); saveProjectsToStorage(); }); container.appendChild(tabDiv); }); }
-    function openFile(fileKey){ const proj=getCurrentProject(); const file=proj.files[fileKey]; if(!file) return; if(!openTabs.find(t=>t.fileKey===fileKey)){ const newId=Date.now()+Math.random(); openTabs.push({id:newId, name:file.name, fileKey:fileKey}); } activeTabId=openTabs.find(t=>t.fileKey===fileKey).id; loadFileIntoEditor(fileKey); renderTabs(); }
-    function renderProjectTree(){ const proj=getCurrentProject(); if(!proj) return; const container=document.getElementById("projectTree"); container.innerHTML=""; const files=Object.keys(proj.files); files.forEach(fkey=>{ const node=document.createElement("div"); node.className="tree-node"; node.innerHTML=`<div class="node-name"><i class="fas fa-file"></i> ${proj.files[fkey].name}</div><div class="node-actions"><i class="fas fa-pen rename-file" data-key="${fkey}"></i> <i class="fas fa-trash delete-file" data-key="${fkey}"></i> <i class="fas fa-download download-file" data-key="${fkey}"></i></div>`; node.querySelector(".node-name").addEventListener("click",()=>openFile(fkey)); node.querySelector(".rename-file")?.addEventListener("click",(e)=>{ e.stopPropagation(); const newName=prompt("New name:",proj.files[fkey].name); if(newName){ const ext=newName.split('.').pop(); proj.files[fkey].name=newName; proj.files[fkey].type=ext; const newKey=newName; proj.files[newKey]=proj.files[fkey]; delete proj.files[fkey]; if(currentFileKey===fkey) currentFileKey=newKey; openTabs=openTabs.map(t=>t.fileKey===fkey? {...t, name:newName, fileKey:newKey}:t); saveProjectsToStorage(); renderProjectTree(); renderTabs(); toast("Renamed"); } }); node.querySelector(".delete-file")?.addEventListener("click",(e)=>{ e.stopPropagation(); if(confirm("Delete file?")){ delete proj.files[fkey]; if(currentFileKey===fkey){ currentFileKey=null; editorEl.innerText=""; } openTabs=openTabs.filter(t=>t.fileKey!==fkey); if(openTabs.length) activeTabId=openTabs[0].id,loadFileIntoEditor(openTabs[0].fileKey); else activeTabId=null; saveProjectsToStorage(); renderProjectTree(); renderTabs(); toast("Deleted"); } }); node.querySelector(".download-file")?.addEventListener("click",()=>{ const blob=new Blob([proj.files[fkey].content],{type:"text/plain"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=proj.files[fkey].name; a.click(); }); container.appendChild(node); }); }
-    function toast(msg){ const t=document.createElement("div"); t.className="toast"; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2000); }
-    // create new project
-    function newProject(){ const name=prompt("Project Name:","MyProject"); if(!name) return; const newId="proj_"+Date.now(); const newProj={id:newId, name:name, files:{"main.js":{name:"main.js",type:"js",content:"// start coding"}}}; projects.push(newProj); currentProjectId=newId; openTabs=[]; activeTabId=null; saveProjectsToStorage(); renderProjectTree(); toast(`Project ${name} created`); }
-    // share: export json
-    function exportProject(){ const proj=getCurrentProject(); const data=JSON.stringify({name:proj.name, files:proj.files}); const blob=new Blob([data],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${proj.name}.json`; a.click(); toast("Project exported"); }
-    function importProject(file){ const reader=new FileReader(); reader.onload=e=>{ const data=JSON.parse(e.target.result); const newId="proj_"+Date.now(); projects.push({id:newId, name:data.name||"Imported", files:data.files}); currentProjectId=newId; saveProjectsToStorage(); renderProjectTree(); toast("Imported"); }; reader.readAsText(file); }
-    // run preview
-    function runCode(){ const activeFile=getCurrentProject()?.files[currentFileKey]; if(!activeFile){ document.getElementById("consoleOutput").innerHTML="No file open"; return; } const ext=activeFile.type; let htmlContent=""; if(ext==="html") htmlContent=activeFile.content; else if(ext==="js") htmlContent=`<script>${activeFile.content}<\/script>`; else if(ext==="css") htmlContent=`<style>${activeFile.content}<\/style>`; else htmlContent=activeFile.content; const preview= `<html><head><meta charset="UTF-8"><style>body{background:#fff;}</style></head><body>${htmlContent}</body></html>`; const iframe=document.createElement("iframe"); document.getElementById("consoleOutput").innerHTML=""; document.getElementById("consoleOutput").appendChild(iframe); iframe.srcdoc=preview; }
-    // color picker
-    const colorPicker=document.getElementById("colorPicker"); const hexSpan=document.getElementById("hexValue"); const rgbSpan=document.getElementById("rgbValue"); colorPicker.addEventListener("input",()=>{ const val=colorPicker.value; hexSpan.innerText=val; const r=parseInt(val.slice(1,3),16); const g=parseInt(val.slice(3,5),16); const b=parseInt(val.slice(5,7),16); rgbSpan.innerText=`${r},${g},${b}`; }); document.getElementById("insertColorBtn").addEventListener("click",()=>{ const col=colorPicker.value; document.execCommand("insertText",false,col); toast("Color inserted"); });
-    // search replace
-    document.getElementById("findBtn").addEventListener("click",()=>{ const term=document.getElementById("searchInput").value; if(!term) return; const content=editorEl.innerText; const idx=content.indexOf(term); if(idx!==-1){ editorEl.focus(); const range=document.createRange(); const sel=window.getSelection(); const textNode=editorEl.firstChild; if(textNode){ range.setStart(textNode,idx); range.setEnd(textNode,idx+term.length); sel.removeAllRanges(); sel.addRange(range); } } else toast("Not found"); });
-    document.getElementById("replaceBtn").addEventListener("click",()=>{ const find=document.getElementById("searchInput").value; const replace=document.getElementById("replaceInput").value; if(find){ const newContent=editorEl.innerText.replaceAll(find,replace); editorEl.innerText=newContent; onEditorInput(); toast("Replaced"); } });
-    // copy/cut/paste/selectAll
-    document.getElementById("copyBtn").addEventListener("click",()=>{ document.execCommand("copy"); toast("Copied"); });
-    document.getElementById("cutBtn").addEventListener("click",()=>{ document.execCommand("cut"); });
-    document.getElementById("pasteBtn").addEventListener("click",()=>{ navigator.clipboard.readText().then(t=>{ document.execCommand("insertText",false,t); }); });
-    document.getElementById("selectAllBtn").addEventListener("click",()=>{ document.execCommand("selectAll"); });
-    document.getElementById("undoBtn").addEventListener("click",()=>undo());
-    document.getElementById("redoBtn").addEventListener("click",()=>redo());
-    // theme
-    let dark=true; document.getElementById("themeToggle").addEventListener("click",()=>{ document.body.classList.toggle("light"); dark=!dark; localStorage.setItem("theme",dark?"dark":"light"); toast(`Theme: ${dark?"Dark":"Light"}`); });
-    // project actions
-    document.getElementById("newProjectBtn").addEventListener("click",newProject);
-    document.getElementById("saveProjectBtn").addEventListener("click",()=>{ saveAllOpenFiles(); toast("Saved all"); });
-    document.getElementById("runBtn").addEventListener("click",runCode);
-    document.getElementById("shareBtn").addEventListener("click",exportProject);
-    document.getElementById("createFolderBtn").addEventListener("click",()=>{ const fname=prompt("Folder name:","newFolder"); if(fname) toast("Folders simulated (virtual) - create file inside"); });
-    document.getElementById("createFileBtn").addEventListener("click",()=>{ const proj=getCurrentProject(); if(!proj) return; const fileName=prompt("File name (with extension):","script.js"); if(fileName){ const ext=fileName.split('.').pop(); proj.files[fileName]={name:fileName,type:ext,content:""}; saveProjectsToStorage(); renderProjectTree(); openFile(fileName); toast("File created"); } });
-    // drag & drop support
-    editorEl.addEventListener("dragover",e=>e.preventDefault()); editorEl.addEventListener("drop",e=>{ e.preventDefault(); const file=e.dataTransfer.files[0]; if(file && file.type==="text/plain"){ const reader=new FileReader(); reader.onload=ev=>{ document.execCommand("insertText",false,ev.target.result); toast("File inserted"); }; reader.readAsText(file); } });
-    // keyboard shortcuts
-    document.addEventListener("keydown",(e)=>{ if(e.ctrlKey && e.key==='s'){ e.preventDefault(); saveAllOpenFiles(); toast("Saved"); } if(e.ctrlKey && e.key==='f'){ e.preventDefault(); document.getElementById("searchInput").focus(); } if(e.ctrlKey && e.key==='z'){ e.preventDefault(); undo(); } if(e.ctrlKey && e.key==='y'){ e.preventDefault(); redo(); } });
-    // init
-    loadFromStorage(); renderProjectTree(); if(Object.keys(getCurrentProject()?.files||{}).length>0){ const firstFile=Object.keys(getCurrentProject().files)[0]; openFile(firstFile); } renderTabs(); editorEl.addEventListener("input",onEditorInput); editorEl.addEventListener("keyup",syncCursor); editorEl.addEventListener("click",syncCursor); if(localStorage.getItem("theme")==="light") document.body.classList.add("light");
-    document.getElementById("closeConsoleBtn").addEventListener("click",()=>{ document.getElementById("bottomPanel").style.display="none"; });
-    document.getElementById("collapseRight").addEventListener("click",()=>{ const rp=document.getElementById("rightPanel"); if(rp.style.width==="40px"){ rp.style.width="280px"; document.getElementById("toolsContent").style.display="block"; }else{ rp.style.width="40px"; document.getElementById("toolsContent").style.display="none"; } });
-    window.addEventListener("beforeunload",()=>saveAllOpenFiles());
-</script>
+
+    <div id="toast" class="toast">Project Saved!</div>
+
+    <script>
+        /* --- State Management --- */
+        let state = {
+            projects: JSON.parse(localStorage.getItem('js-ide-projects')) || [
+                { id: 'p1', name: 'My First App', files: [
+                    { name: 'index.html', content: '<h1>Hello World</h1>', type: 'html' },
+                    { name: 'style.css', content: 'body { background: #121212; color: white; font-family: sans-serif; text-align: center; margin-top: 50px; }', type: 'css' },
+                    { name: 'script.js', content: 'console.log("App Running...");', type: 'js' }
+                ]}
+            ],
+            currentProjectId: 'p1',
+            activeFileName: 'index.html',
+            theme: localStorage.getItem('js-ide-theme') || 'dark'
+        };
+
+        const input = document.getElementById('code-input');
+        const highlight = document.querySelector('#code-highlight code');
+        const lineNums = document.getElementById('line-numbers');
+
+        /* --- Initialization --- */
+        window.onload = () => {
+            if(state.theme === 'light') toggleTheme(true);
+            renderProjects();
+            openFile('index.html');
+            initListeners();
+        };
+
+        function initListeners() {
+            input.addEventListener('scroll', () => {
+                document.getElementById('code-highlight').scrollTop = input.scrollTop;
+                lineNums.scrollTop = input.scrollTop;
+            });
+
+            input.addEventListener('keyup', updateStats);
+            input.addEventListener('click', updateStats);
+        }
+
+        /* --- Core Logic --- */
+
+        function updateEditor() {
+            const code = input.value;
+            highlight.innerHTML = syntaxHighlight(code);
+            updateLineNumbers();
+            
+            // Auto-save to state
+            const project = state.projects.find(p => p.id === state.currentProjectId);
+            const file = project.files.find(f => f.name === state.activeFileName);
+            if(file) file.content = code;
+            
+            localStorage.setItem('js-ide-projects', JSON.stringify(state.projects));
+        }
+
+        function syntaxHighlight(code) {
+            return code
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                .replace(/\/\/.*/g, m => `<span class="hlt-comment">${m}</span>`)
+                .replace(/\b(function|let|const|var|if|else|return|for|while|class|export|import|new)\b/g, '<span class="hlt-keyword">$1</span>')
+                .replace(/\b(console|window|document|Math|Object|Array)\b/g, '<span class="hlt-func">$1</span>')
+                .replace(/"(.*?)"/g, '<span class="hlt-str">"$1"</span>')
+                .replace(/'(.*?)'/g, "<span class='hlt-str'>'$1'</span>")
+                .replace(/&lt;([a-z1-6]+)/gi, '&lt;<span class="hlt-tag">$1</span>')
+                .replace(/([a-z-]+)=/gi, '<span class="hlt-attr">$1</span>=');
+        }
+
+        function updateLineNumbers() {
+            const lines = input.value.split('\n').length;
+            let nums = '';
+            for(let i=1; i<=lines; i++) nums += i + '<br>';
+            lineNums.innerHTML = nums;
+        }
+
+        function handleTab(e) {
+            if(e.key === 'Tab') {
+                e.preventDefault();
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
+                input.value = input.value.substring(0, start) + "    " + input.value.substring(end);
+                input.selectionStart = input.selectionEnd = start + 4;
+                updateEditor();
+            }
+            if(e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveAll();
+            }
+        }
+
+        /* --- UI Interactions --- */
+
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            const icon = document.getElementById('sidebar-icon');
+            sb.classList.toggle('expanded');
+            icon.className = sb.classList.contains('expanded') ? 'fas fa-chevron-left' : 'fas fa-chevron-right';
+        }
+
+        function toggleDrawer() {
+            document.getElementById('right-drawer').classList.toggle('open');
+        }
+
+        function toggleTheme(forceLight = false) {
+            if(forceLight || !document.body.classList.contains('light-mode')) {
+                document.body.classList.add('light-mode');
+                state.theme = 'light';
+            } else {
+                document.body.classList.remove('light-mode');
+                state.theme = 'dark';
+            }
+            localStorage.setItem('js-ide-theme', state.theme);
+        }
+
+        /* --- Project & File System --- */
+
+        function renderProjects() {
+            const list = document.getElementById('project-list');
+            list.innerHTML = state.projects.map(p => `
+                <div class="tree-item ${p.id === state.currentProjectId ? 'active' : ''}" onclick="selectProject('${p.id}')">
+                    <i class="fas fa-cube"></i> ${p.name}
+                    <i class="fas fa-trash" style="margin-left:auto; font-size:0.7rem;" onclick="deleteProject(event, '${p.id}')"></i>
+                </div>
+            `).join('');
+            renderFiles();
+        }
+
+        function renderFiles() {
+            const project = state.projects.find(p => p.id === state.currentProjectId);
+            const tree = document.getElementById('file-tree');
+            const tabs = document.getElementById('tabs-bar');
+            
+            tree.innerHTML = project.files.map(f => `
+                <div class="tree-item ${f.name === state.activeFileName ? 'active' : ''}" onclick="openFile('${f.name}')">
+                    <i class="fas ${getFileIcon(f.name)}"></i> ${f.name}
+                </div>
+            `).join('');
+
+            tabs.innerHTML = project.files.map(f => `
+                <div class="tab ${f.name === state.activeFileName ? 'active' : ''}" onclick="openFile('${f.name}')">
+                    <span>${f.name}</span>
+                    <i class="fas fa-times tab-close" onclick="closeTab(event, '${f.name}')"></i>
+                </div>
+            `).join('');
+        }
+
+        function getFileIcon(name) {
+            if(name.endsWith('.html')) return 'fa-brands fa-html5';
+            if(name.endsWith('.css')) return 'fa-brands fa-css3-alt';
+            if(name.endsWith('.js')) return 'fa-brands fa-js';
+            return 'fa-file-code';
+        }
+
+        function openFile(name) {
+            const project = state.projects.find(p => p.id === state.currentProjectId);
+            const file = project.files.find(f => f.name === name);
+            if(file) {
+                state.activeFileName = name;
+                input.value = file.content;
+                document.getElementById('file-stat').innerText = name;
+                updateEditor();
+                renderFiles();
+            }
+        }
+
+        function createNewProject() {
+            const name = prompt("Project Name:", "New Project");
+            if(name) {
+                const id = 'p' + Date.now();
+                state.projects.push({
+                    id: id,
+                    name: name,
+                    files: [{ name: 'index.html', content: '', type: 'html' }]
+                });
+                state.currentProjectId = id;
+                state.activeFileName = 'index.html';
+                saveAll();
+                renderProjects();
+                openFile('index.html');
+            }
+        }
+
+        function createNewFile() {
+            const name = prompt("File Name (with extension):", "script.js");
+            if(name) {
+                const project = state.projects.find(p => p.id === state.currentProjectId);
+                project.files.push({ name: name, content: '', type: name.split('.').pop() });
+                saveAll();
+                openFile(name);
+            }
+        }
+
+        /* --- Tools --- */
+
+        function updateColorPreview() {
+            const val = document.getElementById('color-picker').value;
+            const preview = document.getElementById('color-hex');
+            preview.style.background = val;
+            preview.innerText = val.toUpperCase();
+        }
+
+        function insertColor() {
+            const val = document.getElementById('color-picker').value;
+            const start = input.selectionStart;
+            input.value = input.value.substring(0, start) + val + input.value.substring(input.selectionEnd);
+            updateEditor();
+        }
+
+        function updateStats() {
+            const text = input.value.substring(0, input.selectionStart);
+            const line = text.split('\n').length;
+            const col = text.split('\n').pop().length + 1;
+            document.getElementById('pos-stat').innerText = `Ln ${line}, Col ${col}`;
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        function saveAll() {
+            localStorage.setItem('js-ide-projects', JSON.stringify(state.projects));
+            showToast("Workspace Saved");
+        }
+
+        /* --- Execution --- */
+
+        function runCode() {
+            const project = state.projects.find(p => p.id === state.currentProjectId);
+            const html = project.files.find(f => f.name.endsWith('.html'))?.content || '';
+            const css = project.files.find(f => f.name.endsWith('.css'))?.content || '';
+            const js = project.files.find(f => f.name.endsWith('.js'))?.content || '';
+
+            const combined = `
+                <html>
+                    <head><style>${css}</style></head>
+                    <body>
+                        ${html}
+                        <script>${js}<\/script>
+                    </body>
+                </html>
+            `;
+
+            const modal = document.getElementById('preview-modal');
+            const frame = document.getElementById('preview-frame');
+            modal.classList.add('active');
+            
+            const doc = frame.contentWindow.document;
+            doc.open();
+            doc.write(combined);
+            doc.close();
+        }
+        function closePreview() {
+            document.getElementById('preview-modal').classList.remove('active');
+        }
+
+        function exportProject() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.projects));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "js_editor_projects.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+    </script>
 </body>
 </html>
