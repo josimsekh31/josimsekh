@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sinu | AI Companion</title>
+    <title>Sinu | Premium AI Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -19,324 +19,302 @@
             background: radial-gradient(circle at 50% -20%, #1e1b4b, #020617);
             color: #f8fafc;
             height: 100vh;
+            margin: 0;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation;
         }
 
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .orb-wrapper {
+        /* The AI Core Orb */
+        .orb-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 280px;
+            height: 280px;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            z-index: 10;
         }
 
         .orb-core {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 50%;
             filter: blur(2px);
-            z-index: 2;
-            box-shadow: 0 0 40px var(--primary);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 60px var(--primary);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .orb-ring {
+        .orb-outer {
             position: absolute;
-            width: 140px;
-            height: 140px;
-            border: 2px solid rgba(168, 85, 247, 0.3);
-            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-            animation: rotate-ring 8s linear infinite;
-        }
-
-        .orb-ring-2 {
-            position: absolute;
-            width: 160px;
-            height: 160px;
-            border: 1px solid rgba(34, 211, 238, 0.2);
+            width: 220px;
+            height: 220px;
+            border: 2px dashed rgba(168, 85, 247, 0.4);
             border-radius: 50%;
-            animation: pulse-ring 4s ease-in-out infinite;
+            animation: spin 15s linear infinite;
         }
 
-        @keyframes rotate-ring { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse-ring { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.2); opacity: 0.5; } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .speaking .orb-core {
-            transform: scale(1.25);
-            box-shadow: 0 0 80px var(--accent);
+        .listening .orb-core {
+            transform: scale(1.1);
+            box-shadow: 0 0 100px var(--accent);
             background: linear-gradient(135deg, var(--accent), var(--primary));
         }
 
-        .bars { display: flex; justify-content: center; align-items: center; gap: 4px; height: 20px; opacity: 0.2; transition: opacity 0.3s; }
-        .listening .bars { opacity: 1; }
-        .bar { width: 3px; height: 4px; background: var(--accent); border-radius: 10px; }
-        .listening .bar { animation: bar-dance 0.8s ease-in-out infinite; }
-        @keyframes bar-dance { 0%, 100% { height: 4px; } 50% { height: 20px; } }
+        .speaking .orb-core {
+            animation: pulse-talk 0.6s infinite alternate;
+        }
 
-        .chat-scroll::-webkit-scrollbar { width: 4px; }
-        .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        @keyframes pulse-talk {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.3); filter: brightness(1.3); }
+        }
 
-        .msg { max-width: 85%; padding: 10px 14px; border-radius: 15px; margin-bottom: 8px; font-size: 0.9rem; line-height: 1.4; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .user-msg { background: rgba(99, 102, 241, 0.2); align-self: flex-end; border-bottom-right-radius: 2px; }
-        .sinu-msg { background: rgba(168, 85, 247, 0.15); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(168, 85, 247, 0.2); }
-        
-        button:active { transform: scale(0.92); }
+        /* Floating Pop-ups */
+        #popups-container {
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .popup-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: twistIn 0.5s ease forwards, fadeOut 0.5s ease forwards 4s;
+        }
+
+        @keyframes twistIn {
+            from { opacity: 0; transform: translateY(20px) rotate(-5deg); }
+            to { opacity: 1; transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: scale(0.9); pointer-events: none; }
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 30;
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover { background: rgba(168, 85, 247, 0.2); border-color: var(--primary); }
+
+        .status-badge {
+            position: fixed;
+            top: 30px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.6;
+        }
+
     </style>
 </head>
-<body class="p-4">
+<body>
 
-    <div class="w-full max-w-6xl h-[90vh] flex flex-col md:flex-row gap-6">
-        <div id="main-ui" class="flex-1 glass-panel rounded-3xl p-8 flex flex-col items-center justify-between relative overflow-hidden">
-            <div class="absolute top-6 left-8 flex items-center gap-2">
-                <div id="status-dot" class="w-2 h-2 bg-slate-600 rounded-full transition-all"></div>
-                <span id="status-text" class="text-xs font-semibold uppercase tracking-widest text-slate-400">Ready</span>
-            </div>
+    <div class="status-badge" id="status">System Idle</div>
 
-            <div class="orb-wrapper" id="orb-container">
-                <div class="orb-ring"></div>
-                <div class="orb-ring-2"></div>
-                <div id="ai-orb" class="orb-core"></div>
-            </div>
+    <div id="popups-container"></div>
 
-            <div class="text-center z-10">
-                <h1 class="text-4xl font-semibold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent mb-2">Hey Sinu</h1>
-                <p id="hint-text" class="text-slate-400 text-sm px-4">Tap the mic to start. Say "Hey Sinu"</p>
-            </div>
+    <div class="orb-container" id="orb-trigger">
+        <div class="orb-outer"></div>
+        <div class="orb-core" id="orb"></div>
+    </div>
 
-            <div class="flex flex-col items-center gap-6 w-full">
-                <div id="visualizer-bars" class="bars">
-                    <div class="bar" style="animation-delay: 0.0s"></div>
-                    <div class="bar" style="animation-delay: 0.1s"></div>
-                    <div class="bar" style="animation-delay: 0.2s"></div>
-                    <div class="bar" style="animation-delay: 0.3s"></div>
-                    <div class="bar" style="animation-delay: 0.4s"></div>
-                </div>
-
-                <div class="flex gap-4">
-                    <button id="mic-btn" class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center hover:bg-purple-600 transition-all shadow-lg border border-white/10">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-                    </button>
-                    <button id="mute-btn" class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center hover:bg-slate-700 transition-all border border-white/10">
-                        <svg id="speaker-icon" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="w-full md:w-96 glass-panel rounded-3xl p-6 flex flex-col">
-            <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
-                <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center font-bold text-purple-400">S</div>
-                <div><h3 class="font-semibold text-sm">Sinu</h3><p class="text-[10px] text-green-500 uppercase tracking-widest font-bold">Online</p></div>
-            </div>
-            <div id="chat-container" class="flex-1 overflow-y-auto chat-scroll flex flex-col gap-2 pr-2">
-                <div class="msg sinu-msg">Hi! I'm Sinu. Just tap the mic and talk to me! 💜</div>
-            </div>
-            <div class="mt-4 flex gap-2">
-                <input type="text" id="text-input" placeholder="Type here..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all">
-                <button id="send-btn" class="bg-purple-600 px-4 rounded-xl hover:bg-purple-500 transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </button>
-            </div>
-        </div>
+    <div class="controls">
+        <button id="mic-toggle" class="btn-action">
+            <svg id="mic-icon" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+        </button>
+        <button onclick="location.reload()" class="btn-action">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        </button>
     </div>
 
     <script>
-        const API_KEY = "AIzaSyCRav1LXihYQDf61qOqKGpm5hEEJi5lAwg";
-        const MODEL_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+        // --- CONFIGURATION ---
+        const ELEVEN_LABS_KEY = "sk_863cbb8276e1c909cf428a5f169f7d4fda528b0eb06b14bb";
+        const VOICE_ID = "csPuxct3x4tABDZeKliZ";
+        const GEMINI_KEY = "AIzaSyCRav1LXihYQDf61qOqKGpm5hEEJi5lAwg";
 
         let isListening = false;
-        let isMuted = false;
-        let chatHistory = [];
+        let isSpeaking = false;
+        const statusEl = document.getElementById('status');
+        const orbEl = document.getElementById('orb');
+        const orbContainer = document.querySelector('.orb-container');
 
-        const micBtn = document.getElementById('mic-btn');
-        const muteBtn = document.getElementById('mute-btn');
-        const statusText = document.getElementById('status-text');
-        const statusDot = document.getElementById('status-dot');
-        const chatContainer = document.getElementById('chat-container');
-        const textInput = document.getElementById('text-input');
-        const mainUI = document.getElementById('main-ui');
-        const orbContainer = document.getElementById('orb-container');
+        // --- SPEECH SERVICES ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 
-        // --- SAFE SPEECH RECOGNITION ---
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-        let recognition = null;
-
-        if (SpeechRecognition) {
-            recognition = new SpeechRecognition();
-            recognition.continuous = false;
+        if (recognition) {
+            recognition.continuous = true;
             recognition.interimResults = false;
             recognition.lang = 'en-US';
 
             recognition.onresult = (event) => {
-                if (event.results && event.results[0]) {
-                    const transcript = event.results[0][0].transcript;
-                    processInput(transcript);
-                }
+                const transcript = event.results[event.results.length - 1][0].transcript;
+                handleUserVoice(transcript);
             };
 
-            recognition.onend = () => {
-                if (isListening) {
-                    // Slight delay to avoid browser lockup
-                    setTimeout(() => { 
-                        if (isListening) try { recognition.start(); } catch(e) {} 
-                    }, 400);
-                }
-            };
-
-            recognition.onerror = (e) => {
-                console.warn("Recognition error:", e.error);
-                if (e.error === 'not-allowed') {
-                    addMessage("Sinu", "I need mic permission to hear you! 💜");
-                    stopListening();
-                }
-            };
+            recognition.onend = () => { if (isListening) recognition.start(); };
         }
 
-        // --- SAFE SPEECH SYNTHESIS ---
-        const synthesis = window.speechSynthesis || null;
+        // --- CORE FUNCTIONS ---
 
-        function startListening() {
-            if (!recognition) {
-                addMessage("Sinu", "Voice recognition isn't supported on this browser. Try Chrome! 💜");
-                return;
+        function toggleMic() {
+            if (isListening) {
+                isListening = false;
+                recognition.stop();
+                statusEl.innerText = "System Idle";
+                orbContainer.classList.remove('listening');
+            } else {
+                isListening = true;
+                recognition.start();
+                statusEl.innerText = "Listening...";
+                orbContainer.classList.add('listening');
+                showPopup("Listening... Speak now 💜");
             }
-            isListening = true;
-            try { recognition.start(); } catch(e) {}
-            statusText.innerText = "Listening...";
-            statusDot.className = "w-2 h-2 bg-green-500 animate-pulse";
-            mainUI.classList.add('listening');
-            micBtn.classList.add('bg-purple-600');
         }
 
-        function stopListening() {
-            isListening = false;
-            if (recognition) try { recognition.stop(); } catch(e) {}
-            statusText.innerText = "Ready";
-            statusDot.className = "w-2 h-2 bg-slate-600";
-            mainUI.classList.remove('listening');
-            micBtn.classList.remove('bg-purple-600');
-        }
+        document.getElementById('mic-toggle').onclick = toggleMic;
 
-        micBtn.onclick = () => {
-            if (isListening) stopListening();
-            else startListening();
-        };
+        async function handleUserVoice(text) {
+            const input = text.toLowerCase().trim();
+            showPopup(text, true);
 
-        async function processInput(text) {
-            let cleanText = text.toLowerCase().trim();
-            const hasWakeWord = cleanText.includes("sinu");
-            
-            // Interaction logic
-            if (isListening && !hasWakeWord && chatHistory.length === 0) return;
-
-            cleanText = cleanText.replace(/hey sinu|hi sinu|hello sinu|sinu/g, "").trim();
-            if (!cleanText && hasWakeWord) {
-                respond("I'm here! What can I do for you? 💜");
+            // AI Adapter Logic
+            if (input.includes("search for") || input.includes("find information about") || input.includes("google search")) {
+                let query = input.replace(/search for|find information about|google search/g, "").trim();
+                playElevenLabsVoice("Searching Google for " + query);
+                setTimeout(() => window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank'), 2000);
                 return;
             }
 
-            addMessage("You", text);
-
-            // Command Check
-            if (cleanText.includes("open instagram")) return executeAction("https://instagram.com", "Opening Instagram! ✨");
-            if (cleanText.includes("open whatsapp")) return executeAction("https://web.whatsapp.com", "Opening WhatsApp! 💬");
-            if (cleanText.includes("play") || cleanText.includes("youtube")) {
-                let q = cleanText.replace("play", "").replace("youtube", "").replace("song", "").trim();
-                return executeAction(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, `Opening YouTube for ${q}! 🎵`);
+            if (input.includes("play") && (input.includes("music") || input.includes("youtube"))) {
+                let music = input.replace(/play|music|youtube/g, "").trim();
+                playElevenLabsVoice("Opening YouTube for " + music);
+                setTimeout(() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(music)}`, '_blank'), 2000);
+                return;
             }
 
-            await getAIResponse(cleanText || text);
-        }
-
-        function executeAction(url, msg) {
-            respond(msg);
-            setTimeout(() => window.open(url, '_blank'), 1000);
+            // Normal AI Conversation
+            getAIResponse(input);
         }
 
         async function getAIResponse(prompt) {
-            statusText.innerText = "Thinking...";
+            statusEl.innerText = "Sinu is thinking...";
             try {
-                const historyStr = chatHistory.slice(-6).map(m => `${m.role}: ${m.text}`).join("\n");
-                const fullPrompt = `You are Sinu, a playful, warm AI girl. Use emojis. Keep it brief. Context:\n${historyStr}\nUser: ${prompt}\nSinu:`;
-
-                const res = await fetch(`${MODEL_URL}?key=${API_KEY}`, {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${GEMINI_KEY}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: `You are Sinu, a friendly AI girl. Respond briefly (1 sentence) and warmly. User says: ${prompt}` }] }]
+                    })
+                });
+                const data = await res.json();
+                const aiText = data.candidates[0].content.parts[0].text;
+                showPopup(aiText);
+                playElevenLabsVoice(aiText);
+            } catch (e) {
+                showPopup("Connection issue, please try again.");
+            } finally {
+                statusEl.innerText = isListening ? "Listening..." : "System Idle";
+            }
+        }
+
+        async function playElevenLabsVoice(text) {
+            if (isSpeaking) return;
+            isSpeaking = true;
+            orbContainer.classList.add('speaking');
+
+            try {
+                const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "xi-api-key": ELEVEN_LABS_KEY
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        model_id: "eleven_monolingual_v1",
+                        voice_settings: { stability: 0.5, similarity_boost: 0.5 }
+                    })
                 });
 
-                const data = await res.json();
-                const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "I'm a bit confused, sorry! 💜";
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
                 
-                chatHistory.push({ role: "User", text: prompt });
-                chatHistory.push({ role: "Sinu", text: aiText });
-                
-                respond(aiText);
+                audio.onended = () => {
+                    isSpeaking = false;
+                    orbContainer.classList.remove('speaking');
+                };
+                audio.play();
             } catch (e) {
-                respond("Connection glitch! Try again? 💜");
-            } finally {
-                if (isListening) statusText.innerText = "Listening...";
-                else statusText.innerText = "Ready";
+                console.error("ElevenLabs Error:", e);
+                isSpeaking = false;
+                orbContainer.classList.remove('speaking');
             }
         }
 
-        function respond(text) {
-            addMessage("Sinu", text);
-            if (!isMuted && synthesis) {
-                synthesis.cancel();
-                const utter = new SpeechSynthesisUtterance(text);
-                const voices = synthesis.getVoices() || [];
-                if (voices.length > 0) {
-                    utter.voice = voices.find(v => v.lang.includes("en") && (v.name.includes("Female") || v.name.includes("Google"))) || voices[0];
-                }
-                utter.onstart = () => orbContainer.classList.add('speaking');
-                utter.onend = () => orbContainer.classList.remove('speaking');
-                synthesis.speak(utter);
-            }
+        function showPopup(text, isUser = false) {
+            const container = document.getElementById('popups-container');
+            const card = document.createElement('div');
+            card.className = 'popup-card';
+            if (isUser) card.style.borderColor = 'var(--accent)';
+            
+            // Text Summarizer (Trims text if too long for card)
+            const summary = text.length > 80 ? text.substring(0, 77) + "..." : text;
+            card.innerText = summary;
+            
+            container.appendChild(card);
+            
+            // Remove after 5 seconds
+            setTimeout(() => card.remove(), 5000);
         }
 
-        function addMessage(sender, text) {
-            const div = document.createElement('div');
-            div.className = `msg ${sender === 'You' ? 'user-msg' : 'sinu-msg'}`;
-            div.innerText = text;
-            chatContainer.appendChild(div);
-            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
-        }
-
-        muteBtn.onclick = () => {
-            isMuted = !isMuted;
-            document.getElementById('speaker-icon').style.opacity = isMuted ? "0.4" : "1";
-            if (isMuted && synthesis) synthesis.cancel();
+        // Welcome
+        window.onload = () => {
+            showPopup("Hey! Tap the mic and say 'Hey Sinu' 💜");
         };
 
-        document.getElementById('send-btn').onclick = () => {
-            const t = textInput.value.trim();
-            if (t) { processInput(t); textInput.value = ''; }
-        };
-        
-        textInput.onkeypress = (e) => { if(e.key === 'Enter') document.getElementById('send-btn').click(); };
-
-        // Fix for the error in your screenshot: Wrap in safety check
-        if (synthesis) {
-            try {
-                window.speechSynthesis.onvoiceschanged = () => { synthesis.getVoices(); };
-                synthesis.getVoices(); // Initial trigger
-            } catch(e) { console.warn("Voice init skipped"); }
-        }
     </script>
 </body>
 </html>
