@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinu | AI Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #a855f7;
+            --secondary: #6366f1;
+            --accent: #22d3ee;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #020617;
+            background: radial-gradient(circle at 50% -20%, #1e1b4b, #020617);
+            color: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .orb-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orb-core {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            filter: blur(2px);
+            z-index: 2;
+            box-shadow: 0 0 40px var(--primary);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .orb-ring {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 2px solid rgba(168, 85, 247, 0.3);
+            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+            animation: rotate-ring 8s linear infinite;
+        }
+
+        .orb-ring-2 {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 50%;
+            animation: pulse-ring 4s ease-in-out infinite;
+        }
+
+        @keyframes rotate-ring {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        .speaking .orb-core {
+            transform: scale(1.2);
+            box-shadow: 0 0 80px var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+        }
+
+        .bars {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            height: 20px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .listening .bars { opacity: 1; }
+
+        .bar {
+            width: 3px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .listening .bar {
+            animation: bar-dance 1s ease-in-out infinite;
+        }
+
+        @keyframes bar-dance {
+            0%, 100% { height: 4px; }
+            50% { height: 20px; }
+        }
+
+        .chat-scroll::-webkit-scrollbar { width: 4px; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        .msg {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 15px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .user-msg { background: rgba(99, 102, 241, 0.2); align-self: flex-end; border-bottom-right-radius: 2px; }
+        .sinu-msg { background: rgba(168, 85, 247, 0.15); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(168, 85, 247, 0.2); }
+        
+        button:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="p-4">
+
+    <div class="w-full max-w-6xl h-[90vh] flex flex-col md:flex-row gap-6">
+        
+        <!-- Interaction Center -->
+        <div id="main-panel" class="flex-1 glass-panel rounded-3xl p-8 flex flex-col items-center justify-between relative overflow-hidden">
+            <div class="absolute top-6 left-8 flex items-center gap-2">
+                <div id="status-dot" class="w-2 h-2 bg-slate-600 rounded-full transition-colors duration-500"></div>
+                <span id="status-text" class="text-xs font-semibold uppercase tracking-widest text-slate-400">System Idle</span>
+            </div>
+
+            <div class="orb-wrapper" id="orb-container">
+                <div class="orb-ring"></div>
+                <div class="orb-ring-2"></div>
+                <div id="ai-orb" class="orb-core"></div>
+            </div>
+
+            <div class="text-center z-10">
+                <h1 class="text-4xl font-semibold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent mb-2">Hey Sinu</h1>
+                <p id="hint-text" class="text-slate-400 text-sm">Click the microphone or say "Hey Sinu"</p>
+            </div>
+
+            <div class="flex flex-col items-center gap-6 w-full">
+                <div id="visualizer" class="bars">
+                    <div class="bar" style="animation-delay: 0.0s"></div>
+                    <div class="bar" style="animation-delay: 0.1s"></div>
+                    <div class="bar" style="animation-delay: 0.2s"></div>
+                    <div class="bar" style="animation-delay: 0.3s"></div>
+                    <div class="bar" style="animation-delay: 0.4s"></div>
+                </div>
+
+                <div class="flex gap-4">
+                    <button id="mic-btn" class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center hover:bg-purple-600 transition-all shadow-lg border border-white/10">
+                        <svg id="mic-icon" class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                    </button>
+                    <button id="mute-btn" class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center hover:bg-slate-700 transition-all border border-white/10">
+                        <svg id="speaker-icon" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat History -->
+        <div class="w-full md:w-96 glass-panel rounded-3xl p-6 flex flex-col">
+            <div class="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <span class="text-purple-400 font-bold">S</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-sm">Sinu Companion</h3>
+                        <p id="online-status" class="text-[10px] text-green-500 uppercase tracking-widest font-bold">Online</p>
+                    </div>
+                </div>
+                <button id="clear-chat" class="text-[10px] text-slate-500 hover:text-white uppercase tracking-widest">Clear</button>
+            </div>
+
+            <div id="chat-container" class="flex-1 overflow-y-auto chat-scroll flex flex-col gap-2 pr-2">
+                <div class="msg sinu-msg">Hey there! I'm Sinu. Just say "Hey Sinu" to talk to me. I'm so happy to see you! 💜</div>
+            </div>
+
+            <div class="mt-4 flex gap-2">
+                <input type="text" id="text-input" placeholder="Type a message..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all">
+                <button id="send-btn" class="bg-purple-600 px-4 rounded-xl hover:bg-purple-500 transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIG & STATE ---
+        const API_KEY = "AIzaSyCRav1LXihYQDf61qOqKGpm5hEEJi5lAwg"; 
+        const MODEL_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+
+        let isListening = false;
+        let isMuted = false;
+        let wakeWordDetected = false;
+        let chatHistory = []; // Short-term memory
+        const MAX_HISTORY = 6;
+
+        // UI Refs
+        const micBtn = document.getElementById('mic-btn');
+        const muteBtn = document.getElementById('mute-btn');
+        const statusText = document.getElementById('status-text');
+        const statusDot = document.getElementById('status-dot');
+        const orbContainer = document.getElementById('orb-container');
+        const chatContainer = document.getElementById('chat-container');
+        const textInput = document.getElementById('text-input');
+        const visualizer = document.getElementById('main-panel');
+
+        // --- SPEECH RECOGNITION (STABILITY FIX) ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false; // Prevents looping issues on mobile
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.toLowerCase().trim();
+                console.log("Transcript:", transcript);
+                processInput(transcript);
+            };
+
+            recognition.onerror = (e) => {
+                console.warn("Speech error:", e.error);
+                if (e.error === 'not-allowed') {
+                    addMessage("Sinu", "Microphone access was denied. Please check your browser settings! 💜");
+                    stopListening();
+                }
+            };
+
+            recognition.onend = () => {
+                // Controlled restart if still active
+                if (isListening) {
+                    setTimeout(() => {
+                        try { recognition.start(); } catch(e) {}
+                    }, 400); 
+                }
+            };
+        } else {
+            statusText.innerText = "Voice Unsupported";
+            document.getElementById('online-status').innerText = "Text Only";
+            document.getElementById('online-status').classList.replace('text-green-500', 'text-yellow-500');
+        }
+
+        const synthesis = window.speechSynthesis;
+
+        // --- CORE LOGIC ---
+
+        function toggleMic() {
+            if (isListening) stopListening();
+            else startListening();
+        }
+
+        function startListening() {
+            if (!recognition) return;
+            isListening = true;
+            try { recognition.start(); } catch(e) {}
+            statusText.innerText = "Listening...";
+            statusDot.classList.replace('bg-slate-600', 'bg-green-500');
+            visualizer.classList.add('listening');
+            micBtn.classList.replace('bg-slate-800', 'bg-purple-600');
+        }
+
+        function stopListening() {
+            isListening = false;
+            try { recognition.stop(); } catch(e) {}
+            statusText.innerText = "System Idle";
+            statusDot.classList.replace('bg-green-500', 'bg-slate-600');
+            visualizer.classList.remove('listening');
+            micBtn.classList.replace('bg-purple-600', 'bg-slate-800');
+        }
+
+        async function processInput(text) {
+            let cleanText = text.toLowerCase();
+            
+            // Wake Word Detection
+            if (cleanText.includes("hey sinu") || cleanText.includes("hi sinu") || cleanText.includes("hello sinu")) {
+                wakeWordDetected = true;
+                cleanText = cleanText.replace(/hey sinu|hi sinu|hello sinu/g, "").trim();
+                if (!cleanText) {
+                    respond("Yes? I'm right here! 💜");
+                    return;
+                }
+            }
+
+            // Only process if wake word was heard or user is typing manually
+            if (wakeWordDetected || !isListening) {
+                addMessage("You", text);
+                
+                // Command Routing
+                if (cleanText.includes("play") && (cleanText.includes("song") || cleanText.includes("music"))) {
+                    let song = cleanText.replace("play", "").replace("song", "").replace("music", "").trim();
+                    executeAction(`https://www.youtube.com/results?search_query=${encodeURIComponent(song)}`, `Opening YouTube results for ${song}! 🎵`);
+                } 
+                else if (cleanText.includes("open instagram")) {
+                    executeAction("https://www.instagram.com", "Opening Instagram for you! ✨");
+                }
+                else if (cleanText.includes("search google for") || cleanText.includes("search for")) {
+                    let q = cleanText.replace("search google for", "").replace("search for", "").trim();
+                    executeAction(`https://www.google.com/search?q=${encodeURIComponent(q)}`, `Looking up ${q} on Google! 🔍`);
+                }
+                else if (cleanText.includes("open whatsapp")) {
+                    executeAction("https://web.whatsapp.com", "Starting WhatsApp... 💬");
+                }
+                else {
+                    await getAIResponse(text);
+                }
+                wakeWordDetected = false; // Reset
+            }
+        }
+
+        function executeAction(url, msg) {
+            respond(msg);
+            setTimeout(() => window.open(url, '_blank'), 1200);
+        }
+
+        async function getAIResponse(prompt) {
+            statusText.innerText = "Sinu is thinking...";
+            
+            // Prepare memory context
+            const historyContext = chatHistory.map(h => `${h.role}: ${h.text}`).join("\n");
+            const systemPrompt = `You are Sinu, a playful, emotional AI best friend. Be warm, supportive, and use emojis. Keep responses short (1-2 sentences). Current conversation:\n${historyContext}\nUser: ${prompt}\nSinu:`;
+
+            try {
+                const response = await fetch(`${MODEL_URL}?key=${API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: systemPrompt }] }]
+                    })
+                });
+
+                const data = await response.json();
+                const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I had a little brain freeze. Can you say that again? 💜";
+                
+                // Update history
+                chatHistory.push({ role: "User", text: prompt });
+                chatHistory.push({ role: "Sinu", text: aiText });
+                if (chatHistory.length > MAX_HISTORY) chatHistory.splice(0, 2);
+
+                respond(aiText);
+            } catch (err) {
+                console.error("Gemini Error:", err);
+                respond("I'm having a little trouble connecting. Check your internet? 💜");
+            } finally {
+                statusText.innerText = isListening ? "Listening..." : "System Idle";
+            }
+        }
+
+        function respond(text) {
+            addMessage("Sinu", text);
+            if (!isMuted) {
+                synthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Voice selection fix
+                const voices = synthesis.getVoices();
+                if (voices.length > 0) {
+                    const preferredVoice = voices.find(v => v.lang.includes("en") && (v.name.includes("Female") || v.name.includes("Google") || v.name.includes("Samantha")));
+                    utterance.voice = preferredVoice || voices[0];
+                }
+                
+                utterance.pitch = 1.15;
+                utterance.rate = 1.0;
+                
+                utterance.onstart = () => orbContainer.classList.add('speaking');
+                utterance.onend = () => orbContainer.classList.remove('speaking');
+                
+                synthesis.speak(utterance);
+            }
+        }
+
+        function addMessage(sender, text) {
+            const div = document.createElement('div');
+            div.className = `msg ${sender === 'You' ? 'user-msg' : 'sinu-msg'}`;
+            div.innerText = text;
+            chatContainer.appendChild(div);
+            // Smooth Scroll
+            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
+        }
+
+        // --- LISTENERS ---
+        micBtn.addEventListener('click', toggleMic);
+        
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            const icon = document.getElementById('speaker-icon');
+            if (isMuted) {
+                synthesis.cancel();
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636"></path>`;
+            } else {
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>`;
+            }
+        });
+
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const val = textInput.value.trim();
+            if (val) { processInput(val); textInput.value = ''; }
+        });
+
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const val = textInput.value.trim();
+                if (val) { processInput(val); textInput.value = ''; }
+            }
+        });
+
+        document.getElementById('clear-chat').addEventListener('click', () => {
+            chatContainer.innerHTML = '';
+            chatHistory = [];
+            addMessage("Sinu", "Memory wiped! Let's start a new chapter. 💜");
+        });
+
+        // Initialize voices for browsers that delay loading
+        window.speechSynthesis.onvoiceschanged = () => { synthesis.getVoices(); };
+    </script>
+</body>
+</html>
