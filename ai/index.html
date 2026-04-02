@@ -2,319 +2,436 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sinu | Premium AI Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sinu | Anime Voice AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #a855f7;
-            --secondary: #6366f1;
+            --primary: #f472b6;
+            --secondary: #a855f7;
             --accent: #22d3ee;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: #020617;
-            background: radial-gradient(circle at 50% -20%, #1e1b4b, #020617);
+            background: #0f172a;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b, #020617);
             color: #f8fafc;
             height: 100vh;
             margin: 0;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation;
         }
 
-        /* The AI Core Orb */
-        .orb-container {
+        /* --- Anime Character Styles --- */
+        .character-container {
             position: relative;
-            width: 280px;
-            height: 280px;
+            width: 300px;
+            height: 350px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            cursor: pointer;
+            align-items: center;
             z-index: 10;
         }
 
-        .orb-core {
+        .anime-face {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background: #ffe4e1; /* Pale skin color */
+            border-radius: 50% 50% 45% 45%;
+            box-shadow: 0 10px 40px rgba(244, 114, 182, 0.3);
+            border: 4px solid #334155;
+        }
+
+        /* Hair */
+        .hair-back {
             position: absolute;
-            width: 140px;
-            height: 140px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            top: -20px;
+            width: 240px;
+            height: 260px;
+            background: #4c1d95;
+            border-radius: 120px 120px 40px 40px;
+            z-index: -1;
+        }
+
+        .hair-front {
+            position: absolute;
+            top: -15px;
+            width: 210px;
+            height: 100px;
+            background: #4c1d95;
+            border-radius: 100px 100px 20px 20px;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 80% 80%, 60% 100%, 40% 80%, 20% 100%, 0% 80%);
+        }
+
+        /* Eyes */
+        .eye {
+            position: absolute;
+            top: 85px;
+            width: 45px;
+            height: 55px;
+            background: white;
             border-radius: 50%;
-            filter: blur(2px);
-            box-shadow: 0 0 60px var(--primary);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid #334155;
+            overflow: hidden;
         }
 
-        .orb-outer {
+        .eye-left { left: 35px; }
+        .eye-right { right: 35px; }
+
+        .pupil {
             position: absolute;
-            width: 220px;
-            height: 220px;
-            border: 2px dashed rgba(168, 85, 247, 0.4);
+            width: 25px;
+            height: 35px;
+            background: #1e1b4b;
             border-radius: 50%;
-            animation: spin 15s linear infinite;
+            top: 10px;
+            left: 8px;
+            transition: 0.1s;
         }
 
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .listening .orb-core {
-            transform: scale(1.1);
-            box-shadow: 0 0 100px var(--accent);
-            background: linear-gradient(135deg, var(--accent), var(--primary));
-        }
-
-        .speaking .orb-core {
-            animation: pulse-talk 0.6s infinite alternate;
-        }
-
-        @keyframes pulse-talk {
-            0% { transform: scale(1); filter: brightness(1); }
-            100% { transform: scale(1.3); filter: brightness(1.3); }
-        }
-
-        /* Floating Pop-ups */
-        #popups-container {
+        .pupil::after {
+            content: '';
             position: absolute;
-            top: 20%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 5px;
+            left: 5px;
+        }
+
+        /* Mouth */
+        .mouth {
+            position: absolute;
+            bottom: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 8px;
+            background: #f43f5e;
+            border-radius: 0 0 12px 12px;
+            transition: all 0.1s;
+        }
+
+        /* Animations */
+        @keyframes blink {
+            0%, 90%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.1); }
+        }
+
+        .blinking .eye {
+            animation: blink 4s infinite;
+        }
+
+        @keyframes talk {
+            0% { height: 6px; border-radius: 20px; }
+            100% { height: 25px; border-radius: 50%; }
+        }
+
+        .speaking .mouth {
+            animation: talk 0.15s infinite alternate ease-in-out;
+            width: 30px;
+        }
+
+        .thinking .eye .pupil {
+            animation: wander 2s infinite ease-in-out;
+        }
+
+        @keyframes wander {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(5px, -5px); }
+        }
+
+        /* --- UI Controls --- */
+        #popups {
+            position: absolute;
+            top: 8%;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             pointer-events: none;
-            z-index: 20;
+            z-index: 30;
+            padding: 0 20px;
         }
 
-        .popup-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
+        .chat-popup {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 20px;
             margin-bottom: 10px;
-            max-width: 80%;
+            max-width: 90%;
             text-align: center;
             font-size: 0.95rem;
-            color: #e2e8f0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: twistIn 0.5s ease forwards, fadeOut 0.5s ease forwards 4s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            animation: fadeIn 0.4s ease forwards;
         }
 
-        @keyframes twistIn {
-            from { opacity: 0; transform: translateY(20px) rotate(-5deg); }
-            to { opacity: 1; transform: translateY(0) rotate(0deg); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        @keyframes fadeOut {
-            to { opacity: 0; transform: scale(0.9); pointer-events: none; }
-        }
-
-        /* Controls */
         .controls {
             position: fixed;
             bottom: 40px;
             display: flex;
             gap: 20px;
-            z-index: 30;
+            z-index: 40;
         }
 
-        .btn-action {
-            background: rgba(255, 255, 255, 0.05);
+        .btn {
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
-            transition: all 0.3s;
+            transition: 0.3s;
+            color: white;
+            cursor: pointer;
         }
 
-        .btn-action:hover { background: rgba(168, 85, 247, 0.2); border-color: var(--primary); }
+        .btn:active { transform: scale(0.9); }
+        .btn.active { background: var(--primary); box-shadow: 0 0 20px var(--primary); }
 
-        .status-badge {
+        #status {
             position: fixed;
             top: 30px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            letter-spacing: 2px;
             opacity: 0.6;
+            font-weight: bold;
         }
 
+        .blush {
+            position: absolute;
+            top: 130px;
+            width: 30px;
+            height: 10px;
+            background: rgba(244, 114, 182, 0.3);
+            border-radius: 50%;
+            filter: blur(3px);
+        }
+        .blush-left { left: 25px; }
+        .blush-right { right: 25px; }
     </style>
 </head>
 <body>
 
-    <div class="status-badge" id="status">System Idle</div>
+    <div id="status">Ready</div>
+    <div id="popups"></div>
 
-    <div id="popups-container"></div>
-
-    <div class="orb-container" id="orb-trigger">
-        <div class="orb-outer"></div>
-        <div class="orb-core" id="orb"></div>
+    <div class="character-container blinking" id="character">
+        <div class="hair-back"></div>
+        <div class="anime-face">
+            <div class="hair-front"></div>
+            <div class="eye eye-left"><div class="pupil"></div></div>
+            <div class="eye eye-right"><div class="pupil"></div></div>
+            <div class="blush blush-left"></div>
+            <div class="blush blush-right"></div>
+            <div class="mouth"></div>
+        </div>
     </div>
 
     <div class="controls">
-        <button id="mic-toggle" class="btn-action">
-            <svg id="mic-icon" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+        <button id="mic-toggle" class="btn">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
         </button>
-        <button onclick="location.reload()" class="btn-action">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        <button onclick="location.reload()" class="btn">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
         </button>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
+        // API Configuration
+        const GEMINI_KEY = ""; 
         const ELEVEN_LABS_KEY = "sk_863cbb8276e1c909cf428a5f169f7d4fda528b0eb06b14bb";
         const VOICE_ID = "csPuxct3x4tABDZeKliZ";
-        const GEMINI_KEY = "AIzaSyCRav1LXihYQDf61qOqKGpm5hEEJi5lAwg";
 
         let isListening = false;
         let isSpeaking = false;
-        const statusEl = document.getElementById('status');
-        const orbEl = document.getElementById('orb');
-        const orbContainer = document.querySelector('.orb-container');
+        const char = document.getElementById('character');
+        const statusText = document.getElementById('status');
+        const micBtn = document.getElementById('mic-toggle');
 
-        // --- SPEECH SERVICES ---
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+        // PCM to WAV for Fallback
+        function createWavHeader(pcmData, sampleRate) {
+            const buffer = new ArrayBuffer(44 + pcmData.length * 2);
+            const view = new DataView(buffer);
+            const writeString = (offset, string) => { for (let i = 0; i < string.length; i++) view.setUint8(offset + i, string.charCodeAt(i)); };
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + pcmData.length * 2, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, pcmData.length * 2, true);
+            let offset = 44;
+            for (let i = 0; i < pcmData.length; i++, offset += 2) view.setInt16(offset, pcmData[i], true);
+            return buffer;
+        }
 
-        if (recognition) {
-            recognition.continuous = true;
-            recognition.interimResults = false;
+        // Web Speech API
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+
+        if (SpeechRec) {
+            recognition = new SpeechRec();
+            recognition.continuous = false;
             recognition.lang = 'en-US';
 
-            recognition.onresult = (event) => {
-                const transcript = event.results[event.results.length - 1][0].transcript;
-                handleUserVoice(transcript);
+            recognition.onresult = (e) => {
+                const text = e.results[0][0].transcript;
+                handleInput(text);
             };
 
             recognition.onend = () => { if (isListening) recognition.start(); };
         }
 
-        // --- CORE FUNCTIONS ---
+        async function handleInput(text) {
+            if (!text.trim() || isSpeaking) return;
 
-        function toggleMic() {
-            if (isListening) {
-                isListening = false;
-                recognition.stop();
-                statusEl.innerText = "System Idle";
-                orbContainer.classList.remove('listening');
-            } else {
-                isListening = true;
-                recognition.start();
-                statusEl.innerText = "Listening...";
-                orbContainer.classList.add('listening');
-                showPopup("Listening... Speak now 💜");
-            }
-        }
-
-        document.getElementById('mic-toggle').onclick = toggleMic;
-
-        async function handleUserVoice(text) {
-            const input = text.toLowerCase().trim();
             showPopup(text, true);
+            char.classList.add('thinking');
+            statusText.innerText = "Thinking...";
 
-            // AI Adapter Logic
-            if (input.includes("search for") || input.includes("find information about") || input.includes("google search")) {
-                let query = input.replace(/search for|find information about|google search/g, "").trim();
-                playElevenLabsVoice("Searching Google for " + query);
-                setTimeout(() => window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank'), 2000);
-                return;
-            }
-
-            if (input.includes("play") && (input.includes("music") || input.includes("youtube"))) {
-                let music = input.replace(/play|music|youtube/g, "").trim();
-                playElevenLabsVoice("Opening YouTube for " + music);
-                setTimeout(() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(music)}`, '_blank'), 2000);
-                return;
-            }
-
-            // Normal AI Conversation
-            getAIResponse(input);
-        }
-
-        async function getAIResponse(prompt) {
-            statusEl.innerText = "Sinu is thinking...";
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${GEMINI_KEY}`, {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${GEMINI_KEY}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `You are Sinu, a friendly AI girl. Respond briefly (1 sentence) and warmly. User says: ${prompt}` }] }]
+                        contents: [{ parts: [{ text: `You are Sinu, a cute anime girl AI. Reply very briefly (1 sentence). User: ${text}` }] }]
                     })
                 });
-                const data = await res.json();
-                const aiText = data.candidates[0].content.parts[0].text;
+
+                const data = await response.json();
+                const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Oops, something went wrong.";
+                
                 showPopup(aiText);
-                playElevenLabsVoice(aiText);
-            } catch (e) {
-                showPopup("Connection issue, please try again.");
+                await speak(aiText);
+
+            } catch (err) {
+                showPopup("My brain feels fuzzy... try again? 💜");
             } finally {
-                statusEl.innerText = isListening ? "Listening..." : "System Idle";
+                char.classList.remove('thinking');
+                statusText.innerText = isListening ? "Listening" : "Ready";
             }
         }
 
-        async function playElevenLabsVoice(text) {
+        async function speak(text) {
             if (isSpeaking) return;
             isSpeaking = true;
-            orbContainer.classList.add('speaking');
+            char.classList.add('speaking');
+            statusText.innerText = "Speaking...";
 
+            // Try ElevenLabs First
             try {
-                const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+                const elResponse = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "xi-api-key": ELEVEN_LABS_KEY
-                    },
+                    headers: { "Content-Type": "application/json", "xi-api-key": ELEVEN_LABS_KEY },
                     body: JSON.stringify({
                         text: text,
                         model_id: "eleven_monolingual_v1",
-                        voice_settings: { stability: 0.5, similarity_boost: 0.5 }
+                        voice_settings: { stability: 0.5, similarity_boost: 0.75 }
                     })
                 });
 
-                const audioBlob = await response.blob();
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const audio = new Audio(audioUrl);
-                
-                audio.onended = () => {
+                if (!elResponse.ok) throw new Error("ElevenLabs Error");
+
+                const blob = await elResponse.blob();
+                await playAudio(URL.createObjectURL(blob));
+
+            } catch (err) {
+                console.warn("ElevenLabs Failed, using Gemini Fallback Voice...");
+                // Fallback to Gemini TTS
+                try {
+                    const geminiTts = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${GEMINI_KEY}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: `Say: ${text}` }] }],
+                            generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } },
+                            model: "gemini-2.5-flash-preview-tts"
+                        })
+                    });
+                    const ttsData = await geminiTts.json();
+                    const base64Audio = ttsData.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+                    
+                    if (base64Audio) {
+                        const binary = atob(base64Audio);
+                        const bytes = new Int16Array(binary.length / 2);
+                        for (let i = 0; i < bytes.length; i++) bytes[i] = binary.charCodeAt(i * 2) | (binary.charCodeAt(i * 2 + 1) << 8);
+                        const wav = createWavHeader(bytes, 24000);
+                        await playAudio(URL.createObjectURL(new Blob([wav], { type: 'audio/wav' })));
+                    }
+                } catch (e) {
                     isSpeaking = false;
-                    orbContainer.classList.remove('speaking');
-                };
-                audio.play();
-            } catch (e) {
-                console.error("ElevenLabs Error:", e);
-                isSpeaking = false;
-                orbContainer.classList.remove('speaking');
+                    char.classList.remove('speaking');
+                }
             }
         }
 
-        function showPopup(text, isUser = false) {
-            const container = document.getElementById('popups-container');
-            const card = document.createElement('div');
-            card.className = 'popup-card';
-            if (isUser) card.style.borderColor = 'var(--accent)';
-            
-            // Text Summarizer (Trims text if too long for card)
-            const summary = text.length > 80 ? text.substring(0, 77) + "..." : text;
-            card.innerText = summary;
-            
-            container.appendChild(card);
-            
-            // Remove after 5 seconds
-            setTimeout(() => card.remove(), 5000);
+        function playAudio(url) {
+            return new Promise((resolve) => {
+                const audio = new Audio(url);
+                audio.onended = () => {
+                    isSpeaking = false;
+                    char.classList.remove('speaking');
+                    resolve();
+                };
+                audio.play();
+            });
         }
 
-        // Welcome
-        window.onload = () => {
-            showPopup("Hey! Tap the mic and say 'Hey Sinu' 💜");
+        function showPopup(text, isUser = false) {
+            const container = document.getElementById('popups');
+            const card = document.createElement('div');
+            card.className = 'chat-popup';
+            if (isUser) { card.style.color = 'var(--accent)'; card.style.borderColor = 'var(--accent)'; }
+            card.innerText = text;
+            container.prepend(card);
+            setTimeout(() => {
+                card.style.opacity = '0';
+                setTimeout(() => card.remove(), 400);
+            }, 6000);
+        }
+
+        micBtn.onclick = () => {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === 'suspended') ctx.resume();
+
+            if (isListening) {
+                isListening = false;
+                recognition.stop();
+                micBtn.classList.remove('active');
+                statusText.innerText = "Ready";
+            } else {
+                isListening = true;
+                recognition.start();
+                micBtn.classList.add('active');
+                statusText.innerText = "Listening...";
+                showPopup("I'm listening! 💜");
+            }
         };
 
+        window.onload = () => showPopup("System Online! Sinu is ready to chat! 💜");
     </script>
 </body>
 </html>
+
