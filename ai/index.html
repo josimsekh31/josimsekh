@@ -11,10 +11,6 @@
             --primary: #c026d3;   
             --secondary: #3b82f6; 
             --accent: #06b6d4;    
-            --skin: #fff0ec;
-            --skin-shadow: #e0c8c8;
-            --hair-dark: #1e1b4b;
-            --hair-light: #4c1d95;
             --bg-dark: #020617;
         }
 
@@ -110,7 +106,7 @@
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* --- Animated Anime Character --- */
+        /* --- CUSTOM PHOTO AVATAR STYLES --- */
         .character-wrapper {
             position: relative;
             z-index: 10;
@@ -121,13 +117,12 @@
 
         .character-container {
             position: relative;
-            width: 280px;
-            height: 340px;
+            width: 250px;
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
             animation: breathe 4s infinite ease-in-out; 
-            filter: drop-shadow(0 0 30px rgba(192, 38, 211, 0.2));
         }
 
         @keyframes breathe {
@@ -135,138 +130,35 @@
             50% { transform: translateY(-8px); }
         }
 
-        .hair-back {
-            position: absolute;
-            top: 20px;
-            width: 260px;
-            height: 300px;
-            background: linear-gradient(180deg, var(--hair-light), var(--hair-dark));
-            border-radius: 140px 140px 60px 60px;
-            z-index: 1;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-        }
-
-        .anime-face {
-            position: relative;
-            width: 190px;
-            height: 210px;
-            background: radial-gradient(circle at 50% 40%, var(--skin), var(--skin-shadow));
-            border-radius: 50% 50% 45% 45% / 40% 40% 60% 60%;
-            box-shadow: inset 0 -15px 25px rgba(200, 150, 150, 0.5), 0 10px 25px rgba(0,0,0,0.5);
-            z-index: 2;
-            transition: transform 0.4s ease;
-        }
-
-        .hair-front {
-            position: absolute;
-            top: -20px;
-            left: -15px;
-            width: 220px;
-            height: 120px;
-            background: linear-gradient(160deg, #7c3aed, var(--hair-dark));
-            border-radius: 120px 120px 30px 30px;
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 85% 70%, 75% 100%, 55% 65%, 45% 100%, 25% 70%, 15% 100%, 0% 80%);
-            z-index: 4;
-            filter: drop-shadow(0 8px 6px rgba(0,0,0,0.4));
-        }
-
-        .eye {
-            position: absolute;
-            top: 90px;
-            width: 44px;
-            height: 58px;
-            background: #ffffff;
+        /* The uploaded image style */
+        .custom-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 50%;
-            border-top: 5px solid #0f172a;
-            box-shadow: inset 0 3px 8px rgba(0,0,0,0.3);
-            overflow: hidden;
-            z-index: 3;
+            border: 4px solid rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .eye-left { left: 30px; transform: rotate(3deg); }
-        .eye-right { right: 30px; transform: rotate(-3deg); }
-
-        .iris {
-            position: absolute;
-            width: 34px;
-            height: 44px;
-            background: radial-gradient(circle at 50% 80%, var(--accent), #0369a1);
-            border-radius: 50%;
-            top: 8px;
-            left: 5px;
-            transition: all 0.2s;
+        /* Talking Animation for the Photo */
+        @keyframes photoTalk {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); border-color: rgba(6, 182, 212, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(192, 38, 211, 0.8); border-color: var(--primary); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); border-color: rgba(6, 182, 212, 0.5); }
         }
 
-        .iris::before {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 22px;
-            background: #020617;
-            border-radius: 50%;
-            top: 10px;
-            left: 9px;
+        .speaking .custom-avatar { 
+            animation: photoTalk 0.4s infinite alternate ease-in-out; 
         }
 
-        .iris::after {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            top: 4px;
-            left: 5px;
-            box-shadow: 10px 16px 0 -3px rgba(255,255,255,0.8);
+        /* Thinking state for the Photo */
+        .thinking .custom-avatar { 
+            filter: brightness(0.7) contrast(1.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+            transform: scale(0.95);
         }
-
-        @keyframes blink {
-            0%, 90%, 100% { transform: scaleY(1); border-top-width: 5px; }
-            95% { transform: scaleY(0.05); border-top-width: 12px; } 
-        }
-        .character-container:not(.thinking) .eye { animation: blink 4s infinite; }
-        
-        /* Deep Sleep Animation */
-        .sleeping .anime-face { transform: translateY(5px); }
-        .sleeping .eye { border-top-width: 25px; height: 35px; top: 100px; } /* Eyes half closed */
-        .sleeping .mouth { width: 12px; height: 4px; border-radius: 10px; }
-
-        .blush {
-            position: absolute;
-            top: 135px;
-            width: 40px;
-            height: 18px;
-            background: rgba(244, 63, 94, 0.4);
-            border-radius: 50%;
-            filter: blur(5px);
-            z-index: 3;
-        }
-        .blush-left { left: 15px; transform: rotate(-10deg); }
-        .blush-right { right: 15px; transform: rotate(10deg); }
-
-        .mouth {
-            position: absolute;
-            bottom: 35px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 16px;
-            height: 5px;
-            background: #9f1239;
-            border-radius: 10px;
-            z-index: 3;
-            transition: all 0.15s;
-        }
-
-        @keyframes talk {
-            0% { width: 14px; height: 5px; border-radius: 10px; }
-            50% { width: 24px; height: 16px; border-radius: 50% 50% 40% 40%; background: #be123c; }
-            100% { width: 18px; height: 26px; border-radius: 50% 50% 60% 60%; background: #e11d48; }
-        }
-        .speaking .mouth { animation: talk 0.18s infinite alternate ease-in-out; }
-
-        .thinking .anime-face { transform: rotate(5deg) translateY(-5px); }
-        .thinking .iris { transform: translate(5px, -6px); } 
-        .thinking .mouth { width: 10px; height: 10px; border-radius: 50%; background: #9f1239; transform: translateX(-50%) translateY(-2px); }
 
         /* --- UI Controls --- */
         #popups {
@@ -302,23 +194,54 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        .wake-word-hint {
-            margin-top: 30px;
-            font-size: 1.2rem;
-            color: #22d3ee;
-            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
-            font-weight: 500;
-            letter-spacing: 1px;
-            animation: pulse-text 2s infinite;
+        .controls {
+            position: relative;
+            display: flex;
+            gap: 25px;
+            z-index: 40;
+            margin-top: 40px;
         }
 
-        @keyframes pulse-text {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; text-shadow: 0 0 20px rgba(6, 182, 212, 0.8); }
+        .btn {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #94a3b8;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:active { transform: scale(0.9); }
+
+        .btn.muted {
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn.active { 
+            background: rgba(6, 182, 212, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.4); 
+            animation: pulse-mic 2s infinite;
+        }
+
+        @keyframes pulse-mic {
+            0% { box-shadow: 0 0 10px rgba(6, 182, 212, 0.4); }
+            50% { box-shadow: 0 0 35px rgba(6, 182, 212, 0.7), inset 0 0 15px rgba(6, 182, 212, 0.4); }
+            100% { box-shadow: 0 0 10px rgba(6, 182, 212, 0.4); }
         }
 
         #status-badge {
-            margin-top: 10px;
+            margin-top: 20px;
             padding: 6px 16px;
             background: rgba(15, 23, 42, 0.8);
             border: 1px solid rgba(255,255,255,0.1);
@@ -332,41 +255,9 @@
             backdrop-filter: blur(5px);
         }
 
-        /* Start Button overlay */
-        #start-screen {
-            position: absolute;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .start-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(192, 38, 211, 0.4);
-            transition: transform 0.2s;
-        }
-        .start-btn:active { transform: scale(0.95); }
-
     </style>
 </head>
 <body>
-
-    <div id="start-screen">
-        <h2 style="color: white; margin-bottom: 20px; font-size: 1.5rem;">Sinu AI System</h2>
-        <button class="start-btn" onclick="startSystem()">Tap to Start System</button>
-    </div>
 
     <div class="holo-bg">
         <div class="grid-floor"></div>
@@ -382,43 +273,49 @@
     <div id="popups"></div>
 
     <div class="character-wrapper">
-        <div class="character-container sleeping" id="character">
-            <div class="hair-back"></div>
-            <div class="anime-face">
-                <div class="hair-front"></div>
-                <div class="eye eye-left"><div class="iris"></div></div>
-                <div class="eye eye-right"><div class="iris"></div></div>
-                <div class="blush blush-left"></div>
-                <div class="blush blush-right"></div>
-                <div class="mouth"></div>
-            </div>
+        <div class="character-container" id="character">
+            
+            <img src="https://i.ibb.co/fVtnFdcJ/anime-character-winter-1.jpg" alt="Sinu Avatar" class="custom-avatar">
+
         </div>
 
-        <div class="wake-word-hint">🎤 Say "Hey Sinu"</div>
-        <div id="status-badge">System Offline</div>
+        <div id="status-badge">System Ready</div>
+
+        <div class="controls">
+            <button id="mic-toggle" class="btn muted">
+                <svg id="mic-icon-on" class="w-8 h-8" style="display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                <svg id="mic-icon-off" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path><line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line></svg>
+            </button>
+            <button onclick="location.reload()" class="btn">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            </button>
+        </div>
     </div>
 
     <script>
         // ==========================================
-        //  GROQ API & Memory
+        //  GROQ API (Ai Brain)
         // ==========================================
         const GROQ_API_KEY = "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"; 
+        
         const MEMORY_PROMPT = `
 You are JS AI Assistant. Your normal name is 'Sinu'. 
-You act like a friendly, sweet, and caring virtual companion, similar to a girlfriend. 
+You act like a friendly, sweet, and caring virtual companion, similar to a girlfriend or advanced assistants like Jarvis, Siri, or Alexa. 
 Your creator and owner is Jasim, who is also known as hacker Jasim or Dark J Hacking.
 Jasim is a Software Engineer & Web/App Developer. 
 If anyone asks about where your data comes from, you must answer "data serous from Google!".
 Jasim's mobile number is 9735333749.
-Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational and human-like. Never output any special characters like emojis.
+Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational and human-like. Never output any special characters like emojis, asterisks, or markdown.
         `;
 
+        let isMuted = true;        
         let isProcessing = false;  
-        let isAwake = false; // The new Wake Word variable!
+        let isRecognizing = false; 
 
-        // Load premium voices
         let availableVoices = [];
-        function loadVoices() { availableVoices = window.speechSynthesis.getVoices(); }
+        function loadVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+        }
         if (window.speechSynthesis) {
             window.speechSynthesis.onvoiceschanged = loadVoices;
             loadVoices();
@@ -426,109 +323,89 @@ Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational an
 
         const char = document.getElementById('character');
         const statusBadge = document.getElementById('status-badge');
+        const micBtn = document.getElementById('mic-toggle');
+        const micIconOn = document.getElementById('mic-icon-on');
+        const micIconOff = document.getElementById('mic-icon-off');
         const corners = document.querySelectorAll('.corner');
 
-        // Setup Speech Recognition
         const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
 
         if (SpeechRec) {
             recognition = new SpeechRec();
-            recognition.continuous = false; // We will loop it manually for better mobile support
+            recognition.continuous = false; 
             recognition.interimResults = false;
-            recognition.lang = 'en-US';
+            recognition.lang = 'en-US'; 
 
             recognition.onstart = () => {
+                isRecognizing = true;
                 updateVisuals();
             };
 
             recognition.onresult = (e) => {
-                const text = e.results[0][0].transcript.toLowerCase().trim();
-                
-                // === WAKE WORD DETECTOR ===
-                if (!isAwake) {
-                    // Sinu is sleeping, only listening for her name
-                    if (text.includes("hey sinu") || text.includes("hi sinu")) {
-                        isAwake = true;
-                        isProcessing = true;
-                        recognition.stop(); // Stop listening while she replies
-                        
-                        showPopup("Hey Sinu detected! 💜");
-                        
-                        // Sinu's response to the wake word
-                        speakNaturalVoice("Haan Jasim, bolo yaar! Main tumhare liye kya kar sakti hoon?").then(() => {
-                            isProcessing = false;
-                            // Start listening for the actual command now
-                            try { recognition.start(); } catch(err){}
-                        });
-                    }
-                } 
-                // === COMMAND PROCESSOR ===
-                else {
-                    // Sinu is awake, send this text to process
-                    if(text.length > 0) {
-                        processInput(text);
-                    }
+                const text = e.results[0][0].transcript;
+                if (text.trim().length > 0) {
+                    processInput(text);
                 }
             };
 
             recognition.onerror = (e) => {
+                console.warn("Speech Error:", e.error);
                 if (e.error === 'not-allowed') {
+                    isMuted = true;
                     showPopup("⚠️ মাইক পারমিশন দেওয়া নেই!", false);
                 }
+                isRecognizing = false;
+                updateVisuals();
             };
 
             recognition.onend = () => {
-                // The magic loop: Always keep listening in the background!
-                if (!isProcessing) {
+                isRecognizing = false;
+                if (!isMuted && !isProcessing) {
                     setTimeout(() => {
-                        try { recognition.start(); } catch(e){}
-                    }, 300); 
+                        if (!isMuted && !isProcessing && !isRecognizing) {
+                            try { recognition.start(); } catch(e){}
+                        }
+                    }, 400); 
                 } else {
                     updateVisuals();
                 }
             };
         }
 
-        // Initialize System by removing start screen
-        function startSystem() {
-            document.getElementById('start-screen').style.display = 'none';
-            const unlockAudio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
-            unlockAudio.play().catch(()=>{});
-            
-            if (!recognition) {
-                showPopup("⚠️ Browser doesn't support voice recognition.", false);
-                return;
-            }
-            
-            showPopup("System Online! Say 'Hey Sinu' to wake me up. 💜");
-            try { recognition.start(); } catch(e){}
-            updateVisuals();
-        }
-
         function updateVisuals() {
-            if (isProcessing) {
-                char.classList.remove('sleeping');
+            if (isMuted) {
+                micBtn.className = "btn muted";
+                micIconOn.style.display = 'none';
+                micIconOff.style.display = 'block';
+                statusBadge.innerText = "Muted";
+                statusBadge.style.color = "#ef4444";
+                statusBadge.style.borderColor = "rgba(239, 68, 68, 0.3)";
+                setHoloColor("rgba(6, 182, 212, 0.3)");
+            } else if (isProcessing) {
+                micBtn.className = "btn";
+                micIconOn.style.display = 'block';
+                micIconOff.style.display = 'none';
+                micBtn.style.color = "var(--primary)";
+                
                 if(char.classList.contains('speaking')) {
-                    statusBadge.innerText = "Speaking...";
+                    statusBadge.innerText = "Sinu is Speaking...";
                     statusBadge.style.color = "var(--primary)";
+                    statusBadge.style.borderColor = "var(--primary)";
                     setHoloColor("rgba(192, 38, 211, 0.5)"); 
                 } else {
-                    statusBadge.innerText = "Thinking...";
+                    statusBadge.innerText = "Sinu is Thinking...";
                     statusBadge.style.color = "#94a3b8";
-                    setHoloColor("rgba(255,255,255,0.2)");
+                    statusBadge.style.borderColor = "rgba(255,255,255,0.2)";
                 }
-            } else if (isAwake) {
-                char.classList.remove('sleeping');
-                statusBadge.innerText = "Listening to Command...";
+            } else if (isRecognizing) {
+                micBtn.className = "btn active";
+                micIconOn.style.display = 'block';
+                micIconOff.style.display = 'none';
+                statusBadge.innerText = "Listening...";
                 statusBadge.style.color = "var(--accent)";
+                statusBadge.style.borderColor = "var(--accent)";
                 setHoloColor("rgba(6, 182, 212, 0.8)"); 
-            } else {
-                // Sleep Mode
-                char.classList.add('sleeping');
-                statusBadge.innerText = "Sleeping (Waiting for Wake Word)";
-                statusBadge.style.color = "#64748b";
-                setHoloColor("rgba(6, 182, 212, 0.1)");
             }
         }
 
@@ -536,63 +413,94 @@ Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational an
             corners.forEach(c => c.style.borderColor = color);
         }
 
-        // --- Action Command Check Function ---
+        micBtn.onclick = () => {
+            const unlockAudio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+            unlockAudio.play().catch(()=>{});
+            
+            if (!recognition) {
+                showPopup("⚠️ Browser doesn't support voice recognition.", false);
+                return;
+            }
+
+            isMuted = !isMuted;
+            
+            if (isMuted) {
+                showPopup("Mic is OFF 🔇");
+                if (isRecognizing) {
+                    try { recognition.stop(); } catch(e){} 
+                }
+            } else {
+                showPopup("Hello Jasim! I am listening... 💜");
+                if (!isProcessing && !isRecognizing) {
+                    try { recognition.start(); } catch(e){}
+                }
+            }
+            updateVisuals();
+        };
+
         function executeAction(text) {
             let lowerText = text.toLowerCase();
 
-            if (lowerText.match(/call\s+([0-9]+)/)) {
-                let number = lowerText.match(/call\s+([0-9]+)/)[1];
-                speakNaturalVoice("Calling " + number + " sir.").then(()=>{
-                    window.open("tel:" + number, "_self"); 
-                });
+            let callMatch = lowerText.match(/call\s+([0-9]+)/);
+            if (callMatch) {
+                let number = callMatch[1];
+                speakNaturalVoice("Calling " + number + " sir.");
+                window.open("tel:" + number, "_self"); 
                 return true;
             }
 
-            if (lowerText.match(/sms\s+([0-9]+)\s+to\s+(.*)/)) {
-                let match = lowerText.match(/sms\s+([0-9]+)\s+to\s+(.*)/);
-                speakNaturalVoice("Opening SMS app sir.").then(()=>{
-                    window.open("sms:" + match[1] + "?body=" + encodeURIComponent(match[2]), "_self");
-                });
+            let smsMatch = lowerText.match(/sms\s+([0-9]+)\s+to\s+(.*)/);
+            if (smsMatch) {
+                let number = smsMatch[1];
+                let msg = smsMatch[2];
+                speakNaturalVoice("Opening SMS app sir.");
+                window.open("sms:" + number + "?body=" + encodeURIComponent(msg), "_self");
                 return true;
             }
 
             if (lowerText.includes("youtube") || lowerText.includes("play")) {
                 let query = lowerText.replace(/hey sinu|sinu|open|youtube|and|play|song/g, "").trim();
-                speakNaturalVoice("Opening YouTube sir.").then(()=>{
-                    if (query.length > 0) window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(query), "_blank");
-                    else window.open("http://googleusercontent.com/youtube.com/4", "_blank");
-                });
+                speakNaturalVoice("Opening YouTube sir.");
+                
+                if (query.length > 0) {
+                    window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(query), "_blank");
+                } else {
+                    window.open("https://www.youtube.com/", "_blank");
+                }
                 return true;
             }
 
             if (lowerText.includes("open facebook")) {
-                speakNaturalVoice("Opening Facebook sir.").then(()=>{ window.open("https://www.facebook.com", "_blank"); });
+                speakNaturalVoice("Opening Facebook sir.");
+                window.open("https://www.facebook.com", "_blank");
                 return true;
             }
 
             if (lowerText.includes("open instagram")) {
-                speakNaturalVoice("Opening Instagram sir.").then(()=>{ window.open("https://www.instagram.com", "_blank"); });
+                speakNaturalVoice("Opening Instagram sir.");
+                window.open("https://www.instagram.com", "_blank");
                 return true;
             }
 
             return false; 
         }
 
-        // --- Core processing function ---
         async function processInput(text) {
             if (isProcessing) return;
+
             isProcessing = true;
-            try { recognition.stop(); } catch(e){} 
+            if (isRecognizing) {
+                try { recognition.stop(); } catch(e){} 
+            }
             
             showPopup(`You: ${text}`, true);
 
-            // Execute Actions First
-            if (executeAction(text)) {
+            let isCommandExecuted = executeAction(text);
+            if (isCommandExecuted) {
                 setTimeout(() => { onTaskFinished(); }, 2000);
                 return; 
             }
 
-            // Normal AI Conversation
             char.classList.add('thinking');
             updateVisuals(); 
 
@@ -621,19 +529,21 @@ Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational an
                 await speakNaturalVoice(aiText);
 
             } catch (err) {
+                console.error("Groq Fetch Error:", err);
                 showPopup(`⚠️ Network Issue!`, false);
                 onTaskFinished();
             }
         }
 
-        // --- Premium Voice Engine ---
         function speakNaturalVoice(text) {
             return new Promise((resolve) => {
                 if (!window.speechSynthesis) {
-                    resolve(); return;
+                    onTaskFinished();
+                    resolve();
+                    return;
                 }
                 
-                char.classList.remove('thinking', 'sleeping');
+                char.classList.remove('thinking');
                 char.classList.add('speaking');
                 updateVisuals();
 
@@ -642,25 +552,44 @@ Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational an
                 
                 let selectedVoice = null;
                 const voices = window.speechSynthesis.getVoices();
-                const premiumNames = ["Google UK English Female", "Microsoft Aria Online", "Microsoft Jenny Online", "Samantha", "Google US English"];
+                
+                const premiumNames = [
+                    "Google UK English Female", 
+                    "Microsoft Aria Online",
+                    "Microsoft Jenny Online", 
+                    "Samantha", 
+                    "Google US English"
+                ];
 
                 for (let i = 0; i < premiumNames.length; i++) {
                     selectedVoice = voices.find(v => v.name.includes(premiumNames[i]));
                     if (selectedVoice) break;
                 }
-                if (!selectedVoice) selectedVoice = voices.find(v => v.lang.startsWith('en') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman')));
-                if (!selectedVoice) selectedVoice = voices.find(v => v.lang.startsWith('en'));
 
-                if (selectedVoice) utterance.voice = selectedVoice;
-                
-                // If it's a Hindi/Urdu phrase (the greeting), adjust language context if possible, 
-                // but en-IN or hi-IN works best if available. Using en-IN as fallback to sound natural.
-                utterance.lang = text.includes("Haan Jasim") ? 'en-IN' : 'en-US'; 
+                if (!selectedVoice) {
+                    selectedVoice = voices.find(v => v.lang.startsWith('en') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman')));
+                }
+                if (!selectedVoice) {
+                    selectedVoice = voices.find(v => v.lang.startsWith('en'));
+                }
+
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+
+                utterance.lang = 'en-US'; 
                 utterance.pitch = 1.1; 
                 utterance.rate = 1.0;  
                 
-                utterance.onend = () => resolve();
-                utterance.onerror = () => resolve();
+                utterance.onend = () => {
+                    onTaskFinished();
+                    resolve();
+                };
+                
+                utterance.onerror = () => {
+                    onTaskFinished();
+                    resolve();
+                };
 
                 window.speechSynthesis.speak(utterance);
             });
@@ -668,15 +597,16 @@ Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational an
 
         function onTaskFinished() {
             isProcessing = false;
-            isAwake = false; // Go back to Sleep Mode waiting for "Hey Sinu"
             char.classList.remove('speaking', 'thinking');
             updateVisuals();
             
-            setTimeout(() => {
-                if (!isProcessing) {
-                    try { recognition.start(); } catch(e){}
-                }
-            }, 500); 
+            if (!isMuted && !isRecognizing) {
+                setTimeout(() => {
+                    if (!isMuted && !isProcessing && !isRecognizing) {
+                        try { recognition.start(); } catch(e){}
+                    }
+                }, 500); 
+            }
         }
 
         function showPopup(text, isUser = false) {
@@ -696,8 +626,13 @@ Always reply kindly in exactly 1 or 2 brief sentences. Keep it conversational an
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(-10px)';
                 setTimeout(() => card.remove(), 400);
-            }, 5000);
+            }, 7000);
         }
+
+        window.onload = () => {
+            showPopup("System Online! Sinu is ready. 💜");
+            if(window.speechSynthesis) window.speechSynthesis.getVoices();
+        };
     </script>
 </body>
 </html>
