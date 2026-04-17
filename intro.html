@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intro</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+    }
+
+    video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      pointer-events: none; /* user cannot click / control */
+    }
+  </style>
+</head>
+
+<body>
+
+  <video id="introVideo" autoplay playsinline>
+    <source src="https://josimsekh.vercel.app/intro.mp4" type="video/mp4">
+  </video>
+
+  <script>
+    const video = document.getElementById("introVideo");
+
+    // Try autoplay with sound
+    window.addEventListener("load", async () => {
+      try {
+        video.muted = true;   // sound ON
+        await video.play();
+      } catch (e) {
+        console.log("Autoplay with sound blocked:", e);
+
+        // fallback: play muted if browser blocks sound autoplay
+        video.muted = true;
+        video.play();
+      }
+    });
+
+    // extra protection against user interaction
+    document.addEventListener("contextmenu", e => e.preventDefault());
+  </script>
+
+</body>
+</html>
