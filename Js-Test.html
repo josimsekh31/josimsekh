@@ -3,15 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIP Social Media Service - SMM Panel (Golden Edition)</title>
+    <title>VIP SMM SERVICE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <div class="hero">
-    <div class="hero-content">
-        <h1>Boost Your Social Media Presence</h1>
-        <p>Get real followers, likes, and comments for all major social platforms at the most competitive prices in the market.</p>
-        <a href="#order" class="btn btn-gold shine-effect">Order Now <i class="fas fa-angle-right"></i></a>
-    </div>
     <style>
         :root {
             --primary-gold: #DAA520; /* Goldenrod - Main gold */
@@ -42,7 +36,8 @@
         body {
             background-color: var(--gray);
             color: var(--text-on-gold-dark);
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-y: auto; /* Allow vertical scroll for the entire page */
             line-height: 1.65;
             -webkit-text-size-adjust: 100%; /* Prevent font boosting on mobile */
         }
@@ -58,7 +53,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 1000; 
+            z-index: 1000; /* Header should always be on top */
         }
         header::before { /* Subtle pulse effect */
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
@@ -139,42 +134,23 @@
         #userDropdownMenu a i { margin-right: 8px; width: 16px; text-align: center; color: var(--primary-gold); font-size: 0.9em;}
 
 
-/* ===== Enhanced Golden Hero Section ===== */
+        /* Hero Section - The "Bubble Shape" / Main Call-to-Action Area */
+        /* Remove the existing .hero styles and replace with this */
+
 .hero {
-    background: linear-gradient(145deg, #DAA520 0%, #B8860B 50%, #F0E68C 100%);
-    color: #FFF8DC;
-    padding: 100px 20px;
-    margin: 40px 0;
+    background: linear-gradient(135deg, var(--dark-gold), var(--primary-gold));
+    color: var(--text-on-gold);
+    padding: 80px 20px;
+    margin: 30px 0;
     text-align: center;
     position: relative;
     overflow: hidden;
-    border-radius: 20px;
-    box-shadow: 
-        0 5px 15px rgba(218, 165, 32, 0.4),
-        inset 0 0 50px rgba(255, 215, 0, 0.2);
-    z-index: 5;
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    transform-style: preserve-3d;
-    perspective: 1000px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(184, 134, 11, 0.3);
+    z-index: 2; /* Higher than header's z-index */
 }
 
 .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-        ellipse at center,
-        rgba(255, 215, 0, 0.4) 0%,
-        rgba(255, 215, 0, 0) 70%
-    );
-    animation: pulseGlow 6s infinite alternate;
-    z-index: -1;
-}
-
-.hero::after {
     content: '';
     position: absolute;
     top: -50%;
@@ -183,95 +159,51 @@
     height: 200%;
     background: linear-gradient(
         to bottom right,
-        rgba(255, 255, 255, 0) 45%,
-        rgba(255, 255, 255, 0.3) 50%,
-        rgba(255, 255, 255, 0) 55%
+        rgba(255, 215, 0, 0) 0%,
+        rgba(255, 215, 0, 0.3) 45%,
+        rgba(255, 215, 0, 0) 80%
     );
     transform: rotate(30deg);
-    animation: goldShine 4s infinite linear;
+    animation: heroShine 3s infinite linear;
     z-index: -1;
 }
 
-@keyframes pulseGlow {
-    0% { opacity: 0.6; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1.05); }
-}
-
-@keyframes goldShine {
-    0% { transform: rotate(30deg) translate(-30%, -30%); }
-    100% { transform: rotate(30deg) translate(30%, 30%); }
-}
-
-.hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-    transform: translateZ(50px);
+@keyframes heroShine {
+    0% { left: -100%; top: -100%; }
+    100% { left: 100%; top: 100%; }
 }
 
 .hero h1 {
-    font-size: 3.2rem;
-    margin-bottom: 25px;
-    text-shadow: 
-        2px 2px 4px rgba(0, 0, 0, 0.3),
-        0 0 10px rgba(255, 215, 0, 0.5);
-    letter-spacing: 1px;
-    font-weight: 700;
-    background: linear-gradient(to right, #FFF8DC, #FFFFFF);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: textGlow 3s ease-in-out infinite alternate;
-}
-
-@keyframes textGlow {
-    0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-    100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero p {
-    font-size: 1.3rem;
-    line-height: 1.6;
-    margin: 0 auto 40px;
+    font-size: 1.2rem;
     max-width: 700px;
+    margin: 0 auto 30px;
     opacity: 0.9;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.hero .btn {
-    position: relative;
-    z-index: 3;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.4s ease;
+/* Adjust header z-index */
+header {
+    z-index: 1000; /* Ensure header stays above everything */
+    position: relative; /* Needed for z-index to work */
 }
-
-.hero .btn:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 
-        0 10px 25px rgba(218, 165, 32, 0.5),
-        0 0 20px rgba(255, 255, 255, 0.4);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .hero {
-        padding: 70px 20px;
-        margin: 20px 0;
-    }
-    
-    .hero h1 {
-        font-size: 2.4rem;
-    }
-    
-    .hero p {
-        font-size: 1.1rem;
-    }
-}
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, var(--light-gold), var(--primary-gold));
+            color: var(--text-on-gold-dark); padding: 12px 30px; border-radius: 50px;
+            text-decoration: none; font-weight: 600; transition: all 0.25s ease-out;
+            border: none; cursor: pointer; font-size: 15px;
+            box-shadow: 0 4px 12px var(--shadow-color); position: relative; overflow: hidden;
+        }
+        .btn:hover {
+            transform: translateY(-2px) scale(1.01); box-shadow: 0 6px 20px var(--shadow-strong-color);
+            background: linear-gradient(135deg, var(--primary-gold), var(--light-gold));
+        }
+        .btn i { margin-left: 7px; font-size: 0.85em; }
 
         /* Golden Shine Effect */
         .shine-effect { position: relative; overflow: hidden; }
@@ -544,7 +476,7 @@
     </style>
 </head>
 <body>
-    <audio id="paymentSuccessSound" src="https://cdn.glitch.global/62e5ac83-c5f3-46d8-a264-ea89b46e4952/phonepesoundd.mp3?v=1748718806597" preload="auto"></audio>
+    <audio id="paymentSuccessSound" src="https://cdn.jsdelivr.net/gh/JosimSet/SMM-Panel-Source-Code@master/payment-success.mp3" preload="auto"></audio>
 
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
@@ -626,8 +558,11 @@
                     <a id="payViaUpiDepositBtn" class="btn btn-gold shine-effect" style="width: 100%; margin-top: 15px;" target="_blank">Pay Via UPI App <i class="fas fa-external-link-alt"></i></a>
 
                     <div class="payment-logos" style="margin-top: 15px;">
-                        <img src="https://cdn.glitch.global/62e5ac83-c5f3-46d8-a264-ea89b46e4952/IMG-20250307-150606.jpg?v=1748718535830" class="payment-logo" alt="Google Pay">
-                            
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png" class="payment-logo" alt="Google Pay">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/1200px-PhonePe_Logo.svg.png" class="payment-logo" alt="PhonePe">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Paytm_logo.svg/1200px-Paytm_logo.svg.png" class="payment-logo" alt="Paytm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/BHIM_SVG_Logo.svg/1024px-BHIM_SVG_Logo.svg.png" class="payment-logo" alt="BHIM">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" class="payment-logo upi-logo" alt="UPI">
                     </div>
                     <div class="form-group" style="margin-top: 20px;">
                         <label for="depositTransactionId">Transaction ID (UTR)</label>
@@ -670,7 +605,7 @@
                 </div>
                 <div class="header-right-controls">
                     <div class="wallet-balance-display shine-effect">
-                        <span class="balance-text">₹<span id="walletBalance">0.00</span></span>
+                        <span class="balance-text">INR ₹<span id="walletBalance">0.00</span></span>
                     </div>
                     <div class="user-profile-area" id="userProfileArea" style="display:none;">
                         <span id="userProfileNameDisplay" class="user-profile-name">
@@ -710,25 +645,37 @@
                  <div class="service-card shine-effect">
                     <div class="service-icon"><i class="fab fa-facebook-f"></i></div>
                     <h3>Facebook Services</h3>
-                    <p>Get real Facebook likes, followers, and comments to boost your page's credibility and visibility.</p>
+                    <p>Gain authentic Facebook engagement: likes, followers, and comments that amplify your page's authority and visibility.</p>
                     <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
                 </div>
                 <div class="service-card shine-effect">
                     <div class="service-icon"><i class="fab fa-instagram"></i></div>
                     <h3>Instagram Services</h3>
-                    <p>Increase your Instagram followers, likes, and comments with our high-quality services.</p>
+                    <p>Boost your Instagram profile with high-quality followers, likes, and comments, curated for maximum impact.</p>
                     <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
                 </div>
                 <div class="service-card shine-effect">
                     <div class="service-icon"><i class="fab fa-youtube"></i></div>
                     <h3>YouTube Services</h3>
-                    <p>Boost your YouTube channel with real views, likes, comments, and subscribers.</p>
+                    <p>Elevate your YouTube channel with real views, likes, comments, and subscribers for sustainable growth.</p>
                     <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
                 </div>
                 <div class="service-card shine-effect">
                     <div class="service-icon"><i class="fab fa-telegram-plane"></i></div>
                     <h3>Telegram Services</h3>
-                    <p>Increase your Telegram channel members and group participants with our services.</p>
+                    <p>Enlarge your Telegram community with active channel members and group participants through our proven strategies.</p>
+                    <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
+                </div>
+                 <div class="service-card shine-effect">
+                    <div class="service-icon"><i class="fab fa-whatsapp"></i></div>
+                    <h3>WhatsApp Services</h3>
+                    <p>Increase your WhatsApp group members and channel subscribers rapidly.</p>
+                    <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
+                </div>
+                 <div class="service-card shine-effect">
+                    <div class="service-icon"><i class="fab fa-twitter"></i></div>
+                    <h3>Twitter Services</h3>
+                    <p>Boost your Twitter presence with real views, likes, comments, shares, and followers.</p>
                     <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
                 </div>
             </div>
@@ -756,6 +703,7 @@
                                 <a href="#" data-value="instagram"><img src="https://img.icons8.com/fluency/48/instagram-new.png" class="social-icon" alt="Instagram"/> Instagram</a>
                                 <a href="#" data-value="youtube"><img src="https://img.icons8.com/color/48/youtube-play.png" class="social-icon" alt="YouTube"/> YouTube</a>
                                 <a href="#" data-value="telegram"><img src="https://img.icons8.com/color/48/telegram-app.png" class="social-icon" alt="Telegram"/> Telegram</a>
+                                <a href="#" data-value="whatsapp"><img src="https://img.icons8.com/color/48/whatsapp--v1.png" class="social-icon" alt="WhatsApp"/> WhatsApp</a>
                                 <a href="#" data-value="twitter"><img src="https://img.icons8.com/color/48/twitterx.png" class="social-icon" alt="X (Twitter)"/> X (Twitter)</a>
                                 <a href="#" data-value="tiktok"><img src="https://img.icons8.com/color/48/tiktok.png" class="social-icon" alt="TikTok"/> TikTok</a>
                             </div>
@@ -816,14 +764,24 @@
                         <p class="qr-code-text">All UPI Payments Accepted Here</p>
                     </div>
                     
-                    <p style="text-align: center; font-size: 17px;">UPI ID: <strong style="color: var(--primary-gold); user-select: all;">josimsekh32@ybl</strong> Copy <p/>
+                    <p style="text-align: center; font-size: 17px;">UPI ID: <strong style="color: var(--primary-gold); user-select: all;">josimsekh32@ybl</strong> (Tap to copy)</p>
+                    
                     <a id="payViaUpiAppBtn" class="btn btn-gold shine-effect" style="width: 100%; margin-top: 15px;" target="_blank">Pay Via UPI App <i class="fas fa-external-link-alt"></i></a>
 
                     <div class="trust-badges" style="gap: 10px; flex-wrap: wrap; justify-content: center; margin: 15px 0;">
                         <div class="trust-badge" style="padding: 6px 12px; font-size: 13px;"><i class="fas fa-shield-alt"></i> 100% Secure Transactions</div>
                         <div class="trust-badge" style="padding: 6px 12px; font-size: 13px;"><i class="fas fa-lock"></i> Trusted & Verified</div>
+                        <div class="trust-badge" style="padding: 6px 12px; font-size: 13px;"><i class="fas fa-star"></i> Premium Quality</div>
+                    </div>
+                    
                     <div class="payment-logos" style="gap: 15px; margin: 15px 0;">
-                        <img src="https://cdn.glitch.global/62e5ac83-c5f3-46d8-a264-ea89b46e4952/IMG-20250307-150606.jpg?v=1748718535830" class="payment-logo" alt="Google Pay">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png" class="payment-logo" alt="Google Pay">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/1200px-PhonePe_Logo.svg.png" class="payment-logo" alt="PhonePe">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Paytm_logo.svg/1200px-Paytm_logo.svg.png" class="payment-logo" alt="Paytm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/BHIM_SVG_Logo.svg/1024px-BHIM_SVG_Logo.svg.png" class="payment-logo" alt="BHIM">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" class="payment-logo upi-logo" alt="UPI">
+                    </div>
+                    
                     <div class="form-group" style="margin-top: 25px;">
                         <label for="transactionId">12-Digit UPI Transaction ID (UTR)</label>
                         <input type="text" id="transactionId" name="transactionId" class="form-control" placeholder="Enter the UTR from your payment app" required maxlength="12" pattern="\d{12}">
@@ -848,7 +806,7 @@
                 <p style="font-size:16px;">Your VIP order has been successfully placed and is now being processed with utmost priority.</p>
                 
                 <div class="success-message" style="font-size:18px;">
-                    <i class="fas fa-award"></i> Order ID: <strong id="orderId" style="color: var(--primary-gold);">VIPSMMS-2025-XXXXXX</strong>
+                    <i class="fas fa-award"></i> Order ID: <strong id="orderId" style="color: var(--primary-gold);">VIPSMMS-2024-XXXXXX</strong>
                 </div>
                 
                 <div class="wait-time">
@@ -931,12 +889,50 @@
         }
         
         const serviceData = {
-            facebook: { followers: { name: "Followers", price: 70, unit: 1000 }, likes: { name: "Page Likes", price: 60, unit: 1000 }, comments: { name: "Comments", price: 80, unit: 100 }, shares: { name: "Shares", price: 90, unit: 1000 } },
-            instagram: { followers: { name: "Followers", price: 90, unit: 1000 }, likes: { name: "Post Likes", price: 70, unit: 1000 }, comments: { name: "Comments", price: 100, unit: 100 }, views: { name: "Story Views", price: 50, unit: 1000 } },
-            youtube: { subscribers: { name: "Subscribers", price: 150, unit: 1000 }, views: { name: "Views", price: 40, unit: 1000 }, likes: { name: "Likes", price: 60, unit: 1000 }, comments: { name: "Comments", price: 120, unit: 100 } },
-            telegram: { members: { name: "Channel Members", price: 80, unit: 1000 }, participants: { name: "Group Participants", price: 70, unit: 1000 }, views: { name: "Post Views", price: 30, unit: 1000 } },
-            twitter: { followers: { name: "Followers", price: 110, unit: 1000 }, likes: { name: "Likes", price: 80, unit: 1000 }, retweets: { name: "Retweets", price: 90, unit: 1000 } },
-            tiktok: { followers: { name: "Followers", price: 120, unit: 1000 }, likes: { name: "Likes", price: 70, unit: 1000 }, views: { name: "Views", price: 30, unit: 1000 } }
+            facebook: {
+                view: { name: "View", price: 79.5, unit: 10000, min: 10000, max: 55000, icon: "fas fa-eye" },
+                like: { name: "Like", price: 99, unit: 10000, min: 10000, max: 55000, icon: "fas fa-thumbs-up" },
+                comment: { name: "Comment", price: 49, unit: 1000, min: 1000, max: 25000, icon: "fas fa-comment-alt" },
+                share: { name: "Share", price: 55, unit: 1000, min: 1000, max: 15000, icon: "fas fa-share-alt" },
+                status_view: { name: "Status View", price: 45, unit: 1000, min: 1000, max: 15000, icon: "fas fa-eye-slash" },
+                followers: { name: "Followers", price: 120, unit: 1000, min: 1000, max: 50000, icon: "fas fa-user-plus" }
+            },
+            instagram: {
+                view: { name: "View", price: 37.5, unit: 10000, min: 10000, max: 55000, icon: "fas fa-eye" },
+                like: { name: "Like", price: 49, unit: 10000, min: 10000, max: 55000, icon: "fas fa-heart" },
+                comment: { name: "Comment", price: 55, unit: 1000, min: 1000, max: 25000, icon: "fas fa-comment-dots" },
+                share: { name: "Share", price: 49, unit: 1000, min: 1000, max: 15000, icon: "fas fa-share-alt" },
+                status_view: { name: "Status View", price: 69, unit: 1000, min: 1000, max: 15000, icon: "fas fa-eye-slash" },
+                followers: { name: "Followers", price: 79, unit: 1000, min: 10000, max: 55000, icon: "fas fa-user-plus" }
+            },
+            youtube: {
+                subscribers: { name: "Subscriber", price: 150, unit: 1000, min: 1000, max: 10000, icon: "fas fa-user-plus" },
+                view: { name: "View", price: 99, unit: 5000, min: 5000, max: 50000, icon: "fas fa-eye" },
+                like: { name: "Like", price: 129, unit: 5000, min: 5000, max: 50000, icon: "fas fa-thumbs-up" },
+                share: { name: "Share", price: 55, unit: 1000, min: 1000, max: 35000, icon: "fas fa-share-alt" },
+                comment: { name: "Comment", price: 79, unit: 1000, min: 1000, max: 50000, icon: "fas fa-comment-alt" }
+            },
+            whatsapp: {
+                group_members: { name: "Group Members", price: 99, unit: 500, min: 500, max: 1000, icon: "fas fa-users" },
+                channel_members: { name: "Channel Members", price: 199, unit: 1000, min: 1000, max: 40000, icon: "fas fa-users-line" }
+            },
+            telegram: {
+                channel_members: { name: "Channel Members", price: 149, unit: 1000, min: 1000, max: 35000, icon: "fas fa-users-line" },
+                group_members: { name: "Group Members", price: 139, unit: 1000, min: 1000, max: 20000, icon: "fas fa-users" }
+            },
+            twitter: {
+                view: { name: "View", price: 37.5, unit: 10000, min: 10000, max: 55000, icon: "fas fa-eye" },
+                like: { name: "Like", price: 49, unit: 10000, min: 10000, max: 55000, icon: "fas fa-heart" },
+                comment: { name: "Comment", price: 55, unit: 1000, min: 1000, max: 25000, icon: "fas fa-comment-dots" },
+                share: { name: "Share", price: 49, unit: 1000, min: 1000, max: 15000, icon: "fas fa-share-alt" },
+                status_view: { name: "Status View", price: 69, unit: 1000, min: 1000, max: 15000, icon: "fas fa-eye-slash" },
+                followers: { name: "Followers", price: 149, unit: 1000, min: 10000, max: 55000, icon: "fas fa-user-plus" }
+            },
+            tiktok: {
+                followers: { name: "Followers", price: 120, unit: 1000, min: 1000, max: 50000, icon: "fas fa-user-plus" },
+                likes: { name: "Likes", price: 70, unit: 1000, min: 1000, max: 50000, icon: "fas fa-heart" },
+                views: { name: "Views", price: 30, unit: 1000, min: 1000, max: 50000, icon: "fas fa-eye" }
+            }
         };
 
         // DOM Elements
@@ -1250,10 +1246,11 @@
 
             for (const [key, value] of Object.entries(services)) {
                 const serviceItemLink = document.createElement('a');
-                serviceItemLink.href = '#'; serviceItemLink.setAttribute('data-value', key); serviceItemLink.textContent = value.name;
+                serviceItemLink.href = '#'; serviceItemLink.setAttribute('data-value', key); 
+                serviceItemLink.innerHTML = `<i class="${value.icon}"></i> ${value.name}`; // Add icon to service dropdown
                 serviceItemLink.addEventListener('click', function(e) {
                     e.preventDefault(); 
-                    if(selectedServiceDisplay) selectedServiceDisplay.textContent = value.name; 
+                    if(selectedServiceDisplay) selectedServiceDisplay.innerHTML = `<i class="${value.icon}"></i> ${value.name}`; // Update selected display with icon
                     if(serviceInput) serviceInput.value = key;
                     if(serviceDropdown) serviceDropdown.classList.remove('show'); 
                     updatePriceDisplay();
@@ -1261,7 +1258,7 @@
                 serviceDropdown.appendChild(serviceItemLink);
             }
             if (firstServiceKey && services[firstServiceKey]) { 
-                if(selectedServiceDisplay) selectedServiceDisplay.textContent = services[firstServiceKey].name; 
+                if(selectedServiceDisplay) selectedServiceDisplay.innerHTML = `<i class="${services[firstServiceKey].icon}"></i> ${services[firstServiceKey].name}`; 
                 if(serviceInput) serviceInput.value = firstServiceKey; 
             } else { 
                 if(selectedServiceDisplay) selectedServiceDisplay.innerHTML = "Select Service <i class=\"fas fa-caret-down\"></i>"; 
@@ -1272,18 +1269,25 @@
 
         // --- Quantity Adjustment Logic ---
         function adjustQuantity(amount) {
-            let currentQty = parseInt(quantityInput.value) || 1000;
+            let currentQty = parseInt(quantityInput.value) || 0; 
             const platform = platformInput.value; const service = serviceInput.value;
+            
+            let unit = 1000; // Default unit if no service selected
+            let minQty = 1000; // Default min quantity
+            let maxQty = 999999; // Default max quantity (large number)
+
             if (platform && service && serviceData[platform]?.[service]) {
-                const unit = serviceData[platform][service].unit || 100;
-                let newQty = currentQty + (amount * unit); 
-                newQty = Math.max(unit, newQty); 
-                quantityInput.value = newQty;
-            } else { 
-                let newQty = currentQty + (amount * 100); 
-                newQty = Math.max(100, newQty); 
-                quantityInput.value = newQty; 
+                const serviceInfo = serviceData[platform][service];
+                unit = serviceInfo.unit || 1000;
+                minQty = serviceInfo.min || unit; 
+                maxQty = serviceInfo.max || maxQty;
             }
+            
+            let newQty = currentQty + (amount * unit); 
+            newQty = Math.max(minQty, newQty); 
+            newQty = Math.min(maxQty, newQty); // Cap at max quantity
+
+            quantityInput.value = newQty; 
             updatePriceDisplay();
         }
 
@@ -1302,6 +1306,13 @@
 
             if (platform && service && serviceData[platform]?.[service] && quantity > 0) {
                 const serviceInfo = serviceData[platform][service];
+                // Validate quantity against service's min/max before calculation
+                if (quantity < serviceInfo.min || quantity > serviceInfo.max) {
+                    currentTotalAmount = 0;
+                    if(priceDisplay) priceDisplay.innerHTML = `<strong>Error: Quantity must be between ${serviceInfo.min} and ${serviceInfo.max}</strong>`;
+                    return;
+                }
+
                 currentTotalAmount = (quantity / serviceInfo.unit) * serviceInfo.price;
                 if(priceDisplay) priceDisplay.innerHTML = `${quantity} ${serviceInfo.name.toLowerCase()} = <strong>₹${currentTotalAmount.toFixed(2)}</strong>`;
             } else { 
@@ -1317,10 +1328,18 @@
             const profileUrlVal = document.getElementById('profileUrl').value.trim(); 
             const quantityVal = parseInt(quantityInput.value);
 
+            // Basic validation
             if (!platformVal || !serviceVal || !profileUrlVal || !(quantityVal > 0) || currentTotalAmount <= 0) {
-                alert('Please complete all fields, select a service, and ensure a valid quantity/price is shown.'); return;
+                alert('Please complete all fields, select a service, and ensure a valid quantity/price is shown.'); 
+                return;
             }
-            
+            // Quantity range validation based on serviceData
+            const serviceInfo = serviceData[platformVal]?.[serviceVal];
+            if (serviceInfo && (quantityVal < serviceInfo.min || quantityVal > serviceInfo.max)) {
+                alert(`Error: Quantity for ${serviceInfo.name} must be between ${serviceInfo.min} and ${serviceInfo.max}.`);
+                return;
+            }
+
             // Show payment method options
             if(paymentSection) paymentSection.style.display = 'block'; 
             if(confirmationSection) confirmationSection.style.display = 'none';
@@ -1434,7 +1453,9 @@
 
             const newBalance = currentBalance - orderAmount;
             setWalletBalance(newBalance);
-            addWalletTransaction('payment', orderAmount, `ORDER-${Date.now()}`, 'Completed', `ORDER-${Date.now()}`); // Add transaction to wallet history
+            const randomOrderIdSuffix = Math.floor(100000 + Math.random() * 900000);
+            const generatedOrderId = `ORDER-${new Date().getFullYear()}-${randomOrderIdSuffix}`;
+            addWalletTransaction('payment', orderAmount, `WALLET-${Date.now()}`, 'Completed', generatedOrderId); // Add transaction to wallet history
 
             const randomIdSuffix = Math.floor(100000 + Math.random() * 900000);
             const fullOrderId = `VIPSMMS-${new Date().getFullYear()}-${randomIdSuffix}`;
