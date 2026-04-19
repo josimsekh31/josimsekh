@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VIP Social Media Service - SMM Panel (Golden Edition)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <div class="hero">
+    <div class="hero-content">
+        <h1>Boost Your Social Media Presence</h1>
+        <p>Get real followers, likes, and comments for all major social platforms at the most competitive prices in the market.</p>
+        <a href="#order" class="btn btn-gold shine-effect">Order Now <i class="fas fa-angle-right"></i></a>
+    </div>
+    <style>
+        :root {
+            --primary-gold: #DAA520; /* Goldenrod - Main gold */
+            --dark-gold: #B8860B;   /* DarkGoldenrod - Deeper gold */
+            --light-gold: #FFD700;  /* Gold - Brighter accents, shine */
+            --accent-gold: #F0E68C; /* Khaki - Very light, complementary */
+            --text-on-gold: #ffffff; /* White text on dark gold backgrounds */
+            --text-on-gold-dark: #4A3B00; /* Dark brown/gold for text on light gold backgrounds */
+            --black: #1a1a1a; /* Standard black */
+            --white: #ffffff; /* Standard white */
+            --gray: #FFF8DC; /* Cornsilk - Light creamy background */
+            --success: #28a745; /* Green for success messages */
+            --shadow-color: rgba(184, 134, 11, 0.18); /* Soft shadow for gold elements */
+            --shadow-strong-color: rgba(184, 134, 11, 0.28); /* Stronger shadow */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gray);
+            color: var(--text-on-gold-dark);
+            overflow-x: hidden;
+            line-height: 1.65;
+            -webkit-text-size-adjust: 100%; /* Prevent font boosting on mobile */
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
+            color: var(--text-on-gold); padding: 15px 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 6px 15px var(--shadow-strong-color); 
+            position: sticky; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; 
+        }
+        header::before { /* Subtle pulse effect */
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0) 65%);
+            animation: pulseHeader 8s infinite linear;
+        }
+        @keyframes pulseHeader { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.02); } 100% { transform: rotate(360deg) scale(1); } }
+
+        .logo { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .logo span { font-size: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .logo i { color: var(--light-gold); font-size: 26px; animation: floatIcon 3s ease-in-out infinite; }
+        @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .nav-links { display: flex; gap: 18px; }
+        .nav-links a {
+            color: var(--text-on-gold); text-decoration: none; font-weight: 500; font-size: 15px;
+            transition: all 0.25s ease; padding: 8px 16px; border-radius: 50px; position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active { background-color: rgba(255, 255, 255, 0.15); transform: translateY(-1px); }
+        
+        .header-right-controls { display: flex; align-items: center; gap: 15px; }
+
+        /* Wallet Balance Display */
+        .wallet-balance-display {
+            background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+            color: var(--text-on-gold-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .wallet-balance-display .balance-text {
+            position: relative;
+            z-index: 2; /* Above shine effect */
+        }
+        .wallet-balance-display::after {
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(100deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 80%);
+            transform: skewX(-20deg); animation: walletShine 2.5s infinite linear;
+            z-index: 1;
+        }
+        @keyframes walletShine { 0% { left: -100%; } 30% { left: 150%; } 100% { left: 150%; } }
+
+
+        /* User Profile Dropdown */
+        .user-profile-area { position: relative; cursor: pointer; }
+        .user-profile-name { color: var(--white); font-weight: 600; padding: 5px 8px; border-radius: 5px; transition: background-color 0.25s; display: flex; align-items: center;}
+        .user-profile-name:hover { background-color: rgba(255,255,255,0.1); }
+        .user-profile-name .profile-abbreviation {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; line-height: 28px; text-align:center;
+            border-radius: 50%; background-color: var(--light-gold); color: var(--text-on-gold-dark);
+            font-size: 15px; font-weight: bold; margin-right: 6px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        .user-profile-name i.fa-caret-down { margin-left: 5px; font-size: 0.8em; }
+        #userDropdownMenu {
+            display: none; position: absolute; right: 0; top: calc(100% + 5px); /* Adjusted top for visual spacing */
+            background-color: var(--white); color: var(--text-on-gold-dark);
+            border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,0.18);
+            min-width: 220px; z-index: 1001; padding: 8px 0;
+            animation: fadeInMenu 0.2s ease-out;
+        }
+        @keyframes fadeInMenu { from { opacity:0; transform: translateY(-5px); } to { opacity:1; transform: translateY(0); } }
+        #userDropdownMenu.show { display: block; }
+        #userDropdownMenu .user-info { padding: 10px 15px; border-bottom: 1px solid var(--gray); margin-bottom: 4px;}
+        #userDropdownMenu .user-info p { margin: 2px 0; font-size: 13px; line-height: 1.3; }
+        #userDropdownMenu .user-info strong { color: var(--dark-gold); }
+        #userDropdownMenu a {
+            display: flex; align-items:center; padding: 8px 15px; text-decoration: none;
+            color: var(--text-on-gold-dark); font-size: 13.5px; transition: background-color 0.2s, color 0.2s;
+        }
+        #userDropdownMenu a:hover { background-color: var(--gray); color: var(--primary-gold); }
+        #userDropdownMenu a i { margin-right: 8px; width: 16px; text-align: center; color: var(--primary-gold); font-size: 0.9em;}
+
+
+/* ===== Enhanced Golden Hero Section ===== */
+.hero {
+    background: linear-gradient(145deg, #DAA520 0%, #B8860B 50%, #F0E68C 100%);
+    color: #FFF8DC;
+    padding: 100px 20px;
+    margin: 40px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 
+        0 5px 15px rgba(218, 165, 32, 0.4),
+        inset 0 0 50px rgba(255, 215, 0, 0.2);
+    z-index: 5;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(255, 215, 0, 0.4) 0%,
+        rgba(255, 215, 0, 0) 70%
+    );
+    animation: pulseGlow 6s infinite alternate;
+    z-index: -1;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 45%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 55%
+    );
+    transform: rotate(30deg);
+    animation: goldShine 4s infinite linear;
+    z-index: -1;
+}
+
+@keyframes pulseGlow {
+    0% { opacity: 0.6; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes goldShine {
+    0% { transform: rotate(30deg) translate(-30%, -30%); }
+    100% { transform: rotate(30deg) translate(30%, 30%); }
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    transform: translateZ(50px);
+}
+
+.hero h1 {
+    font-size: 3.2rem;
+    margin-bottom: 25px;
+    text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 10px rgba(255, 215, 0, 0.5);
+    letter-spacing: 1px;
+    font-weight: 700;
+    background: linear-gradient(to right, #FFF8DC, #FFFFFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+    0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+}
+
+.hero p {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    margin: 0 auto 40px;
+    max-width: 700px;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.hero .btn {
+    position: relative;
+    z-index: 3;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s ease;
+}
+
+.hero .btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 10px 25px rgba(218, 165, 32, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero {
+        padding: 70px 20px;
+        margin: 20px 0;
+    }
+    
+    .hero h1 {
+        font-size: 2.4rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+}
+
+        /* Golden Shine Effect */
+        .shine-effect { position: relative; overflow: hidden; }
+        .shine-effect::after {
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(100deg, rgba(255,223,186,0) 20%, rgba(255,215,0,0.5) 50%, rgba(255,223,186,0) 80%);
+            transform: skewX(-20deg); animation: goldenShineAnimation 2.5s infinite linear;
+        }
+        @keyframes goldenShineAnimation {
+            0% { left: -100%; } 30% { left: 150%; } 100% { left: 150%; }
+        }
+
+        .services, .order { padding: 50px 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 20px; }
+        .section-title { text-align: center; margin-bottom: 35px; }
+        .section-title h2 {
+            font-size: 34px; color: var(--dark-gold); position: relative;
+            display: inline-block; padding-bottom: 10px; font-weight: 700;
+        }
+        .section-title h2::after {
+            content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 4px; background: linear-gradient(to right, var(--light-gold), var(--primary-gold));
+            border-radius: 2px;
+        }
+        .section-title p { font-size: 16px; color: #505050; margin-top: 7px; }
+
+        .service-card {
+            background-color: var(--white); border-radius: 15px; padding: 25px;
+            box-shadow: 0 6px 18px var(--shadow-color);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            border: 1px solid rgba(218,165,32, 0.1); overflow: hidden;
+        }
+        .service-card:hover { transform: translateY(-7px); box-shadow: 0 10px 28px var(--shadow-strong-color); }
+        .service-card h3 { font-size: 20px; margin-bottom: 10px; color: var(--dark-gold); font-weight: 600; }
+        .service-card p { color: #484848; margin-bottom: 15px; line-height: 1.5; font-size: 14px;}
+        .service-icon { font-size: 38px; color: var(--primary-gold); margin-bottom: 15px; display: inline-block; transition: transform 0.25s ease; }
+        .service-card:hover .service-icon { transform: scale(1.07) rotate(-3deg); }
+
+        .order-form, .payment-section, .confirmation-section, .add-funds-modal-content {
+            background-color: var(--white); border-radius: 15px; padding: 25px;
+            box-shadow: 0 6px 18px var(--shadow-color); margin-bottom: 30px;
+        }
+        .payment-section, .confirmation-section, .add-funds-modal-content { display:none; animation: fadeInContent 0.35s ease-out; }
+        @keyframes fadeInContent { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; margin-bottom: 6px; font-weight: 600;
+            color: var(--dark-gold); font-size: 14.5px;
+        }
+        .form-control {
+            width: 100%; padding: 10px 12px; border: 1px solid #ccc;
+            border-radius: 7px; font-size: 14.5px; transition: all 0.2s ease;
+            background-color: #fdfdfd;
+        }
+        .form-control:focus {
+            border-color: var(--primary-gold); outline: none;
+            box-shadow: 0 0 0 3px rgba(218,165,32, 0.15); background-color: var(--white);
+        }
+
+        /* Dropdown Styles - Critical for functionality */
+        .dropdown { position: relative; display: block; width: 100%; }
+        .dropdown-btn {
+            width: 100%; padding: 10px 12px; background-color: var(--white);
+            border: 1px solid #ccc; border-radius: 7px; text-align: left;
+            font-size: 14.5px; cursor: pointer; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .dropdown-btn:focus { border-color: var(--primary-gold); outline: none; box-shadow: 0 0 0 3px rgba(218,165,32, 0.15); }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--white);
+            width: 100%; box-shadow: 0 7px 18px rgba(0,0,0,0.1); z-index: 100;
+            border-radius: 0 0 7px 7px; overflow: hidden; max-height: 240px;
+            overflow-y: auto; border: 1px solid #ddd; border-top: none;
+        }
+        .dropdown-content.show { display: block; } /* This class is toggled by JS */
+        .dropdown-content a {
+            color: var(--text-on-gold-dark); padding: 10px 12px; text-decoration: none;
+            display: flex; align-items: center; transition: all 0.15s ease;
+        }
+        .dropdown-content a:hover { background-color: var(--gray); color: var(--primary-gold); }
+        .social-icon { width: 16px; height: 16px; margin-right: 7px; vertical-align: middle; }
+
+        .quantity-selector {
+            display: flex; align-items: center; border: 1px solid #ccc;
+            border-radius: 7px; overflow: hidden; width: fit-content; margin: 0 auto;
+        }
+        .quantity-btn {
+            background-color: var(--gray); border: none; padding: 10px 12px;
+            font-size: 14.5px; cursor: pointer; transition: all 0.2s ease;
+            color: var(--dark-gold); min-width: 40px; /* Ensure buttons have consistent width */
+        }
+        .quantity-btn:hover { background-color: var(--accent-gold); color: var(--text-on-gold-dark); }
+        .quantity-input { 
+            width: 80px; text-align: center; padding: 10px; border: none;
+            font-size: 14.5px; background-color: var(--white); color: var(--dark-gold);
+            border-left: 1px solid #ccc; border-right: 1px solid #ccc;
+            -moz-appearance: textfield; /* For Firefox */
+        }
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button { /* For Chrome, Safari, Edge, Opera */
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .quantity-input:focus { outline: none; }
+
+        .price-display { color: var(--dark-gold); border: 1px solid var(--light-gold); box-shadow: inset 0 0 7px rgba(218,165,32, 0.1); padding: 12px; border-radius: 7px; margin-top: 16px; text-align: center; font-size: 16px; font-weight: 600; }
+        .payment-amount { color: var(--dark-gold); font-size: 20px; font-weight: 700; text-align: center; margin: 10px 0; }
+        .qr-code { text-align: center; margin: 15px 0;}
+        .qr-code img { border: 1.5px solid var(--light-gold); max-width: 180px; padding:7px; border-radius: 8px; display: inline-block; /* Ensure it stays inline-block for centering */ }
+        .qr-code-text { font-size: 14px; color: #666; margin-top: 5px; }
+        
+        .trust-badges { display: flex; justify-content: center; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+        .trust-badge { display: flex; align-items: center; background-color: var(--gray); padding: 6px 12px; border-radius: 50px; font-size: 13px; color: #505050; }
+        .trust-badge i { margin-right: 6px; color: var(--primary-gold); }
+        
+        .payment-logos { display: flex; justify-content: center; gap: 15px; margin: 15px 0; align-items: center;}
+        .payment-logo { height: 28px; width: auto; max-width: 70px; object-fit: contain; }
+        .payment-logo.upi-logo { height: 30px; }
+
+
+        .verification-badge { display: inline-flex; align-items: center; background-color: var(--accent-gold); color: var(--text-on-gold-dark); padding: 6px 12px; border-radius: 50px; font-size: 13px; margin-bottom: 15px; }
+        .verification-badge i { margin-right: 6px; }
+        .success-message { font-size: 17px; margin: 15px 0; color: var(--success); }
+        .wait-time { color: #B8860B; border: 1px solid var(--accent-gold); background-color: #fff8e1; padding: 12px; border-radius: 8px; font-size: 14px; }
+
+        #paymentConfirmedTick {
+            font-size: 60px; color: var(--success); margin: 12px auto;
+            display: none; animation: scaleUpTick 0.35s ease-out forwards; text-align: center;
+        }
+        @keyframes scaleUpTick { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        footer { background: linear-gradient(135deg, var(--dark-gold) 30%, var(--primary-gold)); color: var(--text-on-gold); padding: 40px 0 15px; }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-bottom: 30px; }
+        .footer-column { flex: 1; min-width: 200px; }
+        .footer-column h3 { font-size: 18px; margin-bottom: 15px; position: relative; padding-bottom: 8px; color: var(--light-gold); }
+        .footer-column h3::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 2.5px; background-color: var(--accent-gold); }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 8px; }
+        .footer-column ul li a { color: rgba(255,255,255,0.85); text-decoration: none; transition: all 0.25s ease; font-size: 14px; }
+        .footer-column ul li a:hover { color: var(--white); padding-left: 6px; }
+        .social-links { display: flex; gap: 15px; margin-top: 15px; }
+        .social-links a {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; background-color: rgba(255,255,255,0.08);
+            border-radius: 50%; color: var(--white); font-size: 17px;
+            transition: all 0.25s ease;
+        }
+        .social-links a:hover { background-color: var(--light-gold); color: var(--text-on-gold-dark); transform: translateY(-3px) scale(1.08); }
+        .copyright-section { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 14px; }
+        .copyright-section .main-copyright { color: rgba(255,255,255,0.8); }
+        .copyright-section .main-copyright a { color: var(--accent-gold); text-decoration: none; font-weight: 500; }
+        .copyright-section .main-copyright a:hover { text-decoration: underline; }
+        .made-by { color: rgba(255,255,255,0.7); margin-top: 6px; font-size: 13px; }
+
+        /* Modal Styles */
+        .modal {
+            display: none; position: fixed; z-index: 1050;
+            left: 0; top: 0; width: 100%; height: 100%;
+            overflow-y: auto; background-color: rgba(0,0,0,0.6);
+            animation: fadeInModalBg 0.3s ease-out;
+            align-items: center; /* For vertical centering */
+            justify-content: center; /* For horizontal centering */
+        }
+        .modal-content {
+            background-color: var(--white);
+            padding: 20px 25px;
+            border: 1px solid var(--light-gold); border-radius: 10px;
+            width: 90%; max-width: 450px; text-align: left;
+            box-shadow: 0 8px 25px var(--shadow-strong-color); position: relative;
+            transform: scale(0.95); opacity: 0;
+            animation: zoomInModalContent 0.35s 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes fadeInModalBg { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomInModalContent { from { transform: scale(0.95) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+        .modal-content h2 { color: var(--dark-gold); margin-bottom: 18px; text-align: center; font-size: 20px; }
+        .modal .form-group { margin-bottom: 12px; }
+        .modal .form-group label { font-size: 14px; margin-bottom: 5px; }
+        .modal .form-control { padding: 9px 12px; border-radius: 6px; font-size: 14px; }
+        .modal .btn { width: 100%; margin-top: 10px; font-size: 15px; padding: 9px; }
+        .close-modal-btn {
+            position: absolute; top: 10px; right: 12px; color: #888;
+            font-size: 24px; font-weight: bold; cursor: pointer; transition: color 0.25s ease;
+            background: none; border: none; padding: 5px; line-height: 1;
+        }
+        .close-modal-btn:hover { color: var(--dark-gold); }
+        
+        #orderHistoryModal .modal-content, #walletHistoryModal .modal-content { max-width: 600px; }
+        #orderHistoryList, #walletHistoryList { list-style: none; padding: 0; max-height: 350px; overflow-y: auto; }
+        #orderHistoryList li, #walletHistoryList li {
+            background-color: var(--gray); padding: 10px; border-radius: 5px;
+            margin-bottom: 8px; border: 1px solid var(--light-gold); font-size: 12.5px;
+        }
+        #orderHistoryList li strong, #walletHistoryList li strong { color: var(--primary-gold); }
+        #orderHistoryList li p, #walletHistoryList li p { margin: 1.5px 0; }
+        
+        #developerPopupModal .modal-content { max-width: 500px; }
+
+        /* Payment Option Section */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        .payment-option-btn {
+            background-color: var(--gray);
+            border: 1px solid var(--light-gold);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark-gold);
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .payment-option-btn:hover {
+            background-color: var(--accent-gold);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .payment-option-btn i {
+            font-size: 1.2em;
+            color: var(--primary-gold);
+        }
+
+        /* FAB Support Button */
+        #fabSupportButton {
+            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--light-gold), var(--primary-gold));
+            color: var(--text-on-gold-dark); border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 24px;
+            box-shadow: 0 3px 10px var(--shadow-strong-color); cursor: pointer;
+            z-index: 999; transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: fabPulse 2s infinite;
+        }
+        #fabSupportButton:hover { transform: scale(1.07); box-shadow: 0 6px 16px var(--shadow-strong-color); animation-play-state: paused; }
+        @keyframes fabPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            header { padding: 12px 0; }
+            .logo { font-size: 20px;} .logo i {font-size: 24px;} .logo span {font-size: 18px;}
+            .hero h1 { font-size: 32px; } .hero p { font-size: 15px; }
+            .section-title h2 { font-size: 26px; }
+            .footer-content { flex-direction: column; gap: 18px; }
+            .modal-content { margin: 10% auto; width: 90%; padding: 15px 20px; }
+            .modal-content h2 { font-size: 18px; } .modal-content p { font-size: 14px; }
+            .quantity-selector { width: auto; } .quantity-input { width: 70px; }
+            .header-right-controls { gap: 10px; }
+            .wallet-balance-display { padding: 5px 10px; font-size: 13px; }
+            .user-profile-area { margin-left: auto; padding-right: 10px; }
+            #userDropdownMenu {min-width: 180px;}
+            .btn { padding: 11px 25px; font-size: 14px;}
+            .service-card { padding: 20px; }
+            .service-card h3 {font-size: 19px;}
+            .service-card p {font-size: 13.5px;}
+            .price-display {font-size: 15px;}
+            .payment-amount {font-size: 19px;}
+            .payment-logos img { height: 26px; }
+            .payment-option-btn { font-size: 15px; padding: 10px 15px;}
+            #fabSupportButton { width: 45px; height: 45px; font-size: 22px; bottom: 15px; right: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="paymentSuccessSound" src="https://cdn.glitch.global/62e5ac83-c5f3-46d8-a264-ea89b46e4952/phonepesoundd.mp3?v=1748718806597" preload="auto"></audio>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal('loginModal')">&times;</button>
+            <h2>Welcome! Please Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginName">Your Name</label>
+                    <input type="text" id="loginName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginMobile">Mobile Number</label>
+                    <input type="tel" id="loginMobile" class="form-control" required>
+                </div>
+                <button type="submit" class="btn shine-effect">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div id="supportModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal('supportModal')">&times;</button>
+            <h2>Need Assistance?</h2>
+            <p>Let us know your issue or query. We'll get back to you soon.</p>
+            <form id="supportForm">
+                <div class="form-group"><label for="supportName">Your Name</label><input type="text" id="supportName" class="form-control" required></div>
+                <div class="form-group"><label for="supportWhatsapp">WhatsApp Number</label><input type="tel" id="supportWhatsapp" class="form-control" required></div>
+                <div class="form-group"><label for="supportIssue">Your Issue/Query</label><textarea id="supportIssue" class="form-control" rows="3" required></textarea></div>
+                <button type="submit" class="btn shine-effect">Send Report</button>
+            </form>
+            <p id="supportStatus" style="text-align:center; margin-top:10px; color: var(--success); font-weight:500;"></p>
+        </div>
+    </div>
+    
+    <!-- Order History Modal -->
+    <div id="orderHistoryModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal('orderHistoryModal')">&times;</button>
+            <h2>Your Order History</h2>
+            <ul id="orderHistoryList"><p style="text-align:center;padding:15px;">No orders found yet.</p></ul>
+        </div>
+    </div>
+
+    <!-- Wallet History Modal -->
+    <div id="walletHistoryModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal('walletHistoryModal')">&times;</button>
+            <h2>Your Wallet History</h2>
+            <ul id="walletHistoryList"><p style="text-align:center;padding:15px;">No transactions found yet.</p></ul>
+        </div>
+    </div>
+
+    <!-- Add Funds Modal -->
+    <div id="addFundsModal" class="modal">
+        <div class="modal-content add-funds-modal-content">
+            <button class="close-modal-btn" onclick="closeModal('addFundsModal')">&times;</button>
+            <h2>Add Funds to Your Wallet</h2>
+            <p>Enter the amount you wish to deposit (Min ₹200, Max ₹5,000).</p>
+            <form id="addFundsForm">
+                <div class="form-group">
+                    <label for="depositAmount">Deposit Amount (₹)</label>
+                    <input type="number" id="depositAmount" class="form-control" min="200" max="5000" value="200" required>
+                </div>
+                <button type="button" id="generateDepositQR" class="btn shine-effect" style="width: 100%; margin-bottom: 15px;">Generate Payment QR</button>
+                
+                <div id="depositPaymentArea" style="display: none; text-align: center;">
+                    <div class="payment-amount" id="depositAmountDisplay">₹0.00</div>
+                    <div class="qr-code">
+                        <img src="" alt="Deposit QR Code" id="depositQrCode">
+                        <p class="qr-code-text">All UPI Payments Accepted Here</p>
+                    </div>
+                    
+                    <a id="payViaUpiDepositBtn" class="btn btn-gold shine-effect" style="width: 100%; margin-top: 15px;" target="_blank">Pay Via UPI App <i class="fas fa-external-link-alt"></i></a>
+
+                    <div class="payment-logos" style="margin-top: 15px;">
+                        <img src="https://cdn.glitch.global/62e5ac83-c5f3-46d8-a264-ea89b46e4952/IMG-20250307-150606.jpg?v=1748718535830" class="payment-logo" alt="Google Pay">
+                            
+                    </div>
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="depositTransactionId">Transaction ID (UTR)</label>
+                        <input type="text" id="depositTransactionId" class="form-control" placeholder="Enter your 12-digit UPI Transaction ID" required maxlength="12" pattern="\d{12}">
+                    </div>
+                    <button type="submit" class="btn btn-gold shine-effect" style="width: 100%;">Confirm Deposit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Developer Ad Modal -->
+    <div id="developerPopupModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal('developerPopupModal')">&times;</button>
+            <h2>Want a Panel Like This?</h2>
+            <p style="text-align: center;">We design and develop professional SMM Panels and other web solutions.</p>
+            <p style="font-weight: bold; margin: 15px 0; text-align: center;">
+                আপনার নিজের এস এম এম প্যানেল বা অন্য কোনো ওয়েবসাইট/অ্যাপ ডিজাইন করতে চান?<br>
+                Contact us to create your own SMM panel or design any website/app!
+            </p>
+            <a href="https://wa.me/919735333749?text=Sir%2C%20I%20want%20to%20create%20a%20website%20for%20a%20social%20media%20service%20SMM%20panel%20like%20this%21" target="_blank" class="btn btn-gold shine-effect">
+                Create Your Own Panel <i class="fas fa-handshake"></i>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <span>VIP Social Media Service</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#services" class="active">Services</a>
+                    <a href="#order">Order</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="header-right-controls">
+                    <div class="wallet-balance-display shine-effect">
+                        <span class="balance-text">₹<span id="walletBalance">0.00</span></span>
+                    </div>
+                    <div class="user-profile-area" id="userProfileArea" style="display:none;">
+                        <span id="userProfileNameDisplay" class="user-profile-name">
+                            <span class="profile-abbreviation" id="profileAbbreviation">U</span> <i class="fas fa-caret-down"></i>
+                        </span>
+                        <div id="userDropdownMenu">
+                            <div class="user-info">
+                                <p><strong>Name:</strong> <span id="menuUserName"></span></p>
+                                <p><strong>Email:</strong> <span id="menuUserEmail"></span></p>
+                                <p><strong>Mobile:</strong> <span id="menuUserMobile"></span></p>
+                            </div>
+                            <a href="#" id="viewOrderHistoryBtn"><i class="fas fa-history"></i> Order History</a>
+                            <a href="#" id="addFundsBtn"><i class="fas fa-wallet"></i> Add Funds</a>
+                            <a href="#" id="viewWalletHistoryBtn"><i class="fas fa-money-bill-transfer"></i> Wallet History</a>
+                            <a href="#" onclick="openModal('supportModal'); return false;"><i class="fas fa-headset"></i> Support</a>
+                            <a href="https://wa.me/919735333749?text=Sir%2C%20I%20want%20to%20create%20a%20website%20for%20a%20social%20media%20service%20SMM%20panel%20like%20this%21" target="_blank"><i class="fas fa-palette"></i> Get Your Own Panel</a>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="hero">
+                <h1>Boost Your Social Media Presence</h1>
+                <p>Get real followers, likes, and comments for all major social platforms at the most competitive prices in the market.</p>
+                <a href="#order" class="btn btn-gold shine-effect">Order Now <i class="fas fa-angle-right"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Services</h2>
+                <p>We provide high-quality social media services for all major platforms</p>
+            </div>
+            <div class="grid">
+                 <div class="service-card shine-effect">
+                    <div class="service-icon"><i class="fab fa-facebook-f"></i></div>
+                    <h3>Facebook Services</h3>
+                    <p>Get real Facebook likes, followers, and comments to boost your page's credibility and visibility.</p>
+                    <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
+                </div>
+                <div class="service-card shine-effect">
+                    <div class="service-icon"><i class="fab fa-instagram"></i></div>
+                    <h3>Instagram Services</h3>
+                    <p>Increase your Instagram followers, likes, and comments with our high-quality services.</p>
+                    <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
+                </div>
+                <div class="service-card shine-effect">
+                    <div class="service-icon"><i class="fab fa-youtube"></i></div>
+                    <h3>YouTube Services</h3>
+                    <p>Boost your YouTube channel with real views, likes, comments, and subscribers.</p>
+                    <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
+                </div>
+                <div class="service-card shine-effect">
+                    <div class="service-icon"><i class="fab fa-telegram-plane"></i></div>
+                    <h3>Telegram Services</h3>
+                    <p>Increase your Telegram channel members and group participants with our services.</p>
+                    <a href="#order" class="btn">Order Now <i class="fas fa-angle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="order" id="order">
+        <div class="container">
+            <div class="section-title">
+                <h2>Place Your Order</h2>
+                <p>Fill out the form below to place your order</p>
+            </div>
+            
+            <div class="order-form">
+                <form id="smmOrderForm">
+                    <div class="form-group">
+                        <label for="platform">Select Platform</label>
+                        <div class="dropdown">
+                            <button class="dropdown-btn" type="button" id="platformBtn">
+                                <span id="selectedPlatform">Select a platform</span>
+                                <i class="fas fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-content" id="platformDropdown">
+                                <a href="#" data-value="facebook"><img src="https://img.icons8.com/color/48/facebook-new.png" class="social-icon" alt="Facebook"/> Facebook</a>
+                                <a href="#" data-value="instagram"><img src="https://img.icons8.com/fluency/48/instagram-new.png" class="social-icon" alt="Instagram"/> Instagram</a>
+                                <a href="#" data-value="youtube"><img src="https://img.icons8.com/color/48/youtube-play.png" class="social-icon" alt="YouTube"/> YouTube</a>
+                                <a href="#" data-value="telegram"><img src="https://img.icons8.com/color/48/telegram-app.png" class="social-icon" alt="Telegram"/> Telegram</a>
+                                <a href="#" data-value="twitter"><img src="https://img.icons8.com/color/48/twitterx.png" class="social-icon" alt="X (Twitter)"/> X (Twitter)</a>
+                                <a href="#" data-value="tiktok"><img src="https://img.icons8.com/color/48/tiktok.png" class="social-icon" alt="TikTok"/> TikTok</a>
+                            </div>
+                            <input type="hidden" id="platform" name="platform" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="service">Select Service</label>
+                        <div class="dropdown">
+                            <button class="dropdown-btn" type="button" id="serviceBtn" disabled>
+                                <span id="selectedService">First select a platform</span>
+                                <i class="fas fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-content" id="serviceDropdown">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                            <input type="hidden" id="service" name="service" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profileUrl">Photo, Video, Profile URL/Username</label>
+                        <input type="text" id="profileUrl" name="profileUrl" class="form-control" placeholder="Enter target URL or username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <div class="quantity-selector">
+                            <button type="button" class="quantity-btn" id="decreaseQty"><i class="fas fa-minus"></i></button>
+                            <input type="number" id="quantity" name="quantity" class="quantity-input" value="1000" min="1">
+                            <button type="button" class="quantity-btn" id="increaseQty"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="price-display shine-effect" id="priceDisplay">
+                        Select service and quantity for price
+                    </div>
+                    
+                    <button type="button" id="proceedToPay" class="btn btn-gold shine-effect" style="width: 100%; margin-top:20px;">Proceed to Secure Payment <i class="fas fa-shield-alt"></i></button>
+                </form>
+            </div>
+            
+            <div class="payment-section" id="paymentSection">
+                <h3 style="color: var(--dark-gold); text-align: center; font-size:22px;">Choose Payment Method</h3>
+                <div class="payment-options">
+                    <button class="payment-option-btn" id="payWithUpiBtn"><i class="fas fa-qrcode"></i> Pay with UPI</button>
+                    <button class="payment-option-btn" id="payWithWalletBtn"><i class="fas fa-wallet"></i> Pay with Wallet</button>
+                </div>
+
+                <div id="upiPaymentDetails" style="display: none;">
+                    <p style="text-align: center; font-size:16px;">Scan the QR or use the UPI ID to send the exact amount shown below.</p>
+                    
+                    <div class="payment-amount" id="paymentAmount">₹0.00</div>
+                    
+                    <div class="qr-code">
+                        <img src="" alt="UPI QR Code" id="qrCode">
+                        <p class="qr-code-text">All UPI Payments Accepted Here</p>
+                    </div>
+                    
+                    <p style="text-align: center; font-size: 17px;">UPI ID: <strong style="color: var(--primary-gold); user-select: all;">josimsekh32@ybl</strong> Copy <p/>
+                    <a id="payViaUpiAppBtn" class="btn btn-gold shine-effect" style="width: 100%; margin-top: 15px;" target="_blank">Pay Via UPI App <i class="fas fa-external-link-alt"></i></a>
+
+                    <div class="trust-badges" style="gap: 10px; flex-wrap: wrap; justify-content: center; margin: 15px 0;">
+                        <div class="trust-badge" style="padding: 6px 12px; font-size: 13px;"><i class="fas fa-shield-alt"></i> 100% Secure Transactions</div>
+                        <div class="trust-badge" style="padding: 6px 12px; font-size: 13px;"><i class="fas fa-lock"></i> Trusted & Verified</div>
+                    <div class="payment-logos" style="gap: 15px; margin: 15px 0;">
+                        <img src="https://cdn.glitch.global/62e5ac83-c5f3-46d8-a264-ea89b46e4952/IMG-20250307-150606.jpg?v=1748718535830" class="payment-logo" alt="Google Pay">
+                    <div class="form-group" style="margin-top: 25px;">
+                        <label for="transactionId">12-Digit UPI Transaction ID (UTR)</label>
+                        <input type="text" id="transactionId" name="transactionId" class="form-control" placeholder="Enter the UTR from your payment app" required maxlength="12" pattern="\d{12}">
+                    </div>
+                    
+                    <button type="button" id="confirmPayment" class="btn btn-gold shine-effect" style="width: 100%;">Confirm Payment <i class="fas fa-check-circle"></i></button>
+                </div>
+                
+                <div id="walletPaymentDetails" style="display: none;">
+                    <p style="text-align: center; font-size:16px;">Current Wallet Balance: <strong>INR ₹<span id="walletBalanceForPayment">0.00</span></strong></p>
+                    <p style="text-align: center; font-size:16px;">Order Amount: <strong>INR ₹<span id="orderAmountForWallet">0.00</span></strong></p>
+                    <p id="walletMessage" style="text-align: center; font-size:15px; margin: 10px 0; font-weight: 500;"></p>
+                    <button type="button" id="confirmWalletPayment" class="btn btn-gold shine-effect" style="width: 100%; margin-top:10px;">Pay from Wallet</button>
+                    <button type="button" id="addFundsForWallet" class="btn btn-gold" style="width: 100%; margin-top:10px; display:none;">Add Funds to Wallet</button>
+                </div>
+
+            </div>
+            
+            <div class="confirmation-section" id="confirmationSection">
+                <div id="paymentConfirmedTick"><i class="fas fa-check-circle"></i></div>
+                <h3 style="color: var(--dark-gold); text-align: center; font-size:22px;">Order Confirmed & Processing!</h3>
+                <p style="font-size:16px;">Your VIP order has been successfully placed and is now being processed with utmost priority.</p>
+                
+                <div class="success-message" style="font-size:18px;">
+                    <i class="fas fa-award"></i> Order ID: <strong id="orderId" style="color: var(--primary-gold);">VIPSMMS-2025-XXXXXX</strong>
+                </div>
+                
+                <div class="wait-time">
+                    <i class="fas fa-hourglass-half"></i> Please allow up to 24 hours for your order to be fully completed. You will be notified.
+                </div>
+                
+                <p style="margin-top: 20px; font-size:15px;">Thank you for choosing VIP Social Media Service!</p>
+                
+                <a href="#order" class="btn btn-gold" style="margin-top: 20px;" id="placeAnotherOrderBtn">Place Another VIP Order <i class="fas fa-redo-alt"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                 <div class="footer-column">
+                    <h3>VIP Social Media Service</h3>
+                    <p>Your elite partner for unparalleled social media growth. We deliver premium, reliable services to significantly enhance your online footprint.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#services">Our Services</a></li>
+                        <li><a href="#order">Place Order</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support Center</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="https://wa.me/919735333749?text=Hello%20VIP%20SMM%20Support%2C%20I%20need%20assistance." target="_blank">WhatsApp Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@vipsmm.com</li>
+                        <li><i class="fas fa-phone-square-alt"></i> +91 XXXXX XXXXX</li>
+                        <li><i class="fas fa-user-clock"></i> 24/7 Customer Support</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright-section">
+                <div class="main-copyright">
+                     <a href="https://wa.me/919735333749?text=Sir%2C%20I%20want%20to%20create%20a%20website%20for%20a%20social%20media%20service%20SMM%20panel%20like%20this%21" target="_blank">
+                        © <span id="currentYear"></span> VIP Social Media Service. All Rights Reserved. (Josim SV-〄Dʌʀĸ-Ϳ Hʌcĸɩŋʛ²⁴⁶﷽)
+                    </a>
+                </div>
+                <div class="made-by">Exclusively Crafted By - Josim Sv</div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="fabSupportButton" onclick="openModal('supportModal')"><i class="fas fa-headset"></i></div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = "7604471756:AAHnH5N4JOIdA-Nx94kkQYL7PigPb74INfA"; 
+        const TELEGRAM_CHAT_ID = "6550943426";
+        const paymentSuccessSound = document.getElementById('paymentSuccessSound');
+
+        async function sendToTelegram(message) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) { console.warn("Telegram Bot not configured."); return; }
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const params = new URLSearchParams({ chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: 'HTML' });
+            try {
+                const response = await fetch(`${url}?${params.toString()}`);
+                const data = await response.json();
+                if (!data.ok) console.error("Telegram API Error:", data.description);
+            } catch (error) { console.error("Failed to send to Telegram:", error); }
+        }
+        
+        const serviceData = {
+            facebook: { followers: { name: "Followers", price: 70, unit: 1000 }, likes: { name: "Page Likes", price: 60, unit: 1000 }, comments: { name: "Comments", price: 80, unit: 100 }, shares: { name: "Shares", price: 90, unit: 1000 } },
+            instagram: { followers: { name: "Followers", price: 90, unit: 1000 }, likes: { name: "Post Likes", price: 70, unit: 1000 }, comments: { name: "Comments", price: 100, unit: 100 }, views: { name: "Story Views", price: 50, unit: 1000 } },
+            youtube: { subscribers: { name: "Subscribers", price: 150, unit: 1000 }, views: { name: "Views", price: 40, unit: 1000 }, likes: { name: "Likes", price: 60, unit: 1000 }, comments: { name: "Comments", price: 120, unit: 100 } },
+            telegram: { members: { name: "Channel Members", price: 80, unit: 1000 }, participants: { name: "Group Participants", price: 70, unit: 1000 }, views: { name: "Post Views", price: 30, unit: 1000 } },
+            twitter: { followers: { name: "Followers", price: 110, unit: 1000 }, likes: { name: "Likes", price: 80, unit: 1000 }, retweets: { name: "Retweets", price: 90, unit: 1000 } },
+            tiktok: { followers: { name: "Followers", price: 120, unit: 1000 }, likes: { name: "Likes", price: 70, unit: 1000 }, views: { name: "Views", price: 30, unit: 1000 } }
+        };
+
+        // DOM Elements
+        const platformBtn = document.getElementById('platformBtn');
+        const selectedPlatformDisplay = document.getElementById('selectedPlatform');
+        const platformDropdown = document.getElementById('platformDropdown');
+        const platformInput = document.getElementById('platform');
+        const serviceBtn = document.getElementById('serviceBtn');
+        const selectedServiceDisplay = document.getElementById('selectedService');
+        const serviceDropdown = document.getElementById('serviceDropdown');
+        const serviceInput = document.getElementById('service');
+        const decreaseQtyBtn = document.getElementById('decreaseQty');
+        const increaseQtyBtn = document.getElementById('increaseQty');
+        const quantityInput = document.getElementById('quantity');
+        const priceDisplay = document.getElementById('priceDisplay');
+        const proceedToPayBtn = document.getElementById('proceedToPay');
+        const paymentSection = document.getElementById('paymentSection');
+        const paymentAmountDisplay = document.getElementById('paymentAmount');
+        const qrCodeImg = document.getElementById('qrCode');
+        const transactionIdInput = document.getElementById('transactionId');
+        const confirmPaymentBtn = document.getElementById('confirmPayment');
+        const confirmationSection = document.getElementById('confirmationSection');
+        const orderIdDisplay = document.getElementById('orderId');
+        const smmOrderForm = document.getElementById('smmOrderForm');
+        const placeAnotherOrderBtn = document.getElementById('placeAnotherOrderBtn');
+        const paymentConfirmedTick = document.getElementById('paymentConfirmedTick');
+
+        const loginModal = document.getElementById('loginModal');
+        const loginForm = document.getElementById('loginForm');
+        const userProfileArea = document.getElementById('userProfileArea');
+        const userProfileNameDisplay = document.getElementById('userProfileNameDisplay');
+        const profileAbbreviation = document.getElementById('profileAbbreviation');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
+        const menuUserName = document.getElementById('menuUserName');
+        const menuUserEmail = document.getElementById('menuUserEmail');
+        const menuUserMobile = document.getElementById('menuUserMobile');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const viewOrderHistoryBtn = document.getElementById('viewOrderHistoryBtn');
+        
+        const supportModal = document.getElementById('supportModal');
+        const supportForm = document.getElementById('supportForm');
+        const supportStatus = document.getElementById('supportStatus');
+        const orderHistoryModal = document.getElementById('orderHistoryModal');
+        const orderHistoryList = document.getElementById('orderHistoryList');
+        const developerPopupModal = document.getElementById('developerPopupModal');
+
+        const walletBalanceDisplay = document.getElementById('walletBalance');
+        const addFundsBtn = document.getElementById('addFundsBtn');
+        const walletHistoryModal = document.getElementById('walletHistoryModal');
+        const walletHistoryList = document.getElementById('walletHistoryList');
+        const viewWalletHistoryBtn = document.getElementById('viewWalletHistoryBtn');
+        const addFundsModal = document.getElementById('addFundsModal');
+        const addFundsForm = document.getElementById('addFundsForm');
+        const depositAmountInput = document.getElementById('depositAmount');
+        const generateDepositQRBtn = document.getElementById('generateDepositQR');
+        const depositPaymentArea = document.getElementById('depositPaymentArea');
+        const depositAmountDisplay = document.getElementById('depositAmountDisplay');
+        const depositQrCodeImg = document.getElementById('depositQrCode');
+        const depositTransactionIdInput = document.getElementById('depositTransactionId');
+        const payViaUpiDepositBtn = document.getElementById('payViaUpiDepositBtn');
+
+        const payWithUpiBtn = document.getElementById('payWithUpiBtn');
+        const payWithWalletBtn = document.getElementById('payWithWalletBtn');
+        const upiPaymentDetails = document.getElementById('upiPaymentDetails');
+        const walletPaymentDetails = document.getElementById('walletPaymentDetails');
+        const walletBalanceForPayment = document.getElementById('walletBalanceForPayment');
+        const orderAmountForWallet = document.getElementById('orderAmountForWallet');
+        const walletMessage = document.getElementById('walletMessage');
+        const confirmWalletPaymentBtn = document.getElementById('confirmWalletPayment');
+        const addFundsForWalletBtn = document.getElementById('addFundsForWallet');
+        const payViaUpiAppBtn = document.getElementById('payViaUpiAppBtn');
+
+
+        let currentTotalAmount = 0;
+        let currentUser = null;
+        let developerPopupIntervalId = null;
+
+
+        // --- General Modal Functions ---
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex'; 
+                setTimeout(() => modal.style.opacity = 1, 10);
+            }
+            if (modalId === 'orderHistoryModal') loadOrderHistory();
+            if (modalId === 'walletHistoryModal') loadWalletHistory();
+            if (modalId === 'addFundsModal') {
+                if(addFundsForm) addFundsForm.reset();
+                if(depositPaymentArea) depositPaymentArea.style.display = 'none';
+                if(depositAmountInput) depositAmountInput.value = 200; // Reset to min
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.opacity = 0; 
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
+            if (modalId === 'supportModal' && supportForm) { 
+                if(supportStatus) supportStatus.textContent = ''; 
+                supportForm.reset(); 
+            }
+            if (modalId === 'developerPopupModal') startDeveloperPopupInterval();
+        }
+
+        window.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => { if (event.target === modal) closeModal(modal.id); });
+        });
+
+        // --- Developer Ad Pop-up Logic ---
+        function showDeveloperPopup() {
+            if (developerPopupModal && developerPopupModal.style.display !== 'flex') {
+                openModal('developerPopupModal');
+            }
+        }
+        function startDeveloperPopupInterval() {
+            if (developerPopupIntervalId) clearInterval(developerPopupIntervalId);
+            developerPopupIntervalId = setInterval(showDeveloperPopup, 30000); // 30 seconds
+        }
+
+        // --- Wallet Logic ---
+        function getWalletBalance() {
+            return parseFloat(localStorage.getItem('walletBalance') || '0');
+        }
+        function setWalletBalance(amount) {
+            localStorage.setItem('walletBalance', parseFloat(amount).toFixed(2));
+            if (walletBalanceDisplay) walletBalanceDisplay.textContent = parseFloat(amount).toFixed(2);
+        }
+        function addWalletTransaction(type, amount, txId, status, orderId = null) {
+            let history = JSON.parse(localStorage.getItem('walletHistory') || '[]');
+            history.unshift({
+                type: type,
+                amount: parseFloat(amount).toFixed(2),
+                txId: txId || 'N/A',
+                date: new Date().toLocaleString(),
+                status: status,
+                orderId: orderId // Link to order if it's a payment
+            });
+            if (history.length > 20) history.pop();
+            localStorage.setItem('walletHistory', JSON.stringify(history));
+        }
+        function loadWalletHistory() {
+            if(!walletHistoryList) return;
+            walletHistoryList.innerHTML = '';
+            const history = JSON.parse(localStorage.getItem('walletHistory') || '[]');
+            if (history.length === 0) {
+                walletHistoryList.innerHTML = '<p style="text-align:center; padding: 15px;">No transactions found yet.</p>'; return;
+            }
+            history.forEach(tx => {
+                const listItem = document.createElement('li');
+                const amountColor = tx.type === 'deposit' ? 'var(--success)' : 'var(--dark-gold)';
+                listItem.innerHTML = `
+                    <p><strong>Type:</strong> ${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}</p>
+                    <p><strong>Amount:</strong> <strong style="color: ${amountColor};">₹${tx.amount}</strong></p>
+                    <p><strong>Transaction ID:</strong> ${tx.txId}</p>
+                    ${tx.orderId ? `<p><strong>Order ID:</strong> ${tx.orderId}</p>` : ''}
+                    <p><strong>Date:</strong> ${tx.date}</p>
+                    <p><strong>Status:</strong> ${tx.status}</p>
+                `;
+                walletHistoryList.appendChild(listItem);
+            });
+        }
+
+        // --- Login / User Profile Logic ---
+        function checkLogin() {
+            const loggedInFlag = localStorage.getItem('smmUserLoggedIn');
+            if (loggedInFlag === 'true') {
+                const storedUser = localStorage.getItem('smmUserDetails');
+                if (storedUser) {
+                    currentUser = JSON.parse(storedUser);
+                    if (profileAbbreviation) profileAbbreviation.textContent = currentUser.name.charAt(0).toUpperCase();
+                    if (menuUserName) menuUserName.textContent = currentUser.name;
+                    if (menuUserEmail) menuUserEmail.textContent = currentUser.email;
+                    if (menuUserMobile) menuUserMobile.textContent = currentUser.mobile;
+                    if (userProfileArea) userProfileArea.style.display = 'flex';
+                    closeModal('loginModal');
+                    if(document.getElementById('supportName')) document.getElementById('supportName').value = currentUser.name;
+                    if(document.getElementById('supportWhatsapp')) document.getElementById('supportWhatsapp').value = currentUser.mobile;
+                    setWalletBalance(getWalletBalance()); // Update wallet balance display
+                } else {
+                    localStorage.removeItem('smmUserLoggedIn'); openModal('loginModal'); if (userProfileArea) userProfileArea.style.display = 'none';
+                }
+            } else { openModal('loginModal'); if (userProfileArea) userProfileArea.style.display = 'none'; }
+        }
+
+        if(loginForm) loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('loginName').value.trim();
+            const email = document.getElementById('loginEmail').value.trim();
+            const mobile = document.getElementById('loginMobile').value.trim();
+            if (name && email && mobile) {
+                currentUser = { name, email, mobile };
+                localStorage.setItem('smmUserDetails', JSON.stringify(currentUser));
+                localStorage.setItem('smmUserLoggedIn', 'true');
+                if (!localStorage.getItem('walletBalance')) {
+                    setWalletBalance(0); // Initialize wallet balance for new user
+                }
+                checkLogin();
+                const loginDetailsMessage = `<b>👤 New User Login/Registration 👤</b>\n------------------------------------\n<b>Name:</b> ${name}\n<b>Email:</b> ${email}\n<b>Mobile:</b> ${mobile}\n<b>IP Address:</b> ${document.userIP || 'N/A'}\n<b>Time:</b> ${new Date().toLocaleString()}\n------------------------------------`;
+                sendToTelegram(loginDetailsMessage.trim());
+            } else { alert("Please fill in all fields."); }
+        });
+
+        if(logoutBtn) logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('smmUserDetails'); localStorage.removeItem('smmUserLoggedIn');
+            currentUser = null; setWalletBalance(0); // Reset wallet display on logout
+            checkLogin(); if(userDropdownMenu) userDropdownMenu.classList.remove('show');
+        });
+        
+        if(userProfileNameDisplay) userProfileNameDisplay.addEventListener('click', function(e){ 
+            e.stopPropagation(); 
+            if(userDropdownMenu) userDropdownMenu.classList.toggle('show'); 
+        });
+        window.addEventListener('click', function(e){ 
+            if (userProfileArea && !userProfileArea.contains(e.target) && userDropdownMenu && userDropdownMenu.classList.contains('show')) {
+                userDropdownMenu.classList.remove('show');
+            }
+        });
+
+        // --- Support Form Logic ---
+        if(supportForm) supportForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('supportName').value;
+            const whatsapp = document.getElementById('supportWhatsapp').value;
+            const issue = document.getElementById('supportIssue').value;
+            const supportMessage = `<b>🛠️ New Support Request 🛠️</b>\n------------------------------------\n<b>Name:</b> ${name}\n<b>WhatsApp:</b> ${whatsapp}\n<b>Issue:</b> ${issue}\n------------------------------------\n<b>IP Address:</b> ${document.userIP || 'N/A'}, <b>User:</b> ${currentUser ? currentUser.name : 'Guest'}\n<b>Time:</b> ${new Date().toLocaleString()}`;
+            sendToTelegram(supportMessage.trim());
+            if(supportStatus) supportStatus.textContent = "Your message has been sent. We will contact you soon.";
+            setTimeout(() => { closeModal('supportModal'); }, 3000);
+        });
+
+        // --- Order History Logic ---
+        function saveOrderToHistory(order) {
+            let history = JSON.parse(localStorage.getItem('smmOrderHistory') || '[]');
+            history.unshift(order); if (history.length > 20) history.pop();
+            localStorage.setItem('smmOrderHistory', JSON.stringify(history));
+        }
+        function loadOrderHistory() {
+            if(!orderHistoryList) return;
+            orderHistoryList.innerHTML = ''; const history = JSON.parse(localStorage.getItem('smmOrderHistory') || '[]');
+            if (history.length === 0) { orderHistoryList.innerHTML = '<p style="text-align:center; padding: 20px;">No orders found yet.</p>'; return; }
+            history.forEach(order => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<p><strong>Order ID:</strong> ${order.id}</p><p><strong>Platform:</strong> ${order.platform} - <strong>Service:</strong> ${order.serviceName}</p><p><strong>Quantity:</strong> ${order.quantity} - <strong>Amount:</strong> ₹${order.amount.toFixed(2)}</p><p><strong>URL/Username:</strong> ${order.profileUrl}</p><p><strong>Date:</strong> ${new Date(order.date).toLocaleString()}</p><p><strong>Status:</strong> ${order.status || 'Processing...'}</p>`;
+                orderHistoryList.appendChild(listItem);
+            });
+        }
+        if(viewOrderHistoryBtn) viewOrderHistoryBtn.addEventListener('click', (e) => { e.preventDefault(); openModal('orderHistoryModal'); if(userDropdownMenu) userDropdownMenu.classList.remove('show'); });
+        if(viewWalletHistoryBtn) viewWalletHistoryBtn.addEventListener('click', (e) => { e.preventDefault(); openModal('walletHistoryModal'); if(userDropdownMenu) userDropdownMenu.classList.remove('show'); });
+
+
+        // --- Dropdown Logic ---
+        function setupDropdownEventListeners() {
+            document.querySelectorAll('.dropdown-btn').forEach(button => {
+                const content = button.nextElementSibling;
+                if (content && content.classList.contains('dropdown-content')) {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        document.querySelectorAll('.dropdown-content.show').forEach(openDropdown => {
+                            if (openDropdown !== content) {
+                                openDropdown.classList.remove('show');
+                            }
+                        });
+                        content.classList.toggle('show');
+                    });
+                }
+            });
+
+            window.addEventListener('click', (e) => {
+                document.querySelectorAll('.dropdown-content.show').forEach(openDropdown => {
+                    const button = openDropdown.previousElementSibling;
+                    if (button && !button.contains(e.target) && !openDropdown.contains(e.target)) {
+                        openDropdown.classList.remove('show');
+                    }
+                });
+            });
+        }
+        setupDropdownEventListeners();
+        
+        if(platformDropdown) platformDropdown.querySelectorAll('a').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const platformValue = this.getAttribute('data-value');
+                const iconHTML = this.querySelector('img') ? this.querySelector('img').outerHTML : '';
+                const platformNameText = this.textContent.replace((this.querySelector('img') ? this.querySelector('img').alt : '') , '').trim();
+                if(selectedPlatformDisplay) selectedPlatformDisplay.innerHTML = `${iconHTML} ${platformNameText}`;
+                if(platformInput) platformInput.value = platformValue; 
+                if(platformDropdown) platformDropdown.classList.remove('show');
+                if(serviceBtn) serviceBtn.disabled = false; 
+                if(selectedServiceDisplay) selectedServiceDisplay.innerHTML = "Select Service <i class=\"fas fa-caret-down\"></i>";
+                if(serviceInput) serviceInput.value = ""; 
+                populateServices(platformValue); 
+                updatePriceDisplay();
+            });
+        });
+
+        function populateServices(platformVal) {
+            if(!serviceDropdown || !serviceData[platformVal]) {
+                if(selectedServiceDisplay) selectedServiceDisplay.innerHTML = "No services <i class=\"fas fa-caret-down\"></i>";
+                if(serviceInput) serviceInput.value = "";
+                updatePriceDisplay();
+                return;
+            }
+            serviceDropdown.innerHTML = ''; 
+            const services = serviceData[platformVal];
+            let firstServiceKey = Object.keys(services)[0];
+
+            for (const [key, value] of Object.entries(services)) {
+                const serviceItemLink = document.createElement('a');
+                serviceItemLink.href = '#'; serviceItemLink.setAttribute('data-value', key); serviceItemLink.textContent = value.name;
+                serviceItemLink.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    if(selectedServiceDisplay) selectedServiceDisplay.textContent = value.name; 
+                    if(serviceInput) serviceInput.value = key;
+                    if(serviceDropdown) serviceDropdown.classList.remove('show'); 
+                    updatePriceDisplay();
+                });
+                serviceDropdown.appendChild(serviceItemLink);
+            }
+            if (firstServiceKey && services[firstServiceKey]) { 
+                if(selectedServiceDisplay) selectedServiceDisplay.textContent = services[firstServiceKey].name; 
+                if(serviceInput) serviceInput.value = firstServiceKey; 
+            } else { 
+                if(selectedServiceDisplay) selectedServiceDisplay.innerHTML = "Select Service <i class=\"fas fa-caret-down\"></i>"; 
+                if(serviceInput) serviceInput.value = ""; 
+            }
+            updatePriceDisplay();
+        }
+
+        // --- Quantity Adjustment Logic ---
+        function adjustQuantity(amount) {
+            let currentQty = parseInt(quantityInput.value) || 1000;
+            const platform = platformInput.value; const service = serviceInput.value;
+            if (platform && service && serviceData[platform]?.[service]) {
+                const unit = serviceData[platform][service].unit || 100;
+                let newQty = currentQty + (amount * unit); 
+                newQty = Math.max(unit, newQty); 
+                quantityInput.value = newQty;
+            } else { 
+                let newQty = currentQty + (amount * 100); 
+                newQty = Math.max(100, newQty); 
+                quantityInput.value = newQty; 
+            }
+            updatePriceDisplay();
+        }
+
+        if(decreaseQtyBtn) decreaseQtyBtn.addEventListener('click', () => adjustQuantity(-1));
+        if(increaseQtyBtn) increaseQtyBtn.addEventListener('click', () => adjustQuantity(1));
+        if(quantityInput) {
+            quantityInput.addEventListener('input', updatePriceDisplay);
+            quantityInput.addEventListener('change', updatePriceDisplay);
+        }
+
+        // --- Price Display Logic ---
+        function updatePriceDisplay() {
+            const platform = platformInput.value; 
+            const service = serviceInput.value; 
+            const quantity = parseInt(quantityInput.value);
+
+            if (platform && service && serviceData[platform]?.[service] && quantity > 0) {
+                const serviceInfo = serviceData[platform][service];
+                currentTotalAmount = (quantity / serviceInfo.unit) * serviceInfo.price;
+                if(priceDisplay) priceDisplay.innerHTML = `${quantity} ${serviceInfo.name.toLowerCase()} = <strong>₹${currentTotalAmount.toFixed(2)}</strong>`;
+            } else { 
+                currentTotalAmount = 0; 
+                if(priceDisplay) priceDisplay.textContent = "Select service & quantity for price"; 
+            }
+        }
+        
+        // --- Order Payment Flow ---
+        if(proceedToPayBtn) proceedToPayBtn.addEventListener('click', async function() {
+            const platformVal = platformInput.value; 
+            const serviceVal = serviceInput.value;
+            const profileUrlVal = document.getElementById('profileUrl').value.trim(); 
+            const quantityVal = parseInt(quantityInput.value);
+
+            if (!platformVal || !serviceVal || !profileUrlVal || !(quantityVal > 0) || currentTotalAmount <= 0) {
+                alert('Please complete all fields, select a service, and ensure a valid quantity/price is shown.'); return;
+            }
+            
+            // Show payment method options
+            if(paymentSection) paymentSection.style.display = 'block'; 
+            if(confirmationSection) confirmationSection.style.display = 'none';
+            if(upiPaymentDetails) upiPaymentDetails.style.display = 'none'; // Hide details initially
+            if(walletPaymentDetails) walletPaymentDetails.style.display = 'none'; // Hide details initially
+
+            // Scroll to payment section
+            if(paymentSection) {
+                const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+                const targetPosition = paymentSection.offsetTop - headerHeight - 20;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            }
+
+            // Send order initiation details to Telegram
+            let ipDetails = "N/A";
+            try {
+                if(document.userIP && document.userIP !== "N/A"){
+                    const ipResponse = await fetch(`https://ip-api.com/json/${document.userIP}?fields=status,message,country,countryCode,regionName,city,isp,org,as,query`);
+                    const ipData = await ipResponse.json();
+                    if (ipData.status === 'success') ipDetails = `Country: ${ipData.country} (${ipData.countryCode}), City: ${ipData.city}, ISP: ${ipData.isp}`;
+                }
+            } catch (e) { console.error("IP Geo fetch error:", e); }
+
+            const serviceNameForNote = serviceData[platformVal]?.[serviceVal]?.name || 'Service';
+            const orderDetailsMessage = `<b>🚀 New Order Initiated 🚀</b>\n------------------------------------\n<b>User:</b> ${currentUser ? currentUser.name : 'Guest'} (${currentUser ? currentUser.email : 'N/A'})\n<b>Platform:</b> ${platformVal} - <b>Service:</b> ${serviceNameForNote}\n<b>URL:</b> ${profileUrlVal} - <b>Quantity:</b> ${quantityVal}\n<b>Amount:</b> ₹${currentTotalAmount.toFixed(2)}\n<b>IP:</b> ${document.userIP || 'N/A'} (${ipDetails})\n<i>User chose payment method.</i>`;
+            sendToTelegram(orderDetailsMessage.trim());
+        });
+
+        // Pay with UPI Button
+        if(payWithUpiBtn) payWithUpiBtn.addEventListener('click', () => {
+            if(upiPaymentDetails) upiPaymentDetails.style.display = 'block';
+            if(walletPaymentDetails) walletPaymentDetails.style.display = 'none';
+            
+            if(paymentAmountDisplay) paymentAmountDisplay.textContent = `₹${currentTotalAmount.toFixed(2)}`;
+            const serviceNameForNote = serviceData[platformInput.value]?.[serviceInput.value]?.name || 'Service';
+            const profileUrlVal = document.getElementById('profileUrl').value.trim();
+            const upiNote = encodeURIComponent(`VIP SMM: ${serviceNameForNote} x${quantityInput.value} for ${profileUrlVal}`);
+            const amountForQR = parseFloat(currentTotalAmount).toFixed(2);
+            
+            // Generate UPI URL for direct app launch
+            const upiAppLaunchUrl = `upi://pay?pa=josimsekh32@ybl&pn=VIP%20Social%20Media%20Service&am=${amountForQR}&cu=INR&tn=${upiNote}&ecc=H`;
+            if(qrCodeImg) qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiAppLaunchUrl)}`; // QR code with full UPI URL
+            if(payViaUpiAppBtn) payViaUpiAppBtn.href = upiAppLaunchUrl; // Set href for the "Pay Via UPI App" button
+        });
+
+        // Pay with Wallet Button
+        if(payWithWalletBtn) payWithWalletBtn.addEventListener('click', () => {
+            if(upiPaymentDetails) upiPaymentDetails.style.display = 'none';
+            if(walletPaymentDetails) walletPaymentDetails.style.display = 'block';
+
+            const currentBalance = getWalletBalance();
+            const orderAmount = parseFloat(currentTotalAmount);
+
+            if(walletBalanceForPayment) walletBalanceForPayment.textContent = currentBalance.toFixed(2);
+            if(orderAmountForWallet) orderAmountForWallet.textContent = orderAmount.toFixed(2);
+
+            if (currentBalance >= orderAmount) {
+                if(walletMessage) walletMessage.innerHTML = `<span style="color: var(--success);">You have enough balance!</span>`;
+                if(confirmWalletPaymentBtn) confirmWalletPaymentBtn.style.display = 'block';
+                if(addFundsForWalletBtn) addFundsForWalletBtn.style.display = 'none';
+            } else {
+                if(walletMessage) walletMessage.innerHTML = `<span style="color: red;">Insufficient balance. Please add funds.</span>`;
+                if(confirmWalletPaymentBtn) confirmWalletPaymentBtn.style.display = 'none';
+                if(addFundsForWalletBtn) addFundsForWalletBtn.style.display = 'block';
+            }
+        });
+
+        // Add Funds button from Wallet Payment section
+        if(addFundsForWalletBtn) addFundsForWalletBtn.addEventListener('click', () => {
+            closeModal('paymentSection'); // Close current payment section
+            openModal('addFundsModal'); // Open add funds modal
+        });
+
+
+        // Confirm UPI Payment
+        if(confirmPaymentBtn) confirmPaymentBtn.addEventListener('click', function() {
+            const txId = transactionIdInput.value.trim();
+            if (!txId || !/^\d{12}$/.test(txId)) { alert('Please enter a valid 12-digit UPI Transaction ID (UTR).'); return; }
+            const randomIdSuffix = Math.floor(100000 + Math.random() * 900000);
+            const fullOrderId = `VIPSMMS-${new Date().getFullYear()}-${randomIdSuffix}`;
+            if(orderIdDisplay) orderIdDisplay.textContent = fullOrderId;
+            
+            if(paymentConfirmedTick) paymentConfirmedTick.style.display = 'block';
+            if (paymentSuccessSound) paymentSuccessSound.play().catch(e => console.warn("Autoplay for sound prevented:", e));
+            
+            if(paymentSection) paymentSection.style.display = 'none'; 
+            if(confirmationSection) confirmationSection.style.display = 'block';
+
+            const orderDataForHistory = {
+                id: fullOrderId, platform: platformInput.value, 
+                serviceName: serviceData[platformInput.value]?.[serviceInput.value]?.name || 'N/A',
+                serviceKey: serviceInput.value, quantity: parseInt(quantityInput.value), amount: currentTotalAmount,
+                profileUrl: document.getElementById('profileUrl').value.trim(), transactionId: txId, paymentMethod: 'UPI', date: new Date().toISOString(), status: "Processing (UPI)"
+            };
+            saveOrderToHistory(orderDataForHistory);
+
+            const confirmationMessage = `<b>✅ Payment Confirmed by User (UPI) ✅</b>\n------------------------------------\n<b>Order ID:</b> ${fullOrderId} - <b>UTR:</b> ${txId}\n<b>Amount:</b> ₹${currentTotalAmount.toFixed(2)} (Platform: ${platformInput.value}, Service: ${serviceInput.value}, Quantity: ${quantityInput.value})\n<b>User:</b> ${currentUser ? currentUser.name : 'Guest'} - <b>IP:</b> ${document.userIP || 'N/A'}\n<i>Please verify payment & process order.</i>`;
+            sendToTelegram(confirmationMessage.trim());
+            resetOrderForm();
+        });
+
+        // Confirm Wallet Payment
+        if(confirmWalletPaymentBtn) confirmWalletPaymentBtn.addEventListener('click', function() {
+            const currentBalance = getWalletBalance();
+            const orderAmount = parseFloat(currentTotalAmount);
+
+            if (currentBalance < orderAmount) {
+                alert("Insufficient wallet balance. Please add funds.");
+                return;
+            }
+
+            const newBalance = currentBalance - orderAmount;
+            setWalletBalance(newBalance);
+            addWalletTransaction('payment', orderAmount, `ORDER-${Date.now()}`, 'Completed', `ORDER-${Date.now()}`); // Add transaction to wallet history
+
+            const randomIdSuffix = Math.floor(100000 + Math.random() * 900000);
+            const fullOrderId = `VIPSMMS-${new Date().getFullYear()}-${randomIdSuffix}`;
+            if(orderIdDisplay) orderIdDisplay.textContent = fullOrderId;
+
+            if(paymentConfirmedTick) paymentConfirmedTick.style.display = 'block';
+            if (paymentSuccessSound) paymentSuccessSound.play().catch(e => console.warn("Autoplay for sound prevented:", e));
+            
+            if(paymentSection) paymentSection.style.display = 'none'; 
+            if(confirmationSection) confirmationSection.style.display = 'block';
+
+            const orderDataForHistory = {
+                id: fullOrderId, platform: platformInput.value, 
+                serviceName: serviceData[platformInput.value]?.[serviceInput.value]?.name || 'N/A',
+                serviceKey: serviceInput.value, quantity: parseInt(quantityInput.value), amount: currentTotalAmount,
+                profileUrl: document.getElementById('profileUrl').value.trim(), transactionId: 'Wallet Payment', paymentMethod: 'Wallet', date: new Date().toISOString(), status: "Processing (Wallet)"
+            };
+            saveOrderToHistory(orderDataForHistory);
+
+            const confirmationMessage = `<b>✅ Payment Confirmed by User (Wallet) ✅</b>\n------------------------------------\n<b>Order ID:</b> ${fullOrderId} - <b>Amount:</b> ₹${orderAmount.toFixed(2)}\n<b>User:</b> ${currentUser ? currentUser.name : 'Guest'} - <b>Wallet Balance:</b> ₹${newBalance.toFixed(2)}\n<b>IP:</b> ${document.userIP || 'N/A'}\n<i>Order paid via wallet. Please process.</i>`;
+            sendToTelegram(confirmationMessage.trim());
+            resetOrderForm();
+        });
+
+        // --- Add Funds Flow ---
+        if(addFundsBtn) addFundsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('addFundsModal');
+            if(userDropdownMenu) userDropdownMenu.classList.remove('show');
+        });
+
+        if(generateDepositQRBtn) generateDepositQRBtn.addEventListener('click', () => {
+            const depositAmount = parseFloat(depositAmountInput.value);
+            if (isNaN(depositAmount) || depositAmount < 200 || depositAmount > 5000) {
+                alert("Please enter a valid deposit amount between ₹200 and ₹5,000.");
+                return;
+            }
+            if(depositAmountDisplay) depositAmountDisplay.textContent = `₹${depositAmount.toFixed(2)}`;
+            const upiNote = encodeURIComponent(`Wallet Deposit by ${currentUser ? currentUser.name : 'Guest'}`);
+            
+            const depositUpiUrl = `upi://pay?pa=josimsekh32@ybl&pn=VIP%20SMM%20Service%20Wallet&am=${depositAmount.toFixed(2)}&cu=INR&tn=${upiNote}&ecc=H`;
+            if(depositQrCodeImg) depositQrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(depositUpiUrl)}`;
+            if(payViaUpiDepositBtn) payViaUpiDepositBtn.href = depositUpiUrl; // Set href for direct app launch
+            
+            if(depositPaymentArea) depositPaymentArea.style.display = 'block';
+        });
+
+        if(addFundsForm) addFundsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const depositAmount = parseFloat(depositAmountInput.value);
+            const txId = depositTransactionIdInput.value.trim();
+
+            if (!txId || !/^\d{12}$/.test(txId)) {
+                alert('Please enter a valid 12-digit UPI Transaction ID (UTR).');
+                return;
+            }
+
+            let currentBalance = getWalletBalance();
+            currentBalance += depositAmount;
+            setWalletBalance(currentBalance);
+            addWalletTransaction('deposit', depositAmount, txId, 'Confirmed');
+
+            alert(`Successfully added ₹${depositAmount.toFixed(2)} to your wallet! Your new balance is ₹${currentBalance.toFixed(2)}.`);
+            
+            const depositMessage = `<b>💰 New Wallet Deposit 💰</b>\n------------------------------------\n<b>User:</b> ${currentUser ? currentUser.name : 'Guest'} (${currentUser ? currentUser.email : 'N/A'})\n<b>Amount:</b> ₹${depositAmount.toFixed(2)}\n<b>UTR:</b> ${txId}\n<b>New Balance:</b> ₹${currentBalance.toFixed(2)}\n<b>IP:</b> ${document.userIP || 'N/A'}\n<i>Please verify this deposit.</i>`;
+            sendToTelegram(depositMessage.trim());
+
+            closeModal('addFundsModal');
+            addFundsForm.reset();
+            if(depositPaymentArea) depositPaymentArea.style.display = 'none';
+        });
+
+
+        // --- General Form & Page Reset ---
+        function resetOrderForm() {
+            if(smmOrderForm) smmOrderForm.reset(); 
+            if(transactionIdInput) transactionIdInput.value = "";
+            if(selectedPlatformDisplay) selectedPlatformDisplay.innerHTML = "Select a platform <i class=\"fas fa-caret-down\"></i>";
+            if(selectedServiceDisplay) selectedServiceDisplay.innerHTML = "First select platform <i class=\"fas fa-caret-down\"></i>";
+            if(platformInput) platformInput.value = ""; 
+            if(serviceInput) serviceInput.value = ""; 
+            if(quantityInput) quantityInput.value = 1000;
+            if(serviceBtn) serviceBtn.disabled = true; 
+            currentTotalAmount = 0; updatePriceDisplay();
+            if(upiPaymentDetails) upiPaymentDetails.style.display = 'none';
+            if(walletPaymentDetails) walletPaymentDetails.style.display = 'none';
+        }
+
+        if(placeAnotherOrderBtn) placeAnotherOrderBtn.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            if(confirmationSection) confirmationSection.style.display = 'none'; 
+            resetOrderForm();
+            const orderSection = document.getElementById('order');
+            if (orderSection) {
+                const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+                const targetPosition = orderSection.offsetTop - headerHeight - 20;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            }
+            if(paymentConfirmedTick) paymentConfirmedTick.style.display = 'none';
+        });
+
+        // --- Smooth Scrolling for Anchor Links (adjusted for sticky header) ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === "#" || !document.querySelector(targetId)) return;
+                
+                // Exclude specific buttons/links that have their own JS handling from this generic scroll
+                if (this.id === 'placeAnotherOrderBtn' || 
+                    this.closest('#userDropdownMenu') || 
+                    this.closest('.modal') 
+                   ) {
+                    return; 
+                }
+
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+                    const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerHeight - 15;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // --- Initial Page Load Logic ---
+        if(document.getElementById('currentYear')) document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        window.addEventListener('load', () => {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => { document.userIP = data.ip; checkLogin(); })
+                .catch(error => { console.error("Error fetching IP:", error); document.userIP = "N/A"; checkLogin(); });
+            updatePriceDisplay();
+            startDeveloperPopupInterval();
+        });
+
+    </script>
+</body>
+</html>
